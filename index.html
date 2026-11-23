@@ -1,579 +1,701 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Undangan Pernikahan — Arya &amp; Nadia | Poké-Wedding Edition</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Press+Start+2P&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Wedding of Rizki Fatih &amp; Ayu Lestari — Kanto Sanctuary Edition</title>
+  <meta name="description" content="Undangan Pernikahan Digital Bertema Pokémon RPG Interaktif oleh RXFatih." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Press+Start+2P&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <a href="#main-content" class="skip-link">Lewati ke Konten Utama</a>
+  <a href="#main-content" class="skip-link">Lewati ke konten utama</a>
 
-  <audio id="bg-music" loop preload="none">
-    <source src="assets/audio/bgm-pokemon.mp3" type="audio/mpeg">
+  <audio id="bgMusic" preload="auto" loop>
+    <source src="assets/music.mp3" type="audio/mpeg" />
   </audio>
 
-  <!-- Gerbang Pembuka Pokéball -->
-  <div id="opening-gate" class="opening-gate" role="dialog" aria-modal="true" aria-labelledby="gate-title">
-    <div class="gate-half gate-top">
-      <div class="gate-grid-overlay" aria-hidden="true"></div>
-      <div class="gate-top-content">
-        <span class="pixel-badge badge-light">KANTO LEAGUE INVITATION // #2026</span>
-        <div class="gate-characters" aria-hidden="true">
-          <!-- Karakter Trainer Pria SVG -->
-          <svg class="sprite-float sprite-groom" width="76" height="88" viewBox="0 0 64 74" fill="none">
-            <rect x="20" y="6" width="24" height="10" rx="3" fill="#DC2626" stroke="#111827" stroke-width="3"/>
-            <rect x="20" y="13" width="32" height="5" rx="2" fill="#FFFFFF" stroke="#111827" stroke-width="3"/>
-            <rect x="18" y="18" width="28" height="20" rx="6" fill="#FDE68A" stroke="#111827" stroke-width="3"/>
-            <rect x="24" y="25" width="4" height="5" rx="1" fill="#111827"/>
-            <rect x="36" y="25" width="4" height="5" rx="1" fill="#111827"/>
-            <rect x="16" y="38" width="32" height="22" rx="4" fill="#1E3A8A" stroke="#111827" stroke-width="3"/>
-            <path d="M28 38L32 48L36 38" fill="#FFFFFF"/>
-            <rect x="20" y="60" width="10" height="10" rx="2" fill="#111827"/>
-            <rect x="34" y="60" width="10" height="10" rx="2" fill="#111827"/>
-          </svg>
+  <canvas id="sparkTrailCanvas" class="spark-trail-canvas" aria-hidden="true"></canvas>
+  <div id="gateFlashBurst" class="gate-flash-burst" aria-hidden="true"></div>
 
-          <!-- Karakter Maskot Listrik SVG -->
-          <svg class="sprite-bounce sprite-mascot" width="72" height="76" viewBox="0 0 64 68" fill="none">
-            <g class="ear-left">
-              <path d="M18 24L8 4L25 18Z" fill="#FACC15" stroke="#111827" stroke-width="3" stroke-linejoin="round"/>
-              <path d="M12 12L8 4L17 11Z" fill="#111827"/>
-            </g>
-            <g class="ear-right">
-              <path d="M46 24L56 4L39 18Z" fill="#FACC15" stroke="#111827" stroke-width="3" stroke-linejoin="round"/>
-              <path d="M52 12L56 4L47 11Z" fill="#111827"/>
-            </g>
-            <rect x="14" y="20" width="36" height="36" rx="14" fill="#FACC15" stroke="#111827" stroke-width="3"/>
-            <circle cx="24" cy="34" r="3" fill="#111827"/>
-            <circle cx="40" cy="34" r="3" fill="#111827"/>
-            <circle cx="23" cy="33" r="1" fill="#FFFFFF"/>
-            <circle cx="39" cy="33" r="1" fill="#FFFFFF"/>
-            <circle cx="19" cy="41" r="4" fill="#EF4444"/>
-            <circle cx="45" cy="41" r="4" fill="#EF4444"/>
-            <path d="M28 42Q32 46 36 42" stroke="#111827" stroke-width="2.5" stroke-linecap="round"/>
-            <rect x="20" y="56" width="8" height="7" rx="3" fill="#FACC15" stroke="#111827" stroke-width="3"/>
-            <rect x="36" y="56" width="8" height="7" rx="3" fill="#FACC15" stroke="#111827" stroke-width="3"/>
-          </svg>
-
-          <!-- Karakter Trainer Wanita SVG -->
-          <svg class="sprite-float sprite-bride" width="76" height="88" viewBox="0 0 64 74" fill="none">
-            <path d="M16 20C16 11 48 11 48 20L52 42H12L16 20Z" fill="#78350F" stroke="#111827" stroke-width="3"/>
-            <circle cx="32" cy="10" r="5" fill="#F43F5E" stroke="#111827" stroke-width="2.5"/>
-            <rect x="19" y="18" width="26" height="20" rx="6" fill="#FDE68A" stroke="#111827" stroke-width="3"/>
-            <rect x="24" y="25" width="4" height="5" rx="1" fill="#111827"/>
-            <rect x="36" y="25" width="4" height="5" rx="1" fill="#111827"/>
-            <path d="M15 38H49L53 60H11L15 38Z" fill="#FFFFFF" stroke="#111827" stroke-width="3" stroke-linejoin="round"/>
-            <path d="M24 44H40" stroke="#F43F5E" stroke-width="3" stroke-linecap="round"/>
-            <rect x="21" y="60" width="8" height="10" rx="2" fill="#FDE68A" stroke="#111827" stroke-width="2.5"/>
-            <rect x="35" y="60" width="8" height="10" rx="2" fill="#FDE68A" stroke="#111827" stroke-width="2.5"/>
-          </svg>
-        </div>
-        <h1 id="gate-title" class="gate-names">Arya &amp; Nadia</h1>
+  <div id="gate" class="gate-overlay" role="dialog" aria-modal="true" aria-labelledby="gateTitle">
+    <div class="gate-panel gate-top">
+      <div class="gate-grid-bg" aria-hidden="true"></div>
+      <div class="gate-floating-motifs" aria-hidden="true">
+        <span class="motif-star s1">✦</span>
+        <span class="motif-star s2">♥</span>
+        <span class="motif-star s3">⚡</span>
+        <span class="motif-star s4">✦</span>
+        <span class="motif-star s5">★</span>
       </div>
-      <div class="gate-rim"></div>
+      <div class="gate-top-content">
+        <div class="league-badge">
+          <span class="badge-dot" aria-hidden="true"></span>
+          <span>KANTO LEAGUE • WEDDING PASS NO. 025</span>
+        </div>
+        <p class="gate-subtitle">THE GRAND ADVENTURE OF</p>
+        <h1 id="gateTitle" class="gate-names">
+          <span>Rizki Fatih</span>
+          <span class="gate-amp">&amp;</span>
+          <span>Ayu Lestari</span>
+        </h1>
+        <p class="gate-date">MINGGU, 20 DESEMBER 2026</p>
+      </div>
+      <div class="gate-belt gate-belt-top" aria-hidden="true"></div>
     </div>
 
-    <div class="gate-center-lock">
-      <button id="open-gate-btn" class="pokeball-trigger" type="button" aria-label="Buka Undangan Pernikahan">
+    <div class="gate-center-latch">
+      <div class="latch-orbit-ring" aria-hidden="true">
+        <span class="orbit-spark"></span>
+      </div>
+      <div class="latch-pulse-ring" aria-hidden="true"></div>
+      <button id="openGateBtn" class="pokeball-latch-btn" type="button" aria-label="Buka Undangan dan Putar Musik">
         <span class="pokeball-core">
           <span class="pokeball-inner-ring"></span>
         </span>
-        <span class="pokeball-prompt">TEKAN UNTUK MEMBUKA</span>
       </button>
+      <span class="latch-hint">TAP POKÉBALL TO OPEN</span>
     </div>
 
-    <div class="gate-half gate-bottom">
-      <div class="gate-rim-bottom"></div>
+    <div class="gate-panel gate-bottom">
+      <div class="gate-belt gate-belt-bottom" aria-hidden="true"></div>
       <div class="gate-bottom-content">
-        <p class="gate-date">SABTU, 12 DESEMBER 2026</p>
-        <p class="gate-sub">Sebuah Petualangan Baru Dimulai Bersama</p>
+        <div class="guest-card">
+          <span class="guest-label">KEPADA YTH. TRAINER SPESIAL:</span>
+          <strong id="guestNameDisplay" class="guest-name">Tamu Undangan</strong>
+        </div>
+        <p class="gate-audio-note">Ketuk Pokéball atau scroll untuk mengaktifkan musik &amp; efek suara</p>
       </div>
     </div>
   </div>
 
-  <!-- Navigasi Utama -->
-  <header class="site-header">
-    <div class="container header-inner">
-      <a href="#hero" class="brand-logo" aria-label="Beranda Poké-Wedding">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <circle cx="12" cy="12" r="10" fill="#FFFFFF" stroke="#111827" stroke-width="2.5"/>
-          <path d="M2 12C2 6.477 6.477 2 12 2C17.523 2 22 6.477 22 12H2Z" fill="#DC2626" stroke="#111827" stroke-width="2.5"/>
-          <circle cx="12" cy="12" r="3.5" fill="#FFFFFF" stroke="#111827" stroke-width="2.5"/>
+  <header class="site-header" id="siteHeader">
+    <div class="container nav-inner">
+      <a href="#hero" class="brand-mark" aria-label="Beranda Undangan">
+        <svg class="mini-pokeball" width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <circle cx="12" cy="12" r="10" fill="#FFFFFF" stroke="#0F172A" stroke-width="2.5"/>
+          <path d="M2 12C2 6.477 6.477 2 12 2C17.523 2 22 6.477 22 12H2Z" fill="#EF4444" stroke="#0F172A" stroke-width="2.5"/>
+          <line x1="2" y1="12" x2="22" y2="12" stroke="#0F172A" stroke-width="2.5"/>
+          <circle cx="12" cy="12" r="3.5" fill="#FFFFFF" stroke="#0F172A" stroke-width="2.5"/>
         </svg>
-        <span>POKÉ-DEX #2026</span>
+        <span class="brand-text">F &amp; A <small>LV.99</small></span>
       </a>
 
-      <nav class="main-nav" aria-label="Navigasi Bagian Undangan">
-        <a href="#mempelai">Trainer</a>
-        <a href="#galeri">Galeri</a>
-        <a href="#acara">Jadwal</a>
-        <a href="#rsvp">RSVP</a>
-        <a href="#mini-game">Mini Game</a>
+      <nav class="main-nav" aria-label="Navigasi Undangan">
+        <a href="#hero" class="nav-link active">Arena</a>
+        <a href="#couple" class="nav-link">Trainers</a>
+        <a href="#gallery" class="nav-link">Memories</a>
+        <a href="#events" class="nav-link">Gym</a>
+        <a href="#story" class="nav-link">Route</a>
+        <a href="#game" class="nav-link">Mini-Game</a>
+        <a href="#rsvp" class="nav-link">RSVP</a>
       </nav>
-
-      <button id="audio-toggle" class="btn-audio" type="button" aria-pressed="false" aria-label="Putar atau Hentikan Musik Latar">
-        <svg id="icon-sound-on" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
-          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-          <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
-          <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
-        </svg>
-        <svg id="icon-sound-off" class="hidden" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
-          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-          <line x1="23" y1="9" x2="17" y2="15"></line>
-          <line x1="17" y1="9" x2="23" y2="15"></line>
-        </svg>
-        <span class="audio-label">BGM</span>
-      </button>
+    </div>
+    <div class="journey-progress-track" aria-hidden="true">
+      <div id="journeyProgressFill" class="journey-progress-fill"></div>
     </div>
   </header>
 
   <main id="main-content">
-    <!-- Hero Section -->
-    <section id="hero" class="section-hero">
-      <div class="container hero-grid">
-        <div class="hero-copy reveal">
-          <span class="pixel-badge">UNDANGAN PERNIKAHAN RESMI</span>
-          <h2 class="hero-title">Arya Pratama <span class="amp">&amp;</span> Nadia Kusuma</h2>
-          <p class="hero-desc">
-            Dua Trainer telah memilih untuk bertualang dalam satu tim selamanya. Dengan memohon rahmat Tuhan Yang Maha Esa, kami mengundang Anda hadir dalam upacara ikrar suci kami.
-          </p>
+    <section id="hero" class="hero-section">
+      <canvas id="heroWorldCanvas" class="hero-particles-canvas" aria-hidden="true"></canvas>
 
-          <div class="countdown-box" aria-label="Hitung Mundur Acara Pernikahan">
-            <div class="cd-item">
-              <span id="cd-days" class="cd-num">00</span>
-              <span class="cd-label">Hari</span>
+      <div class="sky-layer" aria-hidden="true">
+        <div class="sun-orb"></div>
+        <div class="shooting-star star-1"></div>
+        <div class="shooting-star star-2"></div>
+        <div class="pixel-cloud cloud-1"></div>
+        <div class="pixel-cloud cloud-2"></div>
+        <div class="pixel-cloud cloud-3"></div>
+
+        <div class="butterfree-flier bf-1">
+          <svg width="34" height="26" viewBox="0 0 34 26" fill="none">
+            <ellipse class="wing-left" cx="10" cy="12" rx="8" ry="10" fill="#F8FAFC" stroke="#1E293B" stroke-width="2"/>
+            <ellipse class="wing-right" cx="24" cy="12" rx="8" ry="10" fill="#F8FAFC" stroke="#1E293B" stroke-width="2"/>
+            <rect x="15" y="7" width="4" height="13" rx="2" fill="#4338CA"/>
+            <circle cx="15.5" cy="9" r="1.5" fill="#EF4444"/>
+            <circle cx="18.5" cy="9" r="1.5" fill="#EF4444"/>
+          </svg>
+        </div>
+
+        <div class="butterfree-flier bf-2">
+          <svg width="28" height="22" viewBox="0 0 34 26" fill="none">
+            <ellipse class="wing-left" cx="10" cy="12" rx="8" ry="10" fill="#FEF08A" stroke="#1E293B" stroke-width="2"/>
+            <ellipse class="wing-right" cx="24" cy="12" rx="8" ry="10" fill="#FEF08A" stroke="#1E293B" stroke-width="2"/>
+            <rect x="15" y="7" width="4" height="13" rx="2" fill="#1E293B"/>
+          </svg>
+        </div>
+
+        <svg class="kanto-mountains" viewBox="0 0 1440 160" preserveAspectRatio="none">
+          <path d="M0 160L0 110L160 55L320 115L510 35L710 108L920 42L1140 112L1310 60L1440 105L1440 160Z" fill="rgba(15, 23, 42, 0.24)"/>
+          <path d="M0 160L0 128L210 82L430 132L640 72L860 128L1080 76L1290 130L1440 94L1440 160Z" fill="rgba(21, 128, 61, 0.45)"/>
+        </svg>
+      </div>
+
+      <div class="container hero-container">
+        <div class="hero-top-hud">
+          <div class="hud-status-box">
+            <div class="hud-row">
+              <span class="hud-name">WEDDING QUEST</span>
+              <span class="hud-level">Lv.99</span>
             </div>
-            <div class="cd-item">
-              <span id="cd-hours" class="cd-num">00</span>
-              <span class="cd-label">Jam</span>
+            <div class="hp-bar-wrap" aria-label="Status Kebahagiaan 100 persen">
+              <span class="hp-label">HP</span>
+              <div class="hp-track">
+                <div class="hp-fill"></div>
+              </div>
             </div>
-            <div class="cd-item">
-              <span id="cd-minutes" class="cd-num">00</span>
-              <span class="cd-label">Menit</span>
-            </div>
-            <div class="cd-item">
-              <span id="cd-seconds" class="cd-num">00</span>
-              <span class="cd-label">Detik</span>
-            </div>
+            <p class="hud-location">KANTO SANCTUARY • INDIGO PLATEAU</p>
           </div>
 
-          <div class="hero-actions">
-            <a href="#acara" class="btn-primary">Lihat Lokasi Gym</a>
-            <a href="#mini-game" class="btn-secondary">Mainkan Mini Game</a>
+          <div class="countdown-hud" aria-label="Hitung Mundur Pernikahan">
+            <div class="cd-cell">
+              <span id="cdDays" class="cd-num">00</span>
+              <span class="cd-unit">HARI</span>
+            </div>
+            <div class="cd-cell">
+              <span id="cdHours" class="cd-num">00</span>
+              <span class="cd-unit">JAM</span>
+            </div>
+            <div class="cd-cell">
+              <span id="cdMins" class="cd-num">00</span>
+              <span class="cd-unit">MNT</span>
+            </div>
+            <div class="cd-cell">
+              <span id="cdSecs" class="cd-num">00</span>
+              <span class="cd-unit">DTK</span>
+            </div>
           </div>
         </div>
 
-        <!-- Panggung Karakter Interaktif -->
-        <div class="hero-stage reveal">
-          <div class="pokedex-screen">
-            <div class="screen-topbar">
-              <div class="led-group" aria-hidden="true">
-                <span class="led led-blue"></span>
-                <span class="led led-red"></span>
-                <span class="led led-yellow"></span>
-              </div>
-              <span class="screen-code">ARENA: CERULEAN GARDEN</span>
+        <div class="hero-center-stage">
+          <p class="hero-kicker">A WILD WEDDING INVITATION APPEARED!</p>
+          <h2 class="hero-main-title">Rizki Fatih &amp; Ayu Lestari</h2>
+          <p class="hero-subtitle">Dua Trainer memulai petualangan seumur hidup bersama</p>
+
+          <div class="pikachu-stage">
+            <div id="pikaSpeechBubble" class="pika-bubble" role="status" aria-live="polite">
+              Pika-Pika! Klik aku untuk kejutan Thunderbolt cinta!
             </div>
 
-            <div class="battle-field">
-              <div class="status-hud hud-left">
-                <div class="hud-row">
-                  <span class="hud-name">ARYA</span>
-                  <span class="hud-lv">Lv.99</span>
-                </div>
-                <div class="hp-track"><div class="hp-fill" style="width: 100%"></div></div>
-              </div>
+            <div id="pikaEmoteLayer" class="pika-emote-layer" aria-hidden="true"></div>
 
-              <div class="status-hud hud-right">
-                <div class="hud-row">
-                  <span class="hud-name">NADIA</span>
-                  <span class="hud-lv">Lv.99</span>
-                </div>
-                <div class="hp-track"><div class="hp-fill hp-pink" style="width: 100%"></div></div>
-              </div>
+            <button id="pikachuTrigger" class="pikachu-btn" type="button" aria-label="Interaksi dengan Pikachu">
+              <svg class="pikachu-sprite" viewBox="0 0 180 170" width="192" height="182" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <circle class="pika-aura-ring" cx="90" cy="96" r="62" stroke="#FEF08A" stroke-width="3" stroke-dasharray="10 8"/>
+                <g class="pika-tail">
+                  <path d="M118 124L148 100L135 87L164 54L138 52L122 78L133 89L107 111Z" fill="#FACC15" stroke="#1E1B18" stroke-width="4" stroke-linejoin="round"/>
+                  <path d="M113 119L126 108L120 101L107 113Z" fill="#92400E"/>
+                </g>
+                <g class="pika-ear-left">
+                  <path d="M62 62L36 16L73 47Z" fill="#FACC15" stroke="#1E1B18" stroke-width="4" stroke-linejoin="round"/>
+                  <path d="M36 16L52 27L45 37Z" fill="#1E1B18"/>
+                </g>
+                <g class="pika-ear-right">
+                  <path d="M107 47L144 18L118 62Z" fill="#FACC15" stroke="#1E1B18" stroke-width="4" stroke-linejoin="round"/>
+                  <path d="M144 18L135 38L127 28Z" fill="#1E1B18"/>
+                </g>
+                <g class="pika-body">
+                  <ellipse cx="68" cy="146" rx="13" ry="6.5" fill="#FACC15" stroke="#1E1B18" stroke-width="3.5"/>
+                  <ellipse cx="112" cy="146" rx="13" ry="6.5" fill="#FACC15" stroke="#1E1B18" stroke-width="3.5"/>
+                  <path d="M56 96C51 118 53 141 70 144H110C127 141 129 118 124 96Z" fill="#FACC15" stroke="#1E1B18" stroke-width="4"/>
+                  <rect x="52" y="44" width="76" height="62" rx="30" fill="#FACC15" stroke="#1E1B18" stroke-width="4"/>
+                  <path d="M72 52C84 49 96 49 106 52" stroke="#FEF08A" stroke-width="3.5" stroke-linecap="round"/>
+                  <g class="pika-eyes">
+                    <circle cx="72" cy="72" r="7" fill="#1E1B18"/>
+                    <circle cx="74" cy="69.5" r="2.5" fill="#FFFFFF"/>
+                    <circle cx="108" cy="72" r="7" fill="#1E1B18"/>
+                    <circle cx="110" cy="69.5" r="2.5" fill="#FFFFFF"/>
+                  </g>
+                  <polygon points="90,77 87,80.5 93,80.5" fill="#1E1B18"/>
+                  <path d="M80 86Q85 91.5 90 86Q95 91.5 100 86" stroke="#1E1B18" stroke-width="3" stroke-linecap="round" fill="none"/>
+                  <circle class="pika-cheek" cx="61" cy="84" r="8" fill="#EF4444" stroke="#1E1B18" stroke-width="2.5"/>
+                  <circle class="pika-cheek" cx="119" cy="84" r="8" fill="#EF4444" stroke="#1E1B18" stroke-width="2.5"/>
+                  <path d="M62 102C71 112 79 112 83 104" stroke="#1E1B18" stroke-width="3.5" stroke-linecap="round" fill="#FACC15"/>
+                  <path d="M118 102C109 112 101 112 97 104" stroke="#1E1B18" stroke-width="3.5" stroke-linecap="round" fill="#FACC15"/>
+                  <circle cx="90" cy="111" r="11" fill="#FFFFFF" stroke="#1E1B18" stroke-width="3"/>
+                  <path d="M79 111C79 104.925 83.925 100 90 100C96.075 100 101 104.925 101 111H79Z" fill="#EF4444" stroke="#1E1B18" stroke-width="3"/>
+                  <circle cx="90" cy="111" r="3.2" fill="#FFFFFF" stroke="#1E1B18" stroke-width="2.5"/>
+                  <g class="pika-sparks">
+                    <path d="M44 76L28 68L35 82L20 87" stroke="#FEF08A" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M136 76L152 68L145 82L160 87" stroke="#FEF08A" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </g>
+                </g>
+              </svg>
+            </button>
 
-              <div class="stage-characters">
-                <div class="platform-ring">
-                  <svg class="sprite-float" width="84" height="96" viewBox="0 0 64 74" fill="none" aria-label="Karakter Pengantin Pria">
-                    <rect x="20" y="6" width="24" height="10" rx="3" fill="#DC2626" stroke="#111827" stroke-width="3"/>
-                    <rect x="20" y="13" width="32" height="5" rx="2" fill="#FFFFFF" stroke="#111827" stroke-width="3"/>
-                    <rect x="18" y="18" width="28" height="20" rx="6" fill="#FDE68A" stroke="#111827" stroke-width="3"/>
-                    <rect x="24" y="25" width="4" height="5" rx="1" fill="#111827"/>
-                    <rect x="36" y="25" width="4" height="5" rx="1" fill="#111827"/>
-                    <rect x="16" y="38" width="32" height="22" rx="4" fill="#1E3A8A" stroke="#111827" stroke-width="3"/>
-                    <path d="M28 38L32 48L36 38" fill="#FFFFFF"/>
-                    <rect x="20" y="60" width="10" height="10" rx="2" fill="#111827"/>
-                    <rect x="34" y="60" width="10" height="10" rx="2" fill="#111827"/>
+            <div class="stage-shadow" aria-hidden="true"></div>
+          </div>
+
+          <button id="rpgDialogueBtn" class="rpg-dialogue-box" type="button" aria-label="Klik untuk membaca pesan berikutnya">
+            <span class="dialogue-speaker">PROF. OAK • KANTO LAB</span>
+            <p id="rpgTypewriterText" class="rpg-text">
+              Assalamu’alaikum Warahmatullahi Wabarakatuh. Dengan memohon rahmat Allah SWT, kami mengundang Anda hadir dalam momen sakral pernikahan kami.
+            </p>
+            <span class="rpg-next-hint">TAP BOX ▼</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="tall-grass-meadow" aria-hidden="true">
+        <div class="peeking-pokeball-in-grass"></div>
+        <div class="grass-blades-row"></div>
+      </div>
+    </section>
+
+    <section id="couple" class="section-block section-light">
+      <div class="container">
+        <div class="section-heading reveal-on-scroll">
+          <span class="section-tag">TRAINER ROSTER</span>
+          <h2 class="section-title">Mempelai Trainer</h2>
+          <p class="section-desc">Dua jiwa yang dipersatukan dalam satu tujuan perjalanan.</p>
+        </div>
+
+        <div class="trainer-grid">
+          <article class="trainer-card groom-card tilt-card reveal-on-scroll" style="--stagger: 0ms;">
+            <div class="holo-sheen" aria-hidden="true"></div>
+            <div class="trainer-card-header">
+              <span class="trainer-id">IDNo. 20261</span>
+              <span class="trainer-class">ACE TRAINER</span>
+            </div>
+
+            <div class="trainer-avatar-wrap">
+              <div class="trainer-avatar-frame">
+                <img src="assets/groom.jpg" alt="Foto Mempelai Pria M Rizki Fatih" class="trainer-photo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                <div class="trainer-svg-fallback" aria-hidden="true">
+                  <svg viewBox="0 0 120 120" width="96" height="96">
+                    <rect width="120" height="120" rx="16" fill="#DBEAFE"/>
+                    <circle cx="60" cy="48" r="22" fill="#FDBA74" stroke="#1E293B" stroke-width="3"/>
+                    <path d="M38 42C38 24 82 24 82 42Z" fill="#DC2626" stroke="#1E293B" stroke-width="3"/>
+                    <path d="M30 108C32 82 88 82 90 108Z" fill="#1D4ED8" stroke="#1E293B" stroke-width="3"/>
                   </svg>
                 </div>
-
-                <div class="love-ball-center" aria-hidden="true">
-                  <svg class="sprite-pulse" width="44" height="44" viewBox="0 0 44 44" fill="none">
-                    <circle cx="22" cy="22" r="19" fill="#FFFFFF" stroke="#111827" stroke-width="3"/>
-                    <path d="M3 22C3 11.507 11.507 3 22 3C32.493 3 41 11.507 41 22H3Z" fill="#F43F5E" stroke="#111827" stroke-width="3"/>
-                    <path d="M22 14C20.2 11.8 16.8 12.2 16.8 15C16.8 17.5 22 20.5 22 20.5C22 20.5 27.2 17.5 27.2 15C27.2 12.2 23.8 11.8 22 14Z" fill="#FFFFFF"/>
-                    <circle cx="22" cy="22" r="5" fill="#FFFFFF" stroke="#111827" stroke-width="3"/>
-                  </svg>
-                </div>
-
-                <div class="platform-ring">
-                  <svg class="sprite-float-delay" width="84" height="96" viewBox="0 0 64 74" fill="none" aria-label="Karakter Pengantin Wanita">
-                    <path d="M16 20C16 11 48 11 48 20L52 42H12L16 20Z" fill="#78350F" stroke="#111827" stroke-width="3"/>
-                    <circle cx="32" cy="10" r="5" fill="#F43F5E" stroke="#111827" stroke-width="2.5"/>
-                    <rect x="19" y="18" width="26" height="20" rx="6" fill="#FDE68A" stroke="#111827" stroke-width="3"/>
-                    <rect x="24" y="25" width="4" height="5" rx="1" fill="#111827"/>
-                    <rect x="36" y="25" width="4" height="5" rx="1" fill="#111827"/>
-                    <path d="M15 38H49L53 60H11L15 38Z" fill="#FFFFFF" stroke="#111827" stroke-width="3" stroke-linejoin="round"/>
-                    <path d="M24 44H40" stroke="#F43F5E" stroke-width="3" stroke-linecap="round"/>
-                    <rect x="21" y="60" width="8" height="10" rx="2" fill="#FDE68A" stroke="#111827" stroke-width="2.5"/>
-                    <rect x="35" y="60" width="8" height="10" rx="2" fill="#FDE68A" stroke="#111827" stroke-width="2.5"/>
-                  </svg>
-                </div>
               </div>
 
-              <div class="partner-corner" aria-hidden="true">
-                <svg class="sprite-bounce" width="54" height="58" viewBox="0 0 64 68" fill="none">
-                  <path d="M18 24L8 4L25 18Z" fill="#FACC15" stroke="#111827" stroke-width="3" stroke-linejoin="round"/>
-                  <path d="M46 24L56 4L39 18Z" fill="#FACC15" stroke="#111827" stroke-width="3" stroke-linejoin="round"/>
-                  <rect x="14" y="20" width="36" height="36" rx="14" fill="#FACC15" stroke="#111827" stroke-width="3"/>
-                  <circle cx="24" cy="34" r="3" fill="#111827"/>
-                  <circle cx="40" cy="34" r="3" fill="#111827"/>
-                  <circle cx="19" cy="41" r="4" fill="#EF4444"/>
-                  <circle cx="45" cy="41" r="4" fill="#EF4444"/>
-                  <path d="M28 42Q32 46 36 42" stroke="#111827" stroke-width="2.5" stroke-linecap="round"/>
+              <div class="partner-bob-badge" title="Partner: Pikachu" aria-hidden="true">
+                <svg viewBox="0 0 48 48" width="38" height="38">
+                  <circle cx="24" cy="24" r="22" fill="#FEF08A" stroke="#0F172A" stroke-width="3"/>
+                  <path d="M15 16L10 5L20 13Z" fill="#FACC15" stroke="#0F172A" stroke-width="2.5"/>
+                  <path d="M33 16L38 5L28 13Z" fill="#FACC15" stroke="#0F172A" stroke-width="2.5"/>
+                  <circle cx="18" cy="24" r="2.5" fill="#0F172A"/>
+                  <circle cx="30" cy="24" r="2.5" fill="#0F172A"/>
+                  <circle cx="14" cy="29" r="3" fill="#EF4444"/>
+                  <circle cx="34" cy="29" r="3" fill="#EF4444"/>
                 </svg>
               </div>
             </div>
 
-            <div class="dialogue-box">
-              <p><strong>WILD LOVE APPEARED!</strong> Arya dan Nadia menggunakan jurus <em>Ikatan Suci</em>. Sangat efektif!</p>
+            <div class="trainer-info">
+              <h3 class="trainer-name">M. Rizki Fatih, S.Kom</h3>
+              <p class="trainer-parents">Putra Pertama dari Bapak H. Ahmad Fauzi &amp; Ibu Hj. Siti Aminah</p>
+              <div class="trainer-stats">
+                <div class="stat-pill"><span>PARTNER</span><strong>Pikachu</strong></div>
+                <div class="stat-pill"><span>BADGE</span><strong>8 Kanto</strong></div>
+              </div>
+            </div>
+          </article>
+
+          <div class="couple-link-badge reveal-on-scroll" style="--stagger: 120ms;" aria-hidden="true">
+            <div class="link-energy-beam"></div>
+            <div class="link-cable-pill">
+              <span>LINK TRADE</span>
+              <strong>&amp;</strong>
+              <span>SOULMATE</span>
+            </div>
+          </div>
+
+          <article class="trainer-card bride-card tilt-card reveal-on-scroll" style="--stagger: 220ms;">
+            <div class="holo-sheen" aria-hidden="true"></div>
+            <div class="trainer-card-header">
+              <span class="trainer-id">IDNo. 20262</span>
+              <span class="trainer-class">TOP COORDINATOR</span>
+            </div>
+
+            <div class="trainer-avatar-wrap">
+              <div class="trainer-avatar-frame">
+                <img src="assets/bride.jpg" alt="Foto Mempelai Wanita Ayu Lestari" class="trainer-photo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                <div class="trainer-svg-fallback" aria-hidden="true">
+                  <svg viewBox="0 0 120 120" width="96" height="96">
+                    <rect width="120" height="120" rx="16" fill="#FCE7F3"/>
+                    <circle cx="60" cy="48" r="22" fill="#FDBA74" stroke="#1E293B" stroke-width="3"/>
+                    <path d="M36 46C36 22 84 22 84 46L88 76H32Z" fill="#1E293B"/>
+                    <path d="M30 108C32 82 88 82 90 108Z" fill="#DB2777" stroke="#1E293B" stroke-width="3"/>
+                  </svg>
+                </div>
+              </div>
+
+              <div class="partner-bob-badge partner-delay" title="Partner: Eevee" aria-hidden="true">
+                <svg viewBox="0 0 48 48" width="38" height="38">
+                  <circle cx="24" cy="24" r="22" fill="#FDE68A" stroke="#0F172A" stroke-width="3"/>
+                  <path d="M16 17L9 4L21 14Z" fill="#B45309" stroke="#0F172A" stroke-width="2.5"/>
+                  <path d="M32 17L39 4L27 14Z" fill="#B45309" stroke="#0F172A" stroke-width="2.5"/>
+                  <circle cx="18" cy="25" r="2.5" fill="#0F172A"/>
+                  <circle cx="30" cy="25" r="2.5" fill="#0F172A"/>
+                  <path d="M15 33Q24 38 33 33" stroke="#FEF3C7" stroke-width="4" stroke-linecap="round"/>
+                </svg>
+              </div>
+            </div>
+
+            <div class="trainer-info">
+              <h3 class="trainer-name">Ayu Lestari, S.Pd</h3>
+              <p class="trainer-parents">Putri Kedua dari Bapak Drs. Budi Santoso &amp; Ibu Ratna Dewi</p>
+              <div class="trainer-stats">
+                <div class="stat-pill"><span>PARTNER</span><strong>Eevee</strong></div>
+                <div class="stat-pill"><span>RIBBON</span><strong>Grand Master</strong></div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="gallery" class="section-block section-couple-gallery">
+      <div class="container">
+        <div class="section-heading reveal-on-scroll">
+          <span class="section-tag">DOUBLE BATTLE SNAPSHOTS</span>
+          <h2 class="section-title">Galeri Kebersamaan</h2>
+          <p class="section-desc">Dua momen spesial menjelang petualangan baru kami bersama.</p>
+        </div>
+
+        <div class="couple-duo-grid">
+          <figure class="duo-photo-card tilt-card reveal-on-scroll" style="--stagger: 0ms;">
+            <div class="holo-sheen" aria-hidden="true"></div>
+            <div class="duo-card-bar">
+              <span class="duo-cam-dot"></span>
+              <span>POKÉ-SNAP #01 • PALLET SUNSET</span>
+              <span class="duo-heart">♥</span>
+            </div>
+
+            <div class="duo-frame">
+              <img src="assets/couple-1.jpg" alt="Foto Bersama Prewedding Pertama Rizki Fatih dan Ayu Lestari" class="duo-photo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+              <div class="duo-svg-fallback" aria-hidden="true">
+                <svg viewBox="0 0 360 240" width="100%" height="100%">
+                  <defs>
+                    <linearGradient id="sunsetDuo1" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="#1E3A8A"/>
+                      <stop offset="65%" stop-color="#F59E0B"/>
+                      <stop offset="100%" stop-color="#15803D"/>
+                    </linearGradient>
+                  </defs>
+                  <rect width="360" height="240" fill="url(#sunsetDuo1)"/>
+                  <circle cx="180" cy="115" r="46" fill="#FEF08A" opacity="0.65"/>
+                  <circle cx="142" cy="112" r="22" fill="#FDBA74" stroke="#0F172A" stroke-width="3"/>
+                  <path d="M120 106C120 88 164 88 164 106Z" fill="#DC2626" stroke="#0F172A" stroke-width="3"/>
+                  <path d="M108 215C112 156 172 156 176 215Z" fill="#1D4ED8" stroke="#0F172A" stroke-width="3"/>
+                  <circle cx="218" cy="116" r="21" fill="#FDBA74" stroke="#0F172A" stroke-width="3"/>
+                  <path d="M196 114C196 90 240 90 240 114L244 150H192Z" fill="#0F172A"/>
+                  <path d="M184 215C188 158 248 158 252 215Z" fill="#DB2777" stroke="#0F172A" stroke-width="3"/>
+                  <circle cx="180" cy="76" r="13" fill="#FFFFFF" stroke="#0F172A" stroke-width="3"/>
+                  <path d="M167 76C167 68.8 172.8 63 180 63C187.2 63 193 68.8 193 76H167Z" fill="#EF4444" stroke="#0F172A" stroke-width="3"/>
+                </svg>
+              </div>
+            </div>
+
+            <figcaption class="duo-caption">
+              <strong>Langkah Awal di Route 01</strong>
+              <span>“Setiap perjalanan terasa ringan saat melangkah berdampingan.”</span>
+            </figcaption>
+          </figure>
+
+          <figure class="duo-photo-card tilt-card reveal-on-scroll" style="--stagger: 160ms;">
+            <div class="holo-sheen" aria-hidden="true"></div>
+            <div class="duo-card-bar">
+              <span class="duo-cam-dot"></span>
+              <span>POKÉ-SNAP #02 • INDIGO PROMISE</span>
+              <span class="duo-heart">★</span>
+            </div>
+
+            <div class="duo-frame">
+              <img src="assets/couple-2.jpg" alt="Foto Bersama Prewedding Kedua Rizki Fatih dan Ayu Lestari" class="duo-photo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+              <div class="duo-svg-fallback" aria-hidden="true">
+                <svg viewBox="0 0 360 240" width="100%" height="100%">
+                  <defs>
+                    <linearGradient id="nightDuo2" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="#0F172A"/>
+                      <stop offset="65%" stop-color="#312E81"/>
+                      <stop offset="100%" stop-color="#065F46"/>
+                    </linearGradient>
+                  </defs>
+                  <rect width="360" height="240" fill="url(#nightDuo2)"/>
+                  <circle cx="70" cy="48" r="3" fill="#FEF08A"/>
+                  <circle cx="290" cy="42" r="3.5" fill="#FEF08A"/>
+                  <circle cx="245" cy="68" r="2.5" fill="#FFFFFF"/>
+                  <circle cx="144" cy="110" r="22" fill="#FDBA74" stroke="#0F172A" stroke-width="3"/>
+                  <path d="M122 104C122 86 166 86 166 104Z" fill="#0F172A"/>
+                  <path d="M108 215C112 154 176 154 180 215Z" fill="#0F172A" stroke="#FACC15" stroke-width="2.5"/>
+                  <circle cx="216" cy="114" r="21" fill="#FDBA74" stroke="#0F172A" stroke-width="3"/>
+                  <path d="M194 112C194 88 238 88 238 112L242 148H190Z" fill="#1E293B"/>
+                  <path d="M180 215C184 156 248 156 252 215Z" fill="#F8FAFC" stroke="#FACC15" stroke-width="2.5"/>
+                  <circle cx="180" cy="84" r="11" fill="none" stroke="#FACC15" stroke-width="4"/>
+                </svg>
+              </div>
+            </div>
+
+            <figcaption class="duo-caption">
+              <strong>Janji Suci Indigo League</strong>
+              <span>“Satu tim, satu tujuan, selamanya menjadi partner hidup terbaik.”</span>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section id="events" class="section-block section-dark">
+      <div class="container">
+        <div class="section-heading light-heading reveal-on-scroll">
+          <span class="section-tag">GYM SCHEDULE</span>
+          <h2 class="section-title">Waktu &amp; Lokasi Arena</h2>
+          <p class="section-desc">Kehadiran dan doa restu Anda adalah hadiah terindah bagi petualangan kami.</p>
+        </div>
+
+        <div class="events-grid">
+          <article class="gym-pass-card reveal-on-scroll" style="--stagger: 0ms;">
+            <div class="gym-card-top">
+              <span class="pass-ribbon ribbon-gold">STAGE 01 • AKAD NIKAH</span>
+              <div class="gym-badge-emblem" aria-hidden="true">
+                <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+                  <polygon points="18,2 32,10 32,26 18,34 4,26 4,10" fill="#FACC15" stroke="#0F172A" stroke-width="2.5"/>
+                  <circle cx="18" cy="18" r="7" fill="#FEF08A" stroke="#0F172A" stroke-width="2"/>
+                </svg>
+              </div>
+            </div>
+            <h3 class="pass-title">Cerulean Sanctuary Hall</h3>
+            <ul class="pass-details">
+              <li><strong>Tanggal:</strong> Minggu, 20 Desember 2026</li>
+              <li><strong>Waktu:</strong> 08.00 – 10.00 WIB</li>
+              <li><strong>Lokasi:</strong> Masjid Agung Al-Furqon, Jl. Merdeka No. 25, Bogor</li>
+            </ul>
+            <div class="pass-actions">
+              <a href="https://maps.google.com/?q=Bogor" target="_blank" rel="noopener noreferrer" class="btn-rpg btn-gold">
+                Buka Peta Navigasi
+              </a>
+              <button type="button" class="btn-rpg btn-outline-light stamp-pass-btn">
+                Ambil Badge Akad
+              </button>
+            </div>
+            <span class="gym-stamp-mark" aria-hidden="true">BADGE COLLECTED ★</span>
+          </article>
+
+          <article class="gym-pass-card reveal-on-scroll" style="--stagger: 160ms;">
+            <div class="gym-card-top">
+              <span class="pass-ribbon ribbon-crimson">STAGE 02 • RESEPSI</span>
+              <div class="gym-badge-emblem" aria-hidden="true">
+                <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+                  <path d="M18 2L23 12L34 14L26 22L28 33L18 28L8 33L10 22L2 14L13 12Z" fill="#EF4444" stroke="#0F172A" stroke-width="2.5"/>
+                  <circle cx="18" cy="19" r="5" fill="#FACC15"/>
+                </svg>
+              </div>
+            </div>
+            <h3 class="pass-title">Indigo Plateau Grand Ballroom</h3>
+            <ul class="pass-details">
+              <li><strong>Tanggal:</strong> Minggu, 20 Desember 2026</li>
+              <li><strong>Waktu:</strong> 11.00 – 15.00 WIB</li>
+              <li><strong>Lokasi:</strong> Grand Ballroom Puri Kanto, Jl. Pajajaran No. 88, Bogor</li>
+            </ul>
+            <div class="pass-actions">
+              <a href="https://maps.google.com/?q=Bogor" target="_blank" rel="noopener noreferrer" class="btn-rpg btn-crimson">
+                Buka Peta Navigasi
+              </a>
+              <button type="button" class="btn-rpg btn-outline-light stamp-pass-btn">
+                Ambil Badge Resepsi
+              </button>
+            </div>
+            <span class="gym-stamp-mark" aria-hidden="true">VIP PASS STAMPED ★</span>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="story" class="section-block section-light">
+      <div class="container">
+        <div class="section-heading reveal-on-scroll">
+          <span class="section-tag">ADVENTURE LOG</span>
+          <h2 class="section-title">Jejak Perjalanan Cinta</h2>
+        </div>
+
+        <div class="route-map-wrapper">
+          <div class="animated-route-line" aria-hidden="true"></div>
+          <div class="route-timeline">
+            <div class="route-step reveal-on-scroll" style="--stagger: 0ms;">
+              <div class="route-waypoint-ball" aria-hidden="true"></div>
+              <span class="route-mile">ROUTE 01 • 2022</span>
+              <h3>Pertemuan Pertama di Pallet Town</h3>
+              <p>Berawal dari rekan satu tim proyek kampus, obrolan sederhana berubah menjadi partner diskusi setiap hari.</p>
+            </div>
+
+            <div class="route-step reveal-on-scroll" style="--stagger: 140ms;">
+              <div class="route-waypoint-ball" aria-hidden="true"></div>
+              <span class="route-mile">ROUTE 02 • 2024</span>
+              <h3>Menaklukkan Gym Tantangan Bersama</h3>
+              <p>Melewati berbagai fase karier dan jarak dengan saling mendukung layaknya Trainer dan partner setianya.</p>
+            </div>
+
+            <div class="route-step reveal-on-scroll" style="--stagger: 280ms;">
+              <div class="route-waypoint-ball" aria-hidden="true"></div>
+              <span class="route-mile">ROUTE 03 • 2026</span>
+              <h3>Menuju Altar Indigo Plateau</h3>
+              <p>Memantapkan hati mengikat janji suci pernikahan untuk memulai babak baru selamanya.</p>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Bagian 1: 2 Foto Pengantin Sendiri-Sendiri (Trainer Cards) -->
-    <section id="mempelai" class="section-block">
+    <section id="game" class="section-block section-game">
       <div class="container">
-        <div class="section-header reveal">
-          <span class="pixel-badge">POKÉDEX DATA // MEMPELAI</span>
-          <h2 class="section-title">Profil Dua Trainer Utama</h2>
-          <p class="section-subtitle">Mengenal lebih dekat kedua mempelai yang siap melangkah ke babak pernikahan.</p>
+        <div class="section-heading light-heading reveal-on-scroll">
+          <span class="section-tag">ARCADE MINI-GAME</span>
+          <h2 class="section-title">Pika Love Catcher</h2>
+          <p class="section-desc">Gerakkan Pikachu untuk menangkap Pokéball Cinta &amp; Cincin Emas, hindari Bom Asap Koffing!</p>
         </div>
 
-        <div class="trainer-grid">
-          <!-- Foto Pengantin Pria (Sendiri) -->
-          <article class="trainer-card reveal">
-            <div class="card-header">
-              <span class="dex-no">NO. 001 // GROOM</span>
-              <div class="type-group">
-                <span class="type-pill type-electric">ELECTRIC</span>
-                <span class="type-pill type-steel">STEEL</span>
+        <div class="gba-console-shell reveal-on-scroll">
+          <div class="gba-top-bar">
+            <div class="power-led"><span class="led-dot" aria-hidden="true"></span><span>POWER</span></div>
+            <span class="console-brand">POKÉ-BOY ADVANCE SP • WEDDING EDITION</span>
+          </div>
+
+          <div class="gba-screen-bezel">
+            <div class="game-hud-strip">
+              <div class="g-stat">SCORE: <strong id="gameScore">0</strong></div>
+              <div class="g-stat">COMBO: <strong id="gameCombo">x1</strong></div>
+              <div class="g-stat">HP: <strong id="gameLives">♥♥♥</strong></div>
+            </div>
+
+            <div class="canvas-wrapper">
+              <canvas id="pikaGameCanvas" width="640" height="360"></canvas>
+
+              <div id="gameOverlayScreen" class="game-overlay-panel">
+                <h3 id="gameOverlayTitle">SIAP BERMAIN?</h3>
+                <p id="gameOverlayMsg">Tangkap Pokéball (+10) &amp; Cincin (+25). Raih 100 poin untuk membuka Voucher Restu Spesial!</p>
+                <button id="startGameBtn" class="btn-rpg btn-gold" type="button">MULAI GAME</button>
               </div>
             </div>
+          </div>
 
-            <div class="portrait-frame">
-              <img
-                src="assets/img/pengantin-pria.jpg"
-                alt="Foto Mempelai Pria Arya Pratama"
-                width="400"
-                height="500"
-                loading="lazy"
-                data-fallback="groom"
-              >
+          <div class="gba-controls-bar">
+            <div class="dpad-group" role="group" aria-label="Kontrol Arah Game">
+              <button id="btnMoveLeft" class="arcade-btn" type="button" aria-label="Gerak Kiri">◀ KIRI</button>
+              <button id="btnMoveRight" class="arcade-btn" type="button" aria-label="Gerak Kanan">KANAN ▶</button>
             </div>
+            <p class="control-tip">Geser layar game, tekan tombol D-Pad, atau gunakan panah keyboard</p>
+          </div>
 
-            <div class="card-body">
-              <h3 class="trainer-name">Arya Pratama, S.Kom.</h3>
-              <p class="parent-info">Putra pertama dari Bapak Hendra Wijaya &amp; Ibu Siti Aminah</p>
-              <dl class="stat-list">
-                <div class="stat-row">
-                  <dt>Jurus Utama</dt>
-                  <dd>Janji Setia Seumur Hidup</dd>
-                </div>
-                <div class="stat-row">
-                  <dt>Asal Kota</dt>
-                  <dd>Bogor, Jawa Barat</dd>
-                </div>
-              </dl>
-            </div>
-          </article>
-
-          <!-- Foto Pengantin Wanita (Sendiri) -->
-          <article class="trainer-card reveal">
-            <div class="card-header">
-              <span class="dex-no">NO. 002 // BRIDE</span>
-              <div class="type-group">
-                <span class="type-pill type-fairy">FAIRY</span>
-                <span class="type-pill type-grass">GRASS</span>
-              </div>
-            </div>
-
-            <div class="portrait-frame">
-              <img
-                src="assets/img/pengantin-wanita.jpg"
-                alt="Foto Mempelai Wanita Nadia Kusuma"
-                width="400"
-                height="500"
-                loading="lazy"
-                data-fallback="bride"
-              >
-            </div>
-
-            <div class="card-body">
-              <h3 class="trainer-name">Nadia Kusuma, S.Ds.</h3>
-              <p class="parent-info">Putri kedua dari Bapak Bambang Kusuma &amp; Ibu Ratna Dewi</p>
-              <dl class="stat-list">
-                <div class="stat-row">
-                  <dt>Jurus Utama</dt>
-                  <dd>Kasih Sayang Tanpa Batas</dd>
-                </div>
-                <div class="stat-row">
-                  <dt>Asal Kota</dt>
-                  <dd>Bandung, Jawa Barat</dd>
-                </div>
-              </dl>
-            </div>
-          </article>
+          <div id="rewardBanner" class="reward-unlock-box" aria-live="polite">
+            <span class="reward-badge">LOCKED</span>
+            <p id="rewardText">Kumpulkan 100 Poin untuk membuka Kartu Ucapan Rahasia dari Pikachu!</p>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- Bagian 2: 2 Foto Pengantin Bersama (Adventure Log Editorial Bento) -->
-    <section id="galeri" class="section-block section-tinted">
+    <section id="rsvp" class="section-block section-light">
       <div class="container">
-        <div class="section-header reveal">
-          <span class="pixel-badge">ADVENTURE LOG // GALERI BERSAMA</span>
-          <h2 class="section-title">Jejak Petualangan Berdua</h2>
-          <p class="section-subtitle">Dua momen pilihan yang merangkum perjalanan kami hingga menuju pelaminan.</p>
+        <div class="section-heading reveal-on-scroll">
+          <span class="section-tag">TRAINER CONFIRMATION</span>
+          <h2 class="section-title">Konfirmasi Kehadiran &amp; Kado</h2>
+          <p class="section-desc">Kirimkan konfirmasi kehadiran dan doa restu langsung melalui WhatsApp.</p>
         </div>
 
-        <div class="couple-bento">
-          <!-- Foto Bersama 1 -->
-          <figure class="bento-feature reveal">
-            <div class="bento-img-wrap ratio-wide">
-              <img
-                src="assets/img/foto-bersama-1.jpg"
-                alt="Foto Kebersamaan Arya dan Nadia Chapter Pertama"
-                width="800"
-                height="520"
-                loading="lazy"
-                data-fallback="couple1"
-              >
-            </div>
-            <figcaption class="bento-caption">
-              <span class="chapter-tag">CHAPTER 01 — PERTEMUAN PERTAMA</span>
-              <h3>Langkah Awal di Rute 01</h3>
-              <p>Berawal dari percakapan sederhana tentang hobi yang sama, hingga akhirnya menjadi rekan satu tim dalam setiap musim kehidupan.</p>
-            </figcaption>
-          </figure>
-
-          <!-- Foto Bersama 2 -->
-          <figure class="bento-side reveal">
-            <div class="bento-img-wrap ratio-classic">
-              <img
-                src="assets/img/foto-bersama-2.jpg"
-                alt="Foto Kebersamaan Arya dan Nadia Menuju Pernikahan"
-                width="600"
-                height="480"
-                loading="lazy"
-                data-fallback="couple2"
-              >
-            </div>
-            <figcaption class="bento-caption">
-              <span class="chapter-tag">CHAPTER 02 — LIGA PERNIKAHAN</span>
-              <h3>Menuju Hall of Fame</h3>
-              <p>Dengan restu kedua orang tua, kami memantapkan hati untuk mengikat janji suci pada Desember 2026.</p>
-            </figcaption>
-          </figure>
-        </div>
-      </div>
-    </section>
-
-    <!-- Bagian 3: Jadwal Acara & Lokasi -->
-    <section id="acara" class="section-block">
-      <div class="container">
-        <div class="section-header reveal">
-          <span class="pixel-badge">GYM BATTLE SCHEDULE</span>
-          <h2 class="section-title">Waktu &amp; Lokasi Acara</h2>
-          <p class="section-subtitle">Kehadiran serta doa restu Anda adalah lencana kehormatan terindah bagi kami.</p>
-        </div>
-
-        <div class="event-grid">
-          <article class="event-card reveal">
-            <div class="event-badge-icon" aria-hidden="true">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-                <circle cx="12" cy="12" r="9"></circle>
-                <polyline points="12 7 12 12 15 15"></polyline>
-              </svg>
-            </div>
-            <span class="event-kicker">SESI 01 // IKRAR SUCI</span>
-            <h3>Akad Nikah</h3>
-            <p class="event-date">Sabtu, 12 Desember 2026</p>
-            <p class="event-time">Pukul 08.00 – 10.00 WIB</p>
-            <p class="event-place">Masjid Raya Bogor &amp; Gedung Puri Begawan, Jl. Raya Pajajaran, Bogor</p>
-            <a href="https://maps.google.com/?q=Puri+Begawan+Bogor" target="_blank" rel="noopener noreferrer" class="btn-outline">
-              Buka Google Maps
-            </a>
-          </article>
-
-          <article class="event-card reveal">
-            <div class="event-badge-icon icon-gold" aria-hidden="true">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-              </svg>
-            </div>
-            <span class="event-kicker">SESI 02 // PERAYAAN</span>
-            <h3>Resepsi Pernikahan</h3>
-            <p class="event-date">Sabtu, 12 Desember 2026</p>
-            <p class="event-time">Pukul 11.00 – 14.00 WIB</p>
-            <p class="event-place">Grand Ballroom Puri Begawan, Jl. Raya Pajajaran No. 5–7, Bogor</p>
-            <a href="https://maps.google.com/?q=Puri+Begawan+Bogor" target="_blank" rel="noopener noreferrer" class="btn-outline">
-              Buka Google Maps
-            </a>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- Bagian 4: RSVP & Ucapan via WhatsApp -->
-    <section id="rsvp" class="section-block section-tinted">
-      <div class="container rsvp-layout">
-        <div class="rsvp-form-card reveal">
-          <span class="pixel-badge">TRAINER REGISTRATION</span>
-          <h2 class="section-title">Konfirmasi Kehadiran &amp; Ucapan</h2>
-          <p class="section-subtitle">Kirim konfirmasi langsung ke WhatsApp mempelai sekaligus tampilkan doa restu di papan tamu.</p>
-
-          <form id="rsvp-form" class="form-stack">
+        <div class="rsvp-layout">
+          <form id="rsvpForm" class="rpg-form-card reveal-on-scroll" novalidate>
             <div class="form-group">
-              <label for="guest-name">Nama Trainer / Tamu</label>
-              <input id="guest-name" name="guestName" type="text" required placeholder="Contoh: Ash Ketchum" autocomplete="name">
+              <label for="senderName">Nama Trainer / Tamu</label>
+              <input id="senderName" name="senderName" type="text" required autocomplete="name" placeholder="Contoh: Ash Ketchum" />
             </div>
 
-            <div class="form-row-two">
-              <div class="form-group">
-                <label for="guest-status">Konfirmasi Kehadiran</label>
-                <select id="guest-status" name="guestStatus" required>
-                  <option value="Hadir di Acara">Hadir di Acara</option>
-                  <option value="Masih Ragu / Tentatif">Masih Ragu / Tentatif</option>
-                  <option value="Berhalangan Hadir">Berhalangan Hadir</option>
-                </select>
-              </div>
-
-              <div class="form-group">
-                <label for="guest-count">Jumlah Tamu</label>
-                <input id="guest-count" name="guestCount" type="number" inputmode="numeric" min="1" max="5" value="1" required>
+            <div class="form-group">
+              <span class="field-group-label">Status Kehadiran</span>
+              <div class="radio-pill-group">
+                <label class="radio-pill">
+                  <input type="radio" name="attendance" value="Hadir di Acara" checked />
+                  <span>Siap Hadir</span>
+                </label>
+                <label class="radio-pill">
+                  <input type="radio" name="attendance" value="Masih Diusahakan" />
+                  <span>Diusahakan</span>
+                </label>
+                <label class="radio-pill">
+                  <input type="radio" name="attendance" value="Berhalangan Hadir" />
+                  <span>Berhalangan</span>
+                </label>
               </div>
             </div>
 
             <div class="form-group">
-              <label for="guest-message">Pesan &amp; Doa Restu</label>
-              <textarea id="guest-message" name="guestMessage" rows="3" required placeholder="Selamat menempuh hidup baru untuk Arya &amp; Nadia!"></textarea>
+              <label for="guestCount">Jumlah Rombongan</label>
+              <select id="guestCount" name="guestCount">
+                <option value="1 Orang">1 Trainer</option>
+                <option value="2 Orang" selected>2 Trainer (Berpasangan)</option>
+                <option value="3-4 Orang">Party (3-4 Orang)</option>
+              </select>
             </div>
 
-            <button type="submit" class="btn-primary btn-full">Kirim RSVP via WhatsApp</button>
+            <div class="form-group">
+              <label for="wishMessage">Pesan &amp; Doa Restu</label>
+              <textarea id="wishMessage" name="wishMessage" rows="3" required placeholder="Tuliskan doa terbaik untuk kedua mempelai..."></textarea>
+            </div>
+
+            <p id="formErrorMsg" class="form-error" role="alert"></p>
+
+            <button type="submit" class="btn-rpg btn-emerald btn-full">
+              Kirim Konfirmasi via WhatsApp
+            </button>
           </form>
-        </div>
 
-        <div class="wish-board reveal">
-          <div class="wish-board-header">
-            <h3>Papan Doa Restu Trainer</h3>
-            <span id="wish-counter" class="wish-count">2 Pesan</span>
-          </div>
-          <ul id="wish-list" class="wish-list">
-            <li class="wish-item">
-              <div class="wish-meta">
-                <strong>Brock Harrison</strong>
-                <span class="wish-tag">Hadir di Acara</span>
+          <aside class="gift-card reveal-on-scroll" style="--stagger: 150ms;">
+            <div class="gift-card-head">
+              <div class="pokecenter-balls" aria-hidden="true">
+                <span class="pc-ball b1"></span>
+                <span class="pc-ball b2"></span>
+                <span class="pc-ball b3"></span>
               </div>
-              <p>Selamat menempuh hidup baru Arya &amp; Nadia! Semoga rumah tangganya selalu solid seperti tipe Steel dan penuh kebahagiaan.</p>
-            </li>
-            <li class="wish-item">
-              <div class="wish-meta">
-                <strong>Misty Waterflower</strong>
-                <span class="wish-tag">Hadir di Acara</span>
-              </div>
-              <p>Ikut bahagia melihat kalian berdua resmi menjadi satu tim! Sampai jumpa di hari bahagia nanti.</p>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </section>
-
-    <!-- Bagian 5: Permainan Interaktif di Bawah Web -->
-    <section id="mini-game" class="section-game">
-      <div class="container">
-        <div class="game-header reveal">
-          <span class="pixel-badge badge-gold">BONUS STAGE // INTERACTIVE MINI-GAME</span>
-          <h2 class="game-title">Tangkap Love Ball!</h2>
-          <p class="game-desc">
-            Bantu maskot menangkap <strong>Love Ball (+10)</strong> dan <strong>Golden Ball (+25)</strong> selama 30 detik, hindari <strong>Bom Gelap</strong>! Capai <strong>100 poin</strong> untuk membuka Sertifikat Hall of Fame.
-          </p>
-        </div>
-
-        <div class="arcade-cabinet reveal">
-          <div class="arcade-hud">
-            <div class="hud-stat">
-              <span class="hud-lbl">SKOR</span>
-              <span id="game-score" class="hud-val">0</span>
+              <span class="section-tag">POKÉ-TRANSFER GIFT</span>
+              <h3>Tanda Kasih Digital</h3>
+              <p>Bagi keluarga dan sahabat yang ingin mengirimkan tanda kasih secara digital:</p>
             </div>
-            <div class="hud-stat">
-              <span class="hud-lbl">WAKTU</span>
-              <span id="game-timer" class="hud-val">30s</span>
-            </div>
-            <div class="hud-stat">
-              <span class="hud-lbl">NYAWA</span>
-              <span id="game-lives" class="hud-val">3</span>
-            </div>
-            <div class="hud-stat">
-              <span class="hud-lbl">REKOR</span>
-              <span id="game-best" class="hud-val">0</span>
-            </div>
-          </div>
 
-          <div class="canvas-wrapper">
-            <canvas id="love-canvas" width="760" height="400" aria-label="Arena Permainan Tangkap Love Ball"></canvas>
-
-            <div id="game-overlay" class="game-overlay">
-              <div class="overlay-card">
-                <span id="overlay-badge" class="pixel-badge">SIAP BERTUALANG?</span>
-                <h3 id="overlay-heading">Tangkap Love Ball Pernikahan</h3>
-                <p id="overlay-text">Geser karakter di layar sentuh, gunakan tombol arah di bawah, atau tombol panah kiri/kanan pada keyboard.</p>
-                <button id="start-game-btn" type="button" class="btn-primary">Mulai Permainan</button>
+            <div class="bank-box">
+              <span class="bank-name">BANK BCA • A.N. M RIZKI FATIH</span>
+              <div class="account-row">
+                <strong id="accNumber1" class="acc-num">1234567890</strong>
+                <button type="button" class="copy-btn" data-copy="1234567890">Salin</button>
               </div>
             </div>
-          </div>
 
-          <div class="arcade-controls" aria-label="Kontrol Permainan">
-            <button id="btn-move-left" type="button" class="ctrl-btn" aria-label="Geser Kiri">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
-                <polyline points="15 18 9 12 15 6"></polyline>
-              </svg>
-              <span>Kiri</span>
-            </button>
-            <button id="btn-move-right" type="button" class="ctrl-btn" aria-label="Geser Kanan">
-              <span>Kanan</span>
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
-                <polyline points="9 18 15 12 9 6"></polyline>
-              </svg>
-            </button>
-          </div>
+            <div class="bank-box">
+              <span class="bank-name">BANK MANDIRI • A.N. AYU LESTARI</span>
+              <div class="account-row">
+                <strong id="accNumber2" class="acc-num">0987654321</strong>
+                <button type="button" class="copy-btn" data-copy="0987654321">Salin</button>
+              </div>
+            </div>
+          </aside>
         </div>
       </div>
     </section>
   </main>
 
-  <footer class="closing">
-    <div class="container closing-inner">
-      <span class="pixel-badge">THANK YOU FOR PLAYING &amp; ATTENDING</span>
-      <h2 class="closing-names">Arya &amp; Nadia</h2>
-      <p class="closing-note">12 Desember 2026 — Bogor, Jawa Barat</p>
-      <a href="#hero" class="btn-outline">Kembali ke Atas</a>
-      <p class="copyright">Dibuat dengan penuh cinta &bull; Poké-Wedding Interactive Invitation</p>
+  <div class="audio-dock" role="region" aria-label="Kontrol Musik dan Suara">
+    <button id="toggleMusicBtn" class="audio-fab" type="button" aria-pressed="false" aria-label="Putar atau Jeda Musik Latar">
+      <span class="vinyl-disc" aria-hidden="true"></span>
+      <span class="eq-bars" aria-hidden="true">
+        <i></i><i></i><i></i><i></i>
+      </span>
+      <span id="musicStatusText" class="audio-label">BGM OFF</span>
+    </button>
+    <button id="toggleSfxBtn" class="sfx-fab" type="button" aria-pressed="true" aria-label="Aktifkan atau Matikan Efek Suara">
+      SFX ON
+    </button>
+  </div>
+
+  <footer class="closing-footer">
+    <div class="container footer-inner">
+      <p class="footer-names">Rizki Fatih &amp; Ayu Lestari</p>
+      <p class="footer-sub">Terima kasih telah menjadi bagian dari petualangan terindah kami.</p>
+      <p class="footer-credit">Crafted with Retro RPG Spirit by RXFatih</p>
     </div>
   </footer>
 
