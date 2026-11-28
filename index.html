@@ -16,9 +16,7 @@
 <body>
   <a href="#main-content" class="skip-link">Langsung ke isi undangan</a>
 
-  <audio id="bg-music" loop preload="auto">
-    <source src="assets/music.mp3" type="audio/mpeg" />
-  </audio>
+  <audio id="bg-music" src="assets/music.mp3" loop preload="auto" playsinline></audio>
 
   <svg width="0" height="0" style="position:absolute" aria-hidden="true">
     <defs>
@@ -151,7 +149,7 @@
     </div>
   </section>
 
-  <!-- Navigasi Fixed yang Selalu Ikut Saat Scroll -->
+  <!-- Navigasi Fixed -->
   <header id="top-nav" class="top-nav" aria-label="Navigasi Utama">
     <div class="container nav-inner">
       <a href="#hero" class="nav-brand" aria-label="Kembali ke atas">
@@ -188,7 +186,6 @@
       </button>
     </div>
 
-    <!-- Drawer Hamburger Menu -->
     <div id="mobile-drawer" class="mobile-drawer" hidden>
       <div class="container mobile-drawer-inner">
         <a href="#hero" class="drawer-link">Beranda &amp; Karakter</a>
@@ -208,7 +205,6 @@
       <div class="hero-pattern" aria-hidden="true"></div>
 
       <div class="container">
-        <!-- Living Character Stage -->
         <div class="character-stage-card reveal" data-spotlight aria-label="Panggung karakter Pokémon interaktif">
           <div class="stage-topbar">
             <div class="stage-status">
@@ -231,7 +227,7 @@
             </svg>
 
             <div class="full-character-row">
-              <!-- 1. Pikachu Utuh -->
+              <!-- 1. Pikachu -->
               <button
                 type="button"
                 class="full-char-actor actor-pikachu"
@@ -282,7 +278,7 @@
                 <span class="actor-name-pill">Pikachu</span>
               </button>
 
-              <!-- 2. Eevee Utuh -->
+              <!-- 2. Eevee -->
               <button
                 type="button"
                 class="full-char-actor actor-eevee"
@@ -325,7 +321,7 @@
                 <span class="actor-name-pill">Eevee</span>
               </button>
 
-              <!-- 3. Pichu Utuh -->
+              <!-- 3. Pichu -->
               <button
                 type="button"
                 class="full-char-actor actor-pichu"
@@ -372,7 +368,7 @@
                 <span class="actor-name-pill">Pichu</span>
               </button>
 
-              <!-- 4. Togepi Utuh -->
+              <!-- 4. Togepi -->
               <button
                 type="button"
                 class="full-char-actor actor-togepi"
@@ -537,7 +533,7 @@
       </svg>
     </div>
 
-    <!-- Profil Mempelai (FOTO 2 & FOTO 3) -->
+    <!-- Profil Mempelai -->
     <section id="mempelai" class="section-block">
       <div class="container">
         <div class="section-header reveal">
@@ -718,7 +714,7 @@
       </div>
     </section>
 
-    <!-- Galeri Momen (FOTO 4) & Jejak Langkah -->
+    <!-- Galeri Momen & Jejak Langkah -->
     <section id="galeri" class="section-block">
       <div class="container">
         <div class="section-header reveal">
@@ -778,7 +774,7 @@
       </div>
     </section>
 
-    <!-- Hadiah Digital & RSVP WhatsApp + Buku Tamu Permanen -->
+    <!-- Hadiah Digital & RSVP -->
     <section id="rsvp" class="section-block section-tinted">
       <div class="container rsvp-layout">
         <div class="gift-column reveal">
