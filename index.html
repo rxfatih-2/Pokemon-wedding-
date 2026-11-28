@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#FFD60A" />
-  <title>Undangan Pernikahan — Dimas &amp; Nabila | Edisi Pikachu</title>
+  <meta name="theme-color" content="#FACC15" />
+  <title>Undangan Pernikahan — Dimas &amp; Nabila | Pikachu Edition</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
@@ -16,40 +16,156 @@
 <body>
   <a href="#main-content" class="skip-link">Langsung ke isi undangan</a>
 
-  <!-- Audio latar (otomatis menyala saat membuka undangan) -->
+  <!-- Audio latar (otomatis menyala saat gerbang dibuka) -->
   <audio id="bg-music" loop preload="auto">
     <source src="assets/music.mp3" type="audio/mpeg" />
   </audio>
 
-  <!-- Layar Pembuka Interaktif -->
-  <section id="opening-gate" class="opening-gate" aria-label="Sampul Undangan">
+  <!-- Definisi Gradien Vektor Karakter (Reusable) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <radialGradient id="pika-fur" cx="42%" cy="32%" r="68%">
+        <stop offset="0%" stop-color="#FEF08A" />
+        <stop offset="55%" stop-color="#FACC15" />
+        <stop offset="100%" stop-color="#EAB308" />
+      </radialGradient>
+      <radialGradient id="pika-cheek" cx="40%" cy="40%" r="60%">
+        <stop offset="0%" stop-color="#FB7185" />
+        <stop offset="70%" stop-color="#E11D48" />
+        <stop offset="100%" stop-color="#BE123C" />
+      </radialGradient>
+      <linearGradient id="pika-tail-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#FDE047" />
+        <stop offset="75%" stop-color="#F59E0B" />
+        <stop offset="100%" stop-color="#78350F" />
+      </linearGradient>
+      <radialGradient id="eevee-fur" cx="40%" cy="30%" r="70%">
+        <stop offset="0%" stop-color="#E6A962" />
+        <stop offset="60%" stop-color="#C27834" />
+        <stop offset="100%" stop-color="#854D1E" />
+      </radialGradient>
+      <radialGradient id="eevee-cream" cx="50%" cy="35%" r="65%">
+        <stop offset="0%" stop-color="#FFFDF5" />
+        <stop offset="100%" stop-color="#FDE68A" />
+      </radialGradient>
+      <radialGradient id="pichu-fur" cx="45%" cy="35%" r="65%">
+        <stop offset="0%" stop-color="#FEF9C3" />
+        <stop offset="70%" stop-color="#FDE047" />
+        <stop offset="100%" stop-color="#EAB308" />
+      </radialGradient>
+    </defs>
+  </svg>
+
+  <!-- Gerbang Pembuka Interaktif (Split-Vault + Character Ensemble) -->
+  <section id="opening-gate" class="opening-gate" aria-label="Gerbang Undangan">
+    <div class="gate-panel gate-panel-top" aria-hidden="true"></div>
+    <div class="gate-panel gate-panel-bottom" aria-hidden="true"></div>
+    <div class="gate-energy-ring" aria-hidden="true"></div>
     <canvas id="gate-canvas" class="gate-canvas" aria-hidden="true"></canvas>
 
-    <div class="gate-card">
-      <div class="crest-badge" aria-hidden="true">
-        <svg viewBox="0 0 120 120" width="76" height="76" fill="none">
-          <circle cx="60" cy="60" r="54" fill="#18181B" stroke="#FFFBEB" stroke-width="4" />
-          <path d="M68 18L36 64H58L48 102L86 54H63L68 18Z" fill="#FFD60A" />
-          <circle cx="32" cy="72" r="7" fill="#EF233C" />
-          <circle cx="88" cy="72" r="7" fill="#EF233C" />
-        </svg>
+    <div class="gate-stage">
+      <!-- Trio Karakter Mengintip di Atas Kartu Gerbang -->
+      <div class="gate-mascots" aria-label="Karakter pendamping undangan">
+        <!-- Togepi -->
+        <button type="button" class="mascot-btn mascot-togepi" data-spark="heart" aria-label="Sentuh Togepi">
+          <svg viewBox="0 0 110 110" width="76" height="76" fill="none">
+            <path d="M55 12L46 28L33 21L36 37L23 42L35 50H75L87 42L74 37L77 21L64 28L55 12Z" fill="#FEF3C7" stroke="#1C1917" stroke-width="3" stroke-linejoin="round" />
+            <ellipse cx="55" cy="54" rx="25" ry="22" fill="#FFFBEB" stroke="#1C1917" stroke-width="3" />
+            <path d="M41 49Q45 44 49 49" stroke="#1C1917" stroke-width="2.6" stroke-linecap="round" />
+            <path d="M61 49Q65 44 69 49" stroke="#1C1917" stroke-width="2.6" stroke-linecap="round" />
+            <path d="M51 56Q55 61 59 56" stroke="#E11D48" stroke-width="2.4" stroke-linecap="round" />
+            <path d="M28 60L38 66L47 59L55 67L63 59L72 66L82 60C84 82 72 96 55 96C38 96 26 82 28 60Z" fill="#FFFDF5" stroke="#1C1917" stroke-width="3" stroke-linejoin="round" />
+            <polygon points="40,74 46,70 45,78" fill="#E11D48" />
+            <polygon points="65,72 71,76 64,80" fill="#2563EB" />
+            <polygon points="52,82 58,82 55,88" fill="#E11D48" />
+          </svg>
+        </button>
+
+        <!-- Pikachu Utama -->
+        <button type="button" class="mascot-btn mascot-pikachu" data-spark="electric" aria-label="Sentuh Pikachu">
+          <svg viewBox="0 0 180 160" width="128" height="114" fill="none">
+            <!-- Ekor Petir -->
+            <path d="M126 116L146 98L138 86L164 62L152 46L172 28L142 36L148 52L124 74L132 88L114 106Z" fill="url(#pika-tail-grad)" stroke="#1C1917" stroke-width="3.2" stroke-linejoin="round" />
+            <!-- Telinga Kiri & Kanan -->
+            <g class="pika-ear-left">
+              <path d="M62 56C44 34 28 16 20 12C24 28 36 48 50 66Z" fill="url(#pika-fur)" stroke="#1C1917" stroke-width="3.2" stroke-linejoin="round" />
+              <path d="M34 28C27 20 22 14 20 12C22 19 25 27 30 35Z" fill="#1C1917" />
+            </g>
+            <g class="pika-ear-right">
+              <path d="M112 56C130 34 146 16 154 12C150 28 138 48 124 66Z" fill="url(#pika-fur)" stroke="#1C1917" stroke-width="3.2" stroke-linejoin="round" />
+              <path d="M140 28C147 20 152 14 154 12C152 19 149 27 144 35Z" fill="#1C1917" />
+            </g>
+            <!-- Badan & Kepala -->
+            <path d="M52 94C46 112 48 136 62 142H112C126 136 128 112 122 94Z" fill="url(#pika-fur)" stroke="#1C1917" stroke-width="3.2" />
+            <ellipse cx="87" cy="78" rx="40" ry="34" fill="url(#pika-fur)" stroke="#1C1917" stroke-width="3.2" />
+            <!-- Mata -->
+            <circle cx="71" cy="73" r="6.8" fill="#1C1917" />
+            <circle cx="73" cy="70.5" r="2.5" fill="#FFFFFF" />
+            <circle cx="103" cy="73" r="6.8" fill="#1C1917" />
+            <circle cx="105" cy="70.5" r="2.5" fill="#FFFFFF" />
+            <!-- Hidung & Mulut -->
+            <ellipse cx="87" cy="81" rx="2.5" ry="1.6" fill="#1C1917" />
+            <path d="M79 87Q83 92 87 87Q91 92 95 87" stroke="#1C1917" stroke-width="2.5" stroke-linecap="round" />
+            <!-- Pipi Merah -->
+            <circle cx="57" cy="85" r="8.5" fill="url(#pika-cheek)" />
+            <circle cx="117" cy="85" r="8.5" fill="url(#pika-cheek)" />
+            <!-- Dasi Kupu-kupu Pernikahan -->
+            <polygon points="87,108 75,102 75,114" fill="#E11D48" stroke="#1C1917" stroke-width="2" />
+            <polygon points="87,108 99,102 99,114" fill="#E11D48" stroke="#1C1917" stroke-width="2" />
+            <circle cx="87" cy="108" r="3.2" fill="#FACC15" stroke="#1C1917" stroke-width="1.8" />
+            <!-- Tangan Mengintip -->
+            <ellipse cx="66" cy="118" rx="8" ry="6" fill="url(#pika-fur)" stroke="#1C1917" stroke-width="2.6" />
+            <ellipse cx="108" cy="118" rx="8" ry="6" fill="url(#pika-fur)" stroke="#1C1917" stroke-width="2.6" />
+          </svg>
+        </button>
+
+        <!-- Eevee -->
+        <button type="button" class="mascot-btn mascot-eevee" data-spark="star" aria-label="Sentuh Eevee">
+          <svg viewBox="0 0 130 125" width="88" height="84" fill="none">
+            <!-- Telinga Eevee -->
+            <path d="M44 46C30 26 24 10 26 6C36 12 48 26 56 42Z" fill="url(#eevee-fur)" stroke="#1C1917" stroke-width="3" stroke-linejoin="round" />
+            <path d="M42 40C34 26 30 16 31 13C38 18 45 27 50 38Z" fill="#451A03" />
+            <path d="M86 46C100 26 106 10 104 6C94 12 82 26 74 42Z" fill="url(#eevee-fur)" stroke="#1C1917" stroke-width="3" stroke-linejoin="round" />
+            <path d="M88 40C96 26 100 16 99 13C92 18 85 27 80 38Z" fill="#451A03" />
+            <!-- Kepala -->
+            <ellipse cx="65" cy="64" rx="30" ry="26" fill="url(#eevee-fur)" stroke="#1C1917" stroke-width="3" />
+            <path d="M55 39L60 30L65 38L70 31L74 39" fill="url(#eevee-fur)" stroke="#1C1917" stroke-width="2.5" stroke-linejoin="round" />
+            <!-- Mata -->
+            <ellipse cx="53" cy="62" rx="5.2" ry="6.2" fill="#1C1917" />
+            <circle cx="54.5" cy="59.5" r="2.2" fill="#FFFFFF" />
+            <ellipse cx="77" cy="62" rx="5.2" ry="6.2" fill="#1C1917" />
+            <circle cx="78.5" cy="59.5" r="2.2" fill="#FFFFFF" />
+            <circle cx="65" cy="69" r="2" fill="#1C1917" />
+            <path d="M60 74Q65 78 70 74" stroke="#1C1917" stroke-width="2.2" stroke-linecap="round" />
+            <!-- Syal Bulu Krem -->
+            <path d="M35 84C38 76 50 78 65 78C80 78 92 76 95 84C98 94 84 104 65 104C46 104 32 94 35 84Z" fill="url(#eevee-cream)" stroke="#1C1917" stroke-width="3" />
+          </svg>
+        </button>
       </div>
 
-      <p class="gate-kicker">THE ELECTRIC UNION • 2026</p>
-      <h1 class="gate-title">Dimas &amp; Nabila</h1>
-      <p class="gate-subtitle">Dua energi yang bertemu dalam satu petualangan seumur hidup.</p>
+      <!-- Kartu Gerbang Utama -->
+      <div class="gate-card" data-spotlight>
+        <div class="gate-ribbon">
+          <span>THE ELECTRIC UNION • 19.12.2026</span>
+        </div>
 
-      <div class="guest-tag" role="status">
-        <span class="guest-tag-label">Kepada Yth. Bapak/Ibu/Saudara/i</span>
-        <strong id="guest-name-display" class="guest-tag-name">Tamu Undangan Spesial</strong>
+        <h1 class="gate-title">Dimas &amp; Nabila</h1>
+        <p class="gate-subtitle">
+          Dua energi yang bertemu dalam satu frekuensi untuk merajut cerita seumur hidup.
+        </p>
+
+        <div class="guest-tag" role="status">
+          <span class="guest-tag-label">Kepada Yth. Bapak/Ibu/Saudara/i</span>
+          <strong id="guest-name-display" class="guest-tag-name">Tamu Undangan Spesial</strong>
+        </div>
+
+        <button type="button" id="open-invitation-btn" class="btn-primary btn-charge">
+          <span>Buka Undangan</span>
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" aria-hidden="true">
+            <path d="M13 2L4 14H12L11 22L20 10H12L13 2Z" fill="currentColor" />
+          </svg>
+        </button>
       </div>
-
-      <button type="button" id="open-invitation-btn" class="btn-primary btn-magnetic">
-        <span>Buka Undangan</span>
-        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" aria-hidden="true">
-          <path d="M13 2L4 14H12L11 22L20 10H12L13 2Z" fill="currentColor" />
-        </svg>
-      </button>
     </div>
   </section>
 
@@ -57,11 +173,12 @@
   <header id="top-nav" class="top-nav" aria-label="Navigasi Utama">
     <div class="container nav-inner">
       <a href="#hero" class="nav-brand" aria-label="Kembali ke atas">
-        <svg viewBox="0 0 32 32" width="24" height="24" fill="none" aria-hidden="true">
-          <rect width="32" height="32" rx="8" fill="#18181B" />
-          <path d="M18 5L9 18H15L13 27L23 14H17L18 5Z" fill="#FFD60A" />
-        </svg>
-        <span>D &amp; N</span>
+        <span class="brand-crest" aria-hidden="true">
+          <svg viewBox="0 0 32 32" width="22" height="22" fill="none">
+            <path d="M18 3L7 18H15L13 29L25 14H17L18 3Z" fill="#FACC15" />
+          </svg>
+        </span>
+        <span>Dimas &amp; Nabila</span>
       </a>
       <nav class="nav-links">
         <a href="#mempelai">Mempelai</a>
@@ -74,96 +191,209 @@
   </header>
 
   <main id="main-content">
-    <!-- Hero Section -->
+    <!-- Hero Section + Parade Karakter di Bagian Atas Web -->
     <section id="hero" class="hero-section">
-      <div class="hero-grid-bg" aria-hidden="true"></div>
-      <div class="container hero-layout">
-        <div class="hero-copy reveal">
-          <div class="pill-badge">
+      <div class="hero-ambient-glow" aria-hidden="true"></div>
+      <div class="hero-pattern" aria-hidden="true"></div>
+
+      <div class="container">
+        <!-- Parade Karakter Interaktif di Bagian Atas Web -->
+        <div class="top-character-bar reveal" aria-label="Karakter Pokémon di atas halaman">
+          <div class="character-strip-label">
             <span class="pulse-dot" aria-hidden="true"></span>
-            <span>Sabtu, 19 Desember 2026</span>
+            <span>Klik karakter untuk menyalakan percikan energi</span>
           </div>
 
-          <h2 class="hero-heading">
-            Satu Kilau,<br />
-            <span class="highlight-ink">Sejuta Cerita.</span>
-          </h2>
+          <div class="character-squad">
+            <!-- Pikachu -->
+            <button type="button" class="squad-chip" data-spark="electric" aria-label="Pikachu">
+              <svg viewBox="0 0 84 76" width="52" height="48" fill="none">
+                <path d="M28 28L12 8L22 34Z" fill="url(#pika-fur)" stroke="#1C1917" stroke-width="2.4" />
+                <path d="M17 15L12 8L15 19Z" fill="#1C1917" />
+                <path d="M56 28L72 8L62 34Z" fill="url(#pika-fur)" stroke="#1C1917" stroke-width="2.4" />
+                <path d="M67 15L72 8L69 19Z" fill="#1C1917" />
+                <ellipse cx="42" cy="44" rx="23" ry="20" fill="url(#pika-fur)" stroke="#1C1917" stroke-width="2.4" />
+                <circle cx="33" cy="41" r="4" fill="#1C1917" />
+                <circle cx="34.2" cy="39.8" r="1.4" fill="#FFF" />
+                <circle cx="51" cy="41" r="4" fill="#1C1917" />
+                <circle cx="52.2" cy="39.8" r="1.4" fill="#FFF" />
+                <circle cx="25" cy="48" r="5" fill="url(#pika-cheek)" />
+                <circle cx="59" cy="48" r="5" fill="url(#pika-cheek)" />
+                <path d="M37 49Q42 53 47 49" stroke="#1C1917" stroke-width="2" stroke-linecap="round" />
+              </svg>
+              <span>Pikachu</span>
+            </button>
 
-          <p class="hero-lead">
-            Dengan penuh rasa syukur, kami mengundang Anda menjadi saksi dimulainya babak baru perjalanan cinta kami dalam ikatan pernikahan yang suci.
-          </p>
+            <!-- Eevee -->
+            <button type="button" class="squad-chip" data-spark="star" aria-label="Eevee">
+              <svg viewBox="0 0 84 76" width="52" height="48" fill="none">
+                <path d="M28 30L16 8L32 28Z" fill="url(#eevee-fur)" stroke="#1C1917" stroke-width="2.4" />
+                <path d="M56 30L68 8L52 28Z" fill="url(#eevee-fur)" stroke="#1C1917" stroke-width="2.4" />
+                <ellipse cx="42" cy="44" rx="21" ry="18" fill="url(#eevee-fur)" stroke="#1C1917" stroke-width="2.4" />
+                <path d="M24 56C30 50 54 50 60 56C56 66 28 66 24 56Z" fill="url(#eevee-cream)" stroke="#1C1917" stroke-width="2.2" />
+                <circle cx="34" cy="42" r="3.6" fill="#1C1917" />
+                <circle cx="35" cy="41" r="1.3" fill="#FFF" />
+                <circle cx="50" cy="42" r="3.6" fill="#1C1917" />
+                <circle cx="51" cy="41" r="1.3" fill="#FFF" />
+              </svg>
+              <span>Eevee</span>
+            </button>
 
-          <!-- Countdown Timer -->
-          <div id="countdown" class="countdown-grid" aria-label="Hitung mundur menuju hari pernikahan">
-            <div class="time-box">
-              <span id="cd-days" class="time-val">00</span>
-              <span class="time-lbl">Hari</span>
-            </div>
-            <div class="time-box">
-              <span id="cd-hours" class="time-val">00</span>
-              <span class="time-lbl">Jam</span>
-            </div>
-            <div class="time-box">
-              <span id="cd-minutes" class="time-val">00</span>
-              <span class="time-lbl">Menit</span>
-            </div>
-            <div class="time-box">
-              <span id="cd-seconds" class="time-val">00</span>
-              <span class="time-lbl">Detik</span>
-            </div>
-          </div>
+            <!-- Pichu -->
+            <button type="button" class="squad-chip" data-spark="electric" aria-label="Pichu">
+              <svg viewBox="0 0 84 76" width="52" height="48" fill="none">
+                <path d="M27 30L10 14L22 6L34 26Z" fill="url(#pichu-fur)" stroke="#1C1917" stroke-width="2.4" />
+                <path d="M57 30L74 14L62 6L50 26Z" fill="url(#pichu-fur)" stroke="#1C1917" stroke-width="2.4" />
+                <ellipse cx="42" cy="46" rx="20" ry="18" fill="url(#pichu-fur)" stroke="#1C1917" stroke-width="2.4" />
+                <circle cx="34" cy="44" r="3.6" fill="#1C1917" />
+                <circle cx="35" cy="43" r="1.3" fill="#FFF" />
+                <circle cx="50" cy="44" r="3.6" fill="#1C1917" />
+                <circle cx="51" cy="43" r="1.3" fill="#FFF" />
+                <circle cx="27" cy="50" r="4.5" fill="#FB7185" />
+                <circle cx="57" cy="50" r="4.5" fill="#FB7185" />
+              </svg>
+              <span>Pichu</span>
+            </button>
 
-          <div class="hero-actions">
-            <a href="#rsvp" class="btn-primary">Konfirmasi Kehadiran</a>
-            <a href="#game-arena" class="btn-secondary">Mainkan Pika-Spark</a>
+            <!-- Togepi -->
+            <button type="button" class="squad-chip" data-spark="heart" aria-label="Togepi">
+              <svg viewBox="0 0 84 76" width="52" height="48" fill="none">
+                <path d="M42 10L35 22L25 18L28 30H56L59 18L49 22L42 10Z" fill="#FEF3C7" stroke="#1C1917" stroke-width="2.3" />
+                <ellipse cx="42" cy="40" rx="19" ry="16" fill="#FFFDF5" stroke="#1C1917" stroke-width="2.3" />
+                <path d="M33 37Q36 33 39 37" stroke="#1C1917" stroke-width="2.2" stroke-linecap="round" />
+                <path d="M45 37Q48 33 51 37" stroke="#1C1917" stroke-width="2.2" stroke-linecap="round" />
+                <path d="M23 46L32 51L42 45L52 51L61 46C61 61 52 68 42 68C32 68 23 61 23 46Z" fill="#FFFBEB" stroke="#1C1917" stroke-width="2.3" />
+              </svg>
+              <span>Togepi</span>
+            </button>
           </div>
         </div>
 
-        <div class="hero-visual reveal">
-          <div class="couple-showcase-card" data-tilt>
-            <div class="showcase-top-bar">
-              <span class="dex-id">NO. 025 • PARTNER EDITION</span>
-              <span class="type-chip">ELECTRIC / LOVE</span>
+        <div class="hero-layout">
+          <div class="hero-copy reveal">
+            <div class="pill-badge">
+              <span>SABTU, 19 DESEMBER 2026</span>
             </div>
 
-            <div class="showcase-art">
-              <!-- Ganti src dengan foto prewedding Anda di folder assets/hero.jpg -->
-              <img
-                src="assets/hero.jpg"
-                alt="Foto prewedding Dimas dan Nabila"
-                width="480"
-                height="540"
-                fetchpriority="high"
-                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
-              />
-              <div class="art-fallback" style="display: none;">
-                <svg viewBox="0 0 220 220" width="160" height="160" fill="none" aria-hidden="true">
-                  <path d="M55 24L82 78L46 84L55 24Z" fill="#18181B" />
-                  <path d="M165 24L138 78L174 84L165 24Z" fill="#18181B" />
-                  <circle cx="110" cy="126" r="68" fill="#FFD60A" stroke="#18181B" stroke-width="6" />
-                  <circle cx="84" cy="116" r="9" fill="#18181B" />
-                  <circle cx="87" cy="113" r="3" fill="#FFFFFF" />
-                  <circle cx="136" cy="116" r="9" fill="#18181B" />
-                  <circle cx="139" cy="113" r="3" fill="#FFFFFF" />
-                  <circle cx="64" cy="136" r="13" fill="#EF233C" />
-                  <circle cx="156" cy="136" r="13" fill="#EF233C" />
-                  <path d="M96 138Q110 152 124 138" stroke="#18181B" stroke-width="5" stroke-linecap="round" />
-                </svg>
-                <p>Pasang foto terbaik di <code>assets/hero.jpg</code></p>
+            <h2 class="hero-heading">
+              Satu Kilau,<br />
+              <span class="highlight-ink">Sejuta Cerita.</span>
+            </h2>
+
+            <p class="hero-lead">
+              Dengan penuh rasa syukur, kami mengundang Anda hadir dan memberikan doa restu pada hari dimulainya perjalanan baru kehidupan rumah tangga kami.
+            </p>
+
+            <!-- Countdown Timer -->
+            <div id="countdown" class="countdown-grid" aria-label="Hitung mundur menuju hari pernikahan">
+              <div class="time-box">
+                <span id="cd-days" class="time-val">00</span>
+                <span class="time-lbl">Hari</span>
+              </div>
+              <div class="time-box">
+                <span id="cd-hours" class="time-val">00</span>
+                <span class="time-lbl">Jam</span>
+              </div>
+              <div class="time-box">
+                <span id="cd-minutes" class="time-val">00</span>
+                <span class="time-lbl">Menit</span>
+              </div>
+              <div class="time-box">
+                <span id="cd-seconds" class="time-val">00</span>
+                <span class="time-lbl">Detik</span>
               </div>
             </div>
 
-            <div class="showcase-footer">
-              <div>
-                <strong>Dimas Pratama &amp; Nabila Putri</strong>
-                <span>Bogor, Jawa Barat</span>
+            <div class="hero-actions">
+              <a href="#rsvp" class="btn-primary">Konfirmasi Kehadiran</a>
+              <a href="#game-arena" class="btn-secondary">Mainkan Pika-Spark</a>
+            </div>
+          </div>
+
+          <div class="hero-visual reveal">
+            <div class="couple-showcase-card" data-tilt data-spotlight>
+              <div class="showcase-top-bar">
+                <span class="dex-id">NO. 025 • PARTNER EDITION</span>
+                <span class="type-chip">ELECTRIC / LOVE</span>
               </div>
-              <button type="button" id="spark-affinity-btn" class="affinity-pill" aria-label="Kirim percikan cinta">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
-                  <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-                </svg>
-                <span id="affinity-count">999</span>
-              </button>
+
+              <div class="showcase-art">
+                <img
+                  src="assets/hero.jpg"
+                  alt="Foto prewedding Dimas dan Nabila"
+                  width="480"
+                  height="540"
+                  fetchpriority="high"
+                  onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                />
+                <!-- Ilustrasi Pikachu & Eevee Couple sebagai default elegan jika foto belum dipasang -->
+                <div class="art-fallback" style="display: none;">
+                  <svg viewBox="0 0 320 260" width="270" height="220" fill="none" aria-hidden="true">
+                    <!-- Cahaya Latar -->
+                    <circle cx="160" cy="135" r="102" fill="#FEF08A" opacity="0.65" />
+                    <circle cx="160" cy="135" r="76" fill="#FDE047" opacity="0.55" />
+
+                    <!-- Pikachu Pengantin Pria (Kiri) -->
+                    <g transform="translate(34, 42)">
+                      <path d="M98 112L118 94L110 82L132 60L122 46L138 30L112 36L118 50L96 72L104 84L88 102Z" fill="url(#pika-tail-grad)" stroke="#1C1917" stroke-width="2.8" />
+                      <path d="M40 50C24 30 10 14 4 10C8 24 18 42 30 58Z" fill="url(#pika-fur)" stroke="#1C1917" stroke-width="2.8" />
+                      <path d="M16 24C10 17 6 12 4 10C6 16 9 23 13 30Z" fill="#1C1917" />
+                      <path d="M84 50C100 30 114 14 120 10C116 24 106 42 94 58Z" fill="url(#pika-fur)" stroke="#1C1917" stroke-width="2.8" />
+                      <path d="M108 24C114 17 118 12 120 10C118 16 115 23 111 30Z" fill="#1C1917" />
+                      <ellipse cx="62" cy="116" rx="32" ry="36" fill="url(#pika-fur)" stroke="#1C1917" stroke-width="2.8" />
+                      <ellipse cx="62" cy="68" rx="34" ry="29" fill="url(#pika-fur)" stroke="#1C1917" stroke-width="2.8" />
+                      <circle cx="49" cy="64" r="5.5" fill="#1C1917" />
+                      <circle cx="51" cy="62" r="2" fill="#FFFFFF" />
+                      <circle cx="75" cy="64" r="5.5" fill="#1C1917" />
+                      <circle cx="77" cy="62" r="2" fill="#FFFFFF" />
+                      <circle cx="37" cy="74" r="7" fill="url(#pika-cheek)" />
+                      <circle cx="87" cy="74" r="7" fill="url(#pika-cheek)" />
+                      <path d="M55 76Q62 82 69 76" stroke="#1C1917" stroke-width="2.4" stroke-linecap="round" />
+                      <!-- Dasi Kupu-kupu -->
+                      <polygon points="62,97 51,92 51,102" fill="#E11D48" stroke="#1C1917" stroke-width="1.8" />
+                      <polygon points="62,97 73,92 73,102" fill="#E11D48" stroke="#1C1917" stroke-width="1.8" />
+                    </g>
+
+                    <!-- Eevee / Pikachu Pengantin Wanita dengan Veil Bunga (Kanan) -->
+                    <g transform="translate(154, 48)">
+                      <path d="M36 46C22 26 14 12 10 8C14 22 24 40 34 54Z" fill="url(#pika-fur)" stroke="#1C1917" stroke-width="2.8" />
+                      <path d="M19 20C14 14 11 10 10 8C12 14 14 20 17 26Z" fill="#1C1917" />
+                      <path d="M80 46C94 26 102 12 106 8C102 22 92 40 82 54Z" fill="url(#pika-fur)" stroke="#1C1917" stroke-width="2.8" />
+                      <path d="M97 20C102 14 105 10 106 8C104 14 102 20 99 26Z" fill="#1C1917" />
+                      <ellipse cx="58" cy="112" rx="30" ry="34" fill="url(#pika-fur)" stroke="#1C1917" stroke-width="2.8" />
+                      <ellipse cx="58" cy="66" rx="32" ry="28" fill="url(#pika-fur)" stroke="#1C1917" stroke-width="2.8" />
+                      <!-- Mahkota Bunga Pengantin -->
+                      <circle cx="44" cy="40" r="6" fill="#FFFFFF" stroke="#1C1917" stroke-width="1.8" />
+                      <circle cx="58" cy="38" r="6.5" fill="#FB7185" stroke="#1C1917" stroke-width="1.8" />
+                      <circle cx="72" cy="40" r="6" fill="#FFFFFF" stroke="#1C1917" stroke-width="1.8" />
+                      <circle cx="46" cy="63" r="5.2" fill="#1C1917" />
+                      <circle cx="48" cy="61" r="1.9" fill="#FFFFFF" />
+                      <circle cx="70" cy="63" r="5.2" fill="#1C1917" />
+                      <circle cx="72" cy="61" r="1.9" fill="#FFFFFF" />
+                      <circle cx="35" cy="72" r="6.5" fill="url(#pika-cheek)" />
+                      <circle cx="81" cy="72" r="6.5" fill="url(#pika-cheek)" />
+                      <path d="M52 74Q58 80 64 74" stroke="#1C1917" stroke-width="2.3" stroke-linecap="round" />
+                    </g>
+
+                    <!-- Hati Bercahaya di Tengah -->
+                    <path d="M160 88C153 78 140 80 140 91C140 101 160 113 160 113C160 113 180 101 180 91C180 80 167 78 160 88Z" fill="#E11D48" stroke="#1C1917" stroke-width="2.6" />
+                  </svg>
+                  <span class="fallback-caption">Ganti foto prewedding di <code>assets/hero.jpg</code></span>
+                </div>
+              </div>
+
+              <div class="showcase-footer">
+                <div>
+                  <strong>Dimas Pratama &amp; Nabila Putri</strong>
+                  <span>Bogor, Jawa Barat</span>
+                </div>
+                <button type="button" id="spark-affinity-btn" class="affinity-pill" aria-label="Kirim percikan cinta">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
+                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                  </svg>
+                  <span id="affinity-count">999</span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -172,8 +402,8 @@
 
     <!-- Pembatas Petir SVG -->
     <div class="bolt-divider" aria-hidden="true">
-      <svg viewBox="0 0 1200 48" preserveAspectRatio="none">
-        <path d="M0 24H540L565 6L595 42L625 6L650 24H1200" fill="none" stroke="#18181B" stroke-width="3" />
+      <svg viewBox="0 0 1200 44" preserveAspectRatio="none">
+        <path d="M0 22H545L568 6L596 38L624 6L648 22H1200" fill="none" stroke="#1C1917" stroke-width="2.8" />
       </svg>
     </div>
 
@@ -186,7 +416,7 @@
         </div>
 
         <div class="couple-split">
-          <article class="person-card reveal" data-tilt>
+          <article class="person-card reveal" data-tilt data-spotlight>
             <div class="person-avatar">
               <img
                 src="assets/groom.jpg"
@@ -204,13 +434,13 @@
           </article>
 
           <div class="union-bolt" aria-hidden="true">
-            <svg viewBox="0 0 64 64" width="48" height="48" fill="none">
-              <circle cx="32" cy="32" r="30" fill="#FFD60A" stroke="#18181B" stroke-width="3" />
-              <path d="M36 12L19 35H31L27 52L45 29H33L36 12Z" fill="#18181B" />
+            <svg viewBox="0 0 64 64" width="52" height="52" fill="none">
+              <circle cx="32" cy="32" r="29" fill="#FACC15" stroke="#1C1917" stroke-width="3" />
+              <path d="M36 12L19 35H31L27 52L45 29H33L36 12Z" fill="#1C1917" />
             </svg>
           </div>
 
-          <article class="person-card reveal" data-tilt>
+          <article class="person-card reveal" data-tilt data-spotlight>
             <div class="person-avatar">
               <img
                 src="assets/bride.jpg"
@@ -239,22 +469,22 @@
         </div>
 
         <div class="event-grid">
-          <article class="event-card reveal">
+          <article class="event-card reveal" data-spotlight>
             <div class="event-card-head">
               <span class="event-tag">SESI 01</span>
               <h3>Akad Nikah</h3>
             </div>
             <ul class="event-meta">
               <li>
-                <strong>Tanggal:</strong>
+                <strong>Tanggal</strong>
                 <span>Sabtu, 19 Desember 2026</span>
               </li>
               <li>
-                <strong>Pukul:</strong>
+                <strong>Pukul</strong>
                 <span>08.00 – 10.00 WIB</span>
               </li>
               <li>
-                <strong>Lokasi:</strong>
+                <strong>Lokasi</strong>
                 <span>Masjid Agung Al-Munawwarah, Jl. Raya Pajajaran No. 45, Bogor</span>
               </li>
             </ul>
@@ -268,22 +498,22 @@
             </a>
           </article>
 
-          <article class="event-card event-card-featured reveal">
+          <article class="event-card event-card-featured reveal" data-spotlight>
             <div class="event-card-head">
               <span class="event-tag tag-crimson">SESI 02</span>
               <h3>Resepsi Pernikahan</h3>
             </div>
             <ul class="event-meta">
               <li>
-                <strong>Tanggal:</strong>
+                <strong>Tanggal</strong>
                 <span>Sabtu, 19 Desember 2026</span>
               </li>
               <li>
-                <strong>Pukul:</strong>
+                <strong>Pukul</strong>
                 <span>11.00 – 14.00 WIB</span>
               </li>
               <li>
-                <strong>Lokasi:</strong>
+                <strong>Lokasi</strong>
                 <span>Grand Ballroom Puri Surya, Jl. Binamarga No. 12, Bogor</span>
               </li>
             </ul>
@@ -300,14 +530,14 @@
       </div>
     </section>
 
-    <!-- Mini-Game Interaktif Modern -->
+    <!-- Mini-Game Interaktif Modern dengan Karakter Pikachu Penuh -->
     <section id="game-arena" class="section-block game-section">
       <div class="container">
         <div class="section-header section-header-light reveal">
           <span class="section-eyebrow eyebrow-gold">INTERACTIVE ARCADE</span>
           <h2 class="section-title">PIKA-SPARK: Catch The Love</h2>
           <p class="section-desc">
-            Geser kolektor listrik dengan jari atau kursor untuk menangkap kristal hati dan Thunder Stone. Kumpulkan minimal <strong>1.500 poin</strong> dalam 30 detik untuk membuka kode suvenir VIP!
+            Gerakkan <strong>Pikachu</strong> dengan jari atau kursor untuk menangkap kristal hati dan Thunder Stone. Kumpulkan minimal <strong>1.500 poin</strong> dalam 30 detik untuk membuka kode suvenir VIP!
           </p>
         </div>
 
@@ -330,13 +560,13 @@
           <div class="canvas-wrapper">
             <canvas
               id="pika-game-canvas"
-              aria-label="Arena permainan Pika-Spark Catch The Love"
+              aria-label="Arena permainan Pika-Spark bersama Pikachu"
             ></canvas>
 
             <div id="game-overlay" class="game-overlay">
-              <div id="game-overlay-content" class="overlay-box">
-                <span class="overlay-badge">60FPS ELECTRIC ARCADE</span>
-                <h3 id="overlay-title">Siap Mengumpulkan Energi Cinta?</h3>
+              <div class="overlay-box">
+                <span class="overlay-badge">60FPS PIKACHU ARCADE</span>
+                <h3 id="overlay-title">Bantu Pikachu Mengumpulkan Energi Cinta</h3>
                 <p id="overlay-text">
                   Tangkap <strong>Heart Crystal (+100)</strong>, raih <strong>Thunder Stone (+250 + Magnet)</strong>, dan hindari awan statis ungu!
                 </p>
@@ -358,7 +588,7 @@
       </div>
     </section>
 
-    <!-- Cerita Cinta & Galeri -->
+    <!-- Cerita Cinta -->
     <section id="galeri" class="section-block">
       <div class="container">
         <div class="section-header reveal">
@@ -367,19 +597,19 @@
         </div>
 
         <div class="story-timeline">
-          <article class="story-step reveal">
+          <article class="story-step reveal" data-spotlight>
             <span class="story-year">2022</span>
             <h3>Pertemuan Pertama</h3>
             <p>Berawal dari diskusi proyek desain dan kopi sore yang tidak disengaja, obrolan sederhana berubah menjadi kebiasaan setiap hari.</p>
           </article>
 
-          <article class="story-step reveal">
+          <article class="story-step reveal" data-spotlight>
             <span class="story-year">2024</span>
             <h3>Satu Visi &amp; Komitmen</h3>
             <p>Melewati berbagai tantangan jarak dan kesibukan, kami belajar bahwa rumah terbaik adalah saling mendukung tanpa syarat.</p>
           </article>
 
-          <article class="story-step reveal">
+          <article class="story-step reveal" data-spotlight>
             <span class="story-year">2026</span>
             <h3>Ikatan Suci</h3>
             <p>Dengan restu kedua orang tua, kami melangkah bersama memulai babak kehidupan baru yang penuh berkah.</p>
@@ -391,7 +621,6 @@
     <!-- Hadiah Digital & RSVP WhatsApp -->
     <section id="rsvp" class="section-block section-tinted">
       <div class="container rsvp-layout">
-        <!-- Hadiah Digital -->
         <div class="gift-column reveal">
           <span class="section-eyebrow">TANDA KASIH</span>
           <h2 class="section-title-sm">Kado Digital</h2>
@@ -399,7 +628,7 @@
             Doa restu Anda merupakan karunia terindah bagi kami. Apabila berkenan memberikan tanda kasih secara nontunai, dapat melalui rekening berikut:
           </p>
 
-          <div class="bank-card" data-tilt>
+          <div class="bank-card" data-tilt data-spotlight>
             <div class="bank-card-top">
               <span class="bank-name">BANK BCA</span>
               <span class="bank-chip">PIKA-VAULT</span>
@@ -411,7 +640,7 @@
             </button>
           </div>
 
-          <div class="bank-card bank-card-dark" data-tilt>
+          <div class="bank-card bank-card-dark" data-tilt data-spotlight>
             <div class="bank-card-top">
               <span class="bank-name">BANK MANDIRI</span>
               <span class="bank-chip">ELECTRIC PASS</span>
@@ -426,7 +655,6 @@
           <p id="copy-feedback" class="copy-feedback" role="status" aria-live="polite"></p>
         </div>
 
-        <!-- Formulir RSVP WhatsApp -->
         <div class="form-column reveal">
           <span class="section-eyebrow">KONFIRMASI &amp; DOA</span>
           <h2 class="section-title-sm">Kirim RSVP via WhatsApp</h2>
@@ -482,7 +710,6 @@
             </button>
           </form>
 
-          <!-- Dinding Ucapan -->
           <div class="wishes-wall" aria-label="Daftar ucapan tamu">
             <h3 class="wishes-heading">Ucapan Tamu Terbaru</h3>
             <div id="wishes-list" class="wishes-list">
