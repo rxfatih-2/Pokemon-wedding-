@@ -16,12 +16,11 @@
 <body>
   <a href="#main-content" class="skip-link">Langsung ke isi undangan</a>
 
-  <!-- Audio latar otomatis menyala saat gerbang dibuka -->
   <audio id="bg-music" loop preload="auto">
     <source src="assets/music.mp3" type="audio/mpeg" />
   </audio>
 
-  <!-- Definisi Gradien Vektor Karakter (Reusable) -->
+  <!-- Definisi Gradien Karakter Vektor -->
   <svg width="0" height="0" style="position:absolute" aria-hidden="true">
     <defs>
       <radialGradient id="pika-fur" cx="42%" cy="30%" r="70%">
@@ -70,7 +69,6 @@
 
     <div class="gate-stage">
       <div class="gate-mascots" aria-label="Karakter penyambut undangan">
-        <!-- Togepi Gate -->
         <button type="button" class="mascot-btn mascot-togepi" data-spark="heart" data-voice="togepi" aria-label="Sapa Togepi">
           <svg viewBox="0 0 110 110" width="76" height="76" fill="none">
             <path d="M55 12L46 28L33 21L36 37L23 42L35 50H75L87 42L74 37L77 21L64 28L55 12Z" fill="#FEF3C7" stroke="#1C1917" stroke-width="3" stroke-linejoin="round" />
@@ -85,7 +83,6 @@
           </svg>
         </button>
 
-        <!-- Pikachu Gate -->
         <button type="button" class="mascot-btn mascot-pikachu" data-spark="electric" data-voice="pikachu" aria-label="Sapa Pikachu">
           <svg viewBox="0 0 180 160" width="128" height="114" fill="none">
             <path d="M126 116L146 98L138 86L164 62L152 46L172 28L142 36L148 52L124 74L132 88L114 106Z" fill="url(#pika-tail-grad)" stroke="#1C1917" stroke-width="3.2" stroke-linejoin="round" />
@@ -111,7 +108,6 @@
           </svg>
         </button>
 
-        <!-- Eevee Gate -->
         <button type="button" class="mascot-btn mascot-eevee" data-spark="star" data-voice="eevee" aria-label="Sapa Eevee">
           <svg viewBox="0 0 130 125" width="88" height="84" fill="none">
             <path d="M44 46C30 26 24 10 26 6C36 12 48 26 56 42Z" fill="url(#eevee-fur)" stroke="#1C1917" stroke-width="3" stroke-linejoin="round" />
@@ -156,7 +152,7 @@
     </div>
   </section>
 
-  <!-- Navigasi Mengambang -->
+  <!-- Navigasi dengan Fitur Hamburger Menu -->
   <header id="top-nav" class="top-nav" aria-label="Navigasi Utama">
     <div class="container nav-inner">
       <a href="#hero" class="nav-brand" aria-label="Kembali ke atas">
@@ -167,24 +163,53 @@
         </span>
         <span>Dimas &amp; Nabila</span>
       </a>
-      <nav class="nav-links">
+
+      <nav class="nav-desktop" aria-label="Tautan navigasi desktop">
         <a href="#mempelai">Mempelai</a>
         <a href="#acara">Acara</a>
         <a href="#game-arena">Mini Game</a>
-        <a href="#galeri">Cerita</a>
-        <a href="#rsvp">RSVP</a>
+        <a href="#galeri">Galeri &amp; Cerita</a>
+        <a href="#rsvp">Kado &amp; RSVP</a>
       </nav>
+
+      <button
+        type="button"
+        id="nav-toggle"
+        class="hamburger-btn"
+        aria-expanded="false"
+        aria-controls="mobile-drawer"
+        aria-label="Buka menu navigasi"
+      >
+        <span class="ham-box" aria-hidden="true">
+          <span class="ham-line"></span>
+          <span class="ham-line"></span>
+          <span class="ham-line"></span>
+        </span>
+        <span class="ham-label">Menu</span>
+      </button>
+    </div>
+
+    <!-- Drawer Hamburger Menu -->
+    <div id="mobile-drawer" class="mobile-drawer" hidden>
+      <div class="container mobile-drawer-inner">
+        <a href="#hero" class="drawer-link">Beranda &amp; Karakter</a>
+        <a href="#mempelai" class="drawer-link">Profil Mempelai</a>
+        <a href="#acara" class="drawer-link">Jadwal &amp; Lokasi</a>
+        <a href="#game-arena" class="drawer-link">Mini Game Pika-Spark</a>
+        <a href="#galeri" class="drawer-link">Galeri &amp; Jejak Langkah</a>
+        <a href="#rsvp" class="drawer-link drawer-link-cta">Kado Digital &amp; RSVP</a>
+      </div>
     </div>
   </header>
 
   <main id="main-content">
-    <!-- Hero Section + Stage Karakter Utuh di Bagian Atas Web -->
+    <!-- Hero Section + Stage 4 Karakter Utuh -->
     <section id="hero" class="hero-section">
       <canvas id="hero-ambient-canvas" class="hero-ambient-canvas" aria-hidden="true"></canvas>
       <div class="hero-pattern" aria-hidden="true"></div>
 
       <div class="container">
-        <!-- LIVING CHARACTER STAGE (4 Karakter Utuh Beranimasi & Interaktif) -->
+        <!-- Living Character Stage -->
         <div class="character-stage-card reveal" data-spotlight aria-label="Panggung karakter Pokémon interaktif">
           <div class="stage-topbar">
             <div class="stage-status">
@@ -200,7 +225,6 @@
           </div>
 
           <div class="stage-arena">
-            <!-- Bukit & Cahaya Matahari Latar Stage agar Tidak Flat -->
             <div class="stage-sun-glow" aria-hidden="true"></div>
             <svg class="stage-meadow-hills" viewBox="0 0 1200 120" preserveAspectRatio="none" aria-hidden="true">
               <path d="M0 70Q300 20 600 68T1200 54V120H0Z" fill="#FDE68A" opacity="0.55" />
@@ -208,23 +232,21 @@
             </svg>
 
             <div class="full-character-row">
-              <!-- 1. PIKACHU UTUH -->
+              <!-- 1. Pikachu Utuh -->
               <button
                 type="button"
                 class="full-char-actor actor-pikachu"
                 data-spark="electric"
                 data-voice="pikachu"
-                aria-label="Pikachu: Pika-Pika! Selamat Menempuh Hidup Baru!"
+                aria-label="Pikachu: Pika-Pika! Selamat Bahagia!"
               >
                 <span class="speech-bubble" role="status">Pika-Pika! Selamat Bahagia!</span>
                 <svg class="actor-svg" viewBox="0 0 210 195" fill="none">
                   <ellipse class="char-shadow" cx="98" cy="180" rx="44" ry="8" fill="rgba(28,25,23,0.22)" />
                   <g class="char-body-rig">
-                    <!-- Ekor Petir Zig-Zag -->
                     <g class="anim-tail">
                       <path d="M126 142L150 122L140 108L170 82L156 64L180 42L144 50L152 68L124 94L134 110L112 132Z" fill="url(#pika-tail-grad)" stroke="#1C1917" stroke-width="3" stroke-linejoin="round" />
                     </g>
-                    <!-- Telinga Kiri & Kanan -->
                     <g class="anim-ear-l">
                       <path d="M68 68C48 44 30 24 22 18C26 36 40 58 56 78Z" fill="url(#pika-fur)" stroke="#1C1917" stroke-width="3" stroke-linejoin="round" />
                       <path d="M38 36C30 27 25 21 22 18C24 26 28 35 34 44Z" fill="#1C1917" />
@@ -233,34 +255,25 @@
                       <path d="M118 68C138 44 156 24 164 18C160 36 146 58 130 78Z" fill="url(#pika-fur)" stroke="#1C1917" stroke-width="3" stroke-linejoin="round" />
                       <path d="M148 36C156 27 161 21 164 18C162 26 158 35 152 44Z" fill="#1C1917" />
                     </g>
-                    <!-- Kaki -->
                     <ellipse cx="76" cy="172" rx="13" ry="7" fill="url(#pika-fur)" stroke="#1C1917" stroke-width="2.8" />
                     <ellipse cx="114" cy="172" rx="13" ry="7" fill="url(#pika-fur)" stroke="#1C1917" stroke-width="2.8" />
-                    <!-- Badan Utuh -->
                     <path d="M62 108C54 132 56 164 74 170H116C134 164 136 132 128 108Z" fill="url(#pika-fur)" stroke="#1C1917" stroke-width="3" />
-                    <!-- Garis Punggung Cokelat -->
                     <path d="M126 126L134 123L133 132L125 135Z" fill="#78350F" />
                     <path d="M124 142L133 139L131 148L122 150Z" fill="#78350F" />
-                    <!-- Kepala -->
                     <ellipse cx="95" cy="90" rx="40" ry="34" fill="url(#pika-fur)" stroke="#1C1917" stroke-width="3" />
-                    <!-- Mata Berkedip -->
                     <g class="anim-eyes">
                       <circle cx="78" cy="85" r="6.8" fill="#1C1917" />
                       <circle cx="80.2" cy="82.5" r="2.5" fill="#FFFFFF" />
                       <circle cx="112" cy="85" r="6.8" fill="#1C1917" />
                       <circle cx="114.2" cy="82.5" r="2.5" fill="#FFFFFF" />
                     </g>
-                    <!-- Hidung & Mulut -->
                     <ellipse cx="95" cy="93" rx="2.5" ry="1.6" fill="#1C1917" />
                     <path d="M87 99Q91 104 95 99Q99 104 103 99" stroke="#1C1917" stroke-width="2.4" stroke-linecap="round" />
-                    <!-- Pipi Merah -->
                     <circle class="anim-cheeks" cx="65" cy="97" r="8.5" fill="url(#pika-cheek)" />
                     <circle class="anim-cheeks" cx="125" cy="97" r="8.5" fill="url(#pika-cheek)" />
-                    <!-- Dasi Kupu-kupu Pernikahan -->
                     <polygon points="95,121 82,115 82,127" fill="#E11D48" stroke="#1C1917" stroke-width="2.2" />
                     <polygon points="95,121 108,115 108,127" fill="#E11D48" stroke="#1C1917" stroke-width="2.2" />
                     <circle cx="95" cy="121" r="3.4" fill="#FACC15" stroke="#1C1917" stroke-width="1.8" />
-                    <!-- Tangan Melambai -->
                     <g class="anim-arms">
                       <ellipse cx="64" cy="133" rx="11" ry="7" transform="rotate(-24 64 133)" fill="url(#pika-fur)" stroke="#1C1917" stroke-width="2.6" />
                       <ellipse cx="126" cy="133" rx="11" ry="7" transform="rotate(24 126 133)" fill="url(#pika-fur)" stroke="#1C1917" stroke-width="2.6" />
@@ -270,24 +283,22 @@
                 <span class="actor-name-pill">Pikachu</span>
               </button>
 
-              <!-- 2. EEVEE UTUH -->
+              <!-- 2. Eevee Utuh -->
               <button
                 type="button"
                 class="full-char-actor actor-eevee"
                 data-spark="star"
                 data-voice="eevee"
-                aria-label="Eevee: Vee-Vee! Cinta Sejati Selamanya!"
+                aria-label="Eevee: Vee-Vee! Penuh Cinta!"
               >
                 <span class="speech-bubble" role="status">Vee-Vee! Penuh Cinta!</span>
                 <svg class="actor-svg" viewBox="0 0 200 195" fill="none">
                   <ellipse class="char-shadow" cx="96" cy="180" rx="42" ry="8" fill="rgba(28,25,23,0.22)" />
                   <g class="char-body-rig">
-                    <!-- Ekor Lebat Eevee -->
                     <g class="anim-tail">
                       <path d="M122 146C146 136 168 110 162 84C158 70 144 68 134 78C124 88 116 112 114 138Z" fill="url(#eevee-fur)" stroke="#1C1917" stroke-width="3" stroke-linejoin="round" />
                       <path d="M162 84C158 70 144 68 134 78L142 90L151 86L156 97Z" fill="url(#eevee-cream)" stroke="#1C1917" stroke-width="2.4" stroke-linejoin="round" />
                     </g>
-                    <!-- Telinga Panjang Eevee -->
                     <g class="anim-ear-l">
                       <path d="M68 68C50 42 42 20 44 14C56 22 72 40 82 62Z" fill="url(#eevee-fur)" stroke="#1C1917" stroke-width="3" stroke-linejoin="round" />
                       <path d="M64 60C54 42 49 28 50 24C58 30 68 42 74 56Z" fill="#451A03" />
@@ -296,16 +307,12 @@
                       <path d="M116 68C134 42 142 20 140 14C128 22 112 40 102 62Z" fill="url(#eevee-fur)" stroke="#1C1917" stroke-width="3" stroke-linejoin="round" />
                       <path d="M120 60C130 42 135 28 134 24C126 30 116 42 110 56Z" fill="#451A03" />
                     </g>
-                    <!-- Badan & Kaki Duduk -->
                     <path d="M68 118C62 142 64 166 76 172H112C124 166 126 142 120 118Z" fill="url(#eevee-fur)" stroke="#1C1917" stroke-width="3" />
                     <ellipse cx="78" cy="173" rx="11" ry="6.5" fill="url(#eevee-fur)" stroke="#1C1917" stroke-width="2.6" />
                     <ellipse cx="108" cy="173" rx="11" ry="6.5" fill="url(#eevee-fur)" stroke="#1C1917" stroke-width="2.6" />
-                    <!-- Syal Bulu Krem Tebal -->
                     <path d="M56 114C60 102 76 105 93 105C110 105 126 102 130 114C134 128 116 140 93 140C70 140 52 128 56 114Z" fill="url(#eevee-cream)" stroke="#1C1917" stroke-width="3" />
-                    <!-- Kepala -->
                     <ellipse cx="93" cy="86" rx="33" ry="29" fill="url(#eevee-fur)" stroke="#1C1917" stroke-width="3" />
                     <path d="M82 58L88 47L93 56L99 48L104 58" fill="url(#eevee-fur)" stroke="#1C1917" stroke-width="2.5" stroke-linejoin="round" />
-                    <!-- Mata Berkedip -->
                     <g class="anim-eyes">
                       <ellipse cx="80" cy="84" rx="5.5" ry="6.6" fill="#1C1917" />
                       <circle cx="81.6" cy="81.2" r="2.3" fill="#FFFFFF" />
@@ -319,7 +326,7 @@
                 <span class="actor-name-pill">Eevee</span>
               </button>
 
-              <!-- 3. PICHU UTUH -->
+              <!-- 3. Pichu Utuh -->
               <button
                 type="button"
                 class="full-char-actor actor-pichu"
@@ -331,11 +338,9 @@
                 <svg class="actor-svg" viewBox="0 0 190 195" fill="none">
                   <ellipse class="char-shadow" cx="95" cy="180" rx="38" ry="8" fill="rgba(28,25,23,0.22)" />
                   <g class="char-body-rig">
-                    <!-- Ekor Kecil Hitam Pichu -->
                     <g class="anim-tail">
                       <path d="M118 148L142 134L134 118L114 134Z" fill="#1C1917" stroke="#1C1917" stroke-width="2.5" stroke-linejoin="round" />
                     </g>
-                    <!-- Telinga Besar Berlian Pichu -->
                     <g class="anim-ear-l">
                       <path d="M68 74L32 42L56 22L82 62Z" fill="url(#pichu-fur)" stroke="#1C1917" stroke-width="3.2" stroke-linejoin="round" />
                       <path d="M56 22L32 42L44 52L64 34Z" fill="#1C1917" />
@@ -344,16 +349,11 @@
                       <path d="M122 74L158 42L134 22L108 62Z" fill="url(#pichu-fur)" stroke="#1C1917" stroke-width="3.2" stroke-linejoin="round" />
                       <path d="M134 22L158 42L146 52L126 34Z" fill="#1C1917" />
                     </g>
-                    <!-- Kaki -->
                     <ellipse cx="80" cy="172" rx="11" ry="6.5" fill="url(#pichu-fur)" stroke="#1C1917" stroke-width="2.8" />
                     <ellipse cx="110" cy="172" rx="11" ry="6.5" fill="url(#pichu-fur)" stroke="#1C1917" stroke-width="2.8" />
-                    <!-- Badan Mungil -->
                     <path d="M72 120C66 140 68 164 80 170H110C122 164 124 140 118 120Z" fill="url(#pichu-fur)" stroke="#1C1917" stroke-width="3" />
-                    <!-- Kerah Hitam Pichu -->
                     <path d="M74 118L84 130L95 120L106 130L116 118" fill="#1C1917" stroke="#1C1917" stroke-width="2.2" stroke-linejoin="round" />
-                    <!-- Kepala Bulat -->
                     <ellipse cx="95" cy="92" rx="34" ry="30" fill="url(#pichu-fur)" stroke="#1C1917" stroke-width="3" />
-                    <!-- Mata Berkedip -->
                     <g class="anim-eyes">
                       <circle cx="81" cy="88" r="6" fill="#1C1917" />
                       <circle cx="83" cy="85.8" r="2.2" fill="#FFFFFF" />
@@ -362,10 +362,8 @@
                     </g>
                     <circle cx="95" cy="95" r="2" fill="#1C1917" />
                     <path d="M88 101Q95 109 102 101Z" fill="#FB7185" stroke="#1C1917" stroke-width="2" />
-                    <!-- Pipi Merah Muda -->
                     <circle class="anim-cheeks" cx="70" cy="99" r="7.5" fill="#FB7185" />
                     <circle class="anim-cheeks" cx="120" cy="99" r="7.5" fill="#FB7185" />
-                    <!-- Tangan Melambai -->
                     <g class="anim-arms">
                       <ellipse cx="64" cy="134" rx="10" ry="6" transform="rotate(-32 64 134)" fill="url(#pichu-fur)" stroke="#1C1917" stroke-width="2.6" />
                       <ellipse cx="126" cy="134" rx="10" ry="6" transform="rotate(32 126 134)" fill="url(#pichu-fur)" stroke="#1C1917" stroke-width="2.6" />
@@ -375,39 +373,32 @@
                 <span class="actor-name-pill">Pichu</span>
               </button>
 
-              <!-- 4. TOGEPI UTUH -->
+              <!-- 4. Togepi Utuh -->
               <button
                 type="button"
                 class="full-char-actor actor-togepi"
                 data-spark="heart"
                 data-voice="togepi"
-                aria-label="Togepi: Toge-Priii! Doa Restu Selalu!"
+                aria-label="Togepi: Toge-Priii! Doa Restu!"
               >
                 <span class="speech-bubble" role="status">Toge-Priii! Doa Restu!</span>
                 <svg class="actor-svg" viewBox="0 0 190 195" fill="none">
                   <ellipse class="char-shadow" cx="95" cy="180" rx="38" ry="8" fill="rgba(28,25,23,0.22)" />
                   <g class="char-body-rig">
-                    <!-- Kaki Mungil Togepi -->
                     <ellipse cx="78" cy="171" rx="12" ry="7" fill="#FEF3C7" stroke="#1C1917" stroke-width="2.8" />
                     <ellipse cx="112" cy="171" rx="12" ry="7" fill="#FEF3C7" stroke="#1C1917" stroke-width="2.8" />
-                    <!-- Mahkota Duri Kepala -->
                     <path d="M95 34L84 56L66 46L72 68L54 74L72 86H118L136 74L118 68L124 46L106 56L95 34Z" fill="#FEF3C7" stroke="#1C1917" stroke-width="3" stroke-linejoin="round" />
-                    <!-- Kepala -->
                     <ellipse cx="95" cy="92" rx="33" ry="28" fill="#FFFDF5" stroke="#1C1917" stroke-width="3" />
-                    <!-- Mata Senyum Ceria -->
                     <path d="M76 86Q82 79 88 86" stroke="#1C1917" stroke-width="3" stroke-linecap="round" />
                     <path d="M102 86Q108 79 114 86" stroke="#1C1917" stroke-width="3" stroke-linecap="round" />
                     <circle cx="74" cy="94" r="5.5" fill="#FDA4AF" opacity="0.75" />
                     <circle cx="116" cy="94" r="5.5" fill="#FDA4AF" opacity="0.75" />
                     <path d="M89 96Q95 103 101 96" stroke="#E11D48" stroke-width="2.6" stroke-linecap="round" />
-                    <!-- Tangan Kecil -->
                     <g class="anim-arms">
                       <ellipse cx="56" cy="126" rx="11" ry="7" transform="rotate(-28 56 126)" fill="#FFFDF5" stroke="#1C1917" stroke-width="2.8" />
                       <ellipse cx="134" cy="126" rx="11" ry="7" transform="rotate(28 134 126)" fill="#FFFDF5" stroke="#1C1917" stroke-width="2.8" />
                     </g>
-                    <!-- Badan Cangkang Telur Utuh -->
                     <path d="M58 106L72 115L84 105L95 116L106 105L118 115L132 106C136 142 120 166 95 166C70 166 54 142 58 106Z" fill="url(#togepi-shell)" stroke="#1C1917" stroke-width="3" stroke-linejoin="round" />
-                    <!-- Motif Segitiga Cangkang -->
                     <polygon points="75,128 84,122 82,134" fill="#E11D48" />
                     <polygon points="108,125 117,131 107,136" fill="#2563EB" />
                     <polygon points="90,144 100,144 95,153" fill="#E11D48" />
@@ -420,7 +411,7 @@
           </div>
         </div>
 
-        <!-- Konten Utama Hero -->
+        <!-- Hero Split + FOTO BERSAMA 1 -->
         <div class="hero-layout">
           <div class="hero-copy reveal">
             <div class="pill-badge">
@@ -464,18 +455,18 @@
           <div class="hero-visual reveal">
             <div class="couple-showcase-card" data-tilt data-spotlight>
               <div class="showcase-top-bar">
-                <span class="dex-id">NO. 025 • PARTNER EDITION</span>
+                <span class="dex-id">PHOTO 01 • COUPLE EDITION</span>
                 <span class="type-chip">ELECTRIC / LOVE</span>
               </div>
 
               <div class="showcase-art">
                 <img
-                  src="assets/hero.jpg"
-                  alt="Foto prewedding Dimas dan Nabila"
+                  src="assets/couple-1.jpg"
+                  alt="Foto bersama pertama Dimas dan Nabila"
                   width="480"
                   height="540"
                   fetchpriority="high"
-                  onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                  onerror="if(!this.dataset.triedHero){this.dataset.triedHero='1';this.src='assets/hero.jpg';}else{this.style.display='none';this.nextElementSibling.style.display='flex';}"
                 />
                 <div class="art-fallback" style="display: none;">
                   <svg viewBox="0 0 320 260" width="270" height="220" fill="none" aria-hidden="true">
@@ -519,7 +510,7 @@
                     </g>
                     <path d="M160 88C153 78 140 80 140 91C140 101 160 113 160 113C160 113 180 101 180 91C180 80 167 78 160 88Z" fill="#E11D48" stroke="#1C1917" stroke-width="2.6" />
                   </svg>
-                  <span class="fallback-caption">Ganti foto prewedding di <code>assets/hero.jpg</code></span>
+                  <span class="fallback-caption">Simpan foto bersama ke-1 di <code>assets/couple-1.jpg</code></span>
                 </div>
               </div>
 
@@ -541,14 +532,13 @@
       </div>
     </section>
 
-    <!-- Pembatas Petir SVG -->
     <div class="bolt-divider" aria-hidden="true">
       <svg viewBox="0 0 1200 44" preserveAspectRatio="none">
         <path d="M0 22H545L568 6L596 38L624 6L648 22H1200" fill="none" stroke="#1C1917" stroke-width="2.8" />
       </svg>
     </div>
 
-    <!-- Profil Mempelai -->
+    <!-- Profil Mempelai (FOTO 2 & FOTO 3: Solo Pengantin Pria & Wanita) -->
     <section id="mempelai" class="section-block">
       <div class="container">
         <div class="section-header reveal">
@@ -557,13 +547,14 @@
         </div>
 
         <div class="couple-split">
+          <!-- Foto 2: Pengantin Pria Sendiri -->
           <article class="person-card reveal" data-tilt data-spotlight>
             <div class="person-avatar">
               <img
                 src="assets/groom.jpg"
-                alt="Dimas Pratama"
-                width="160"
-                height="160"
+                alt="Foto solo Dimas Pratama"
+                width="180"
+                height="180"
                 loading="lazy"
                 onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';"
               />
@@ -581,13 +572,14 @@
             </svg>
           </div>
 
+          <!-- Foto 3: Pengantin Wanita Sendiri -->
           <article class="person-card reveal" data-tilt data-spotlight>
             <div class="person-avatar">
               <img
                 src="assets/bride.jpg"
-                alt="Nabila Putri"
-                width="160"
-                height="160"
+                alt="Foto solo Nabila Putri Maharani"
+                width="180"
+                height="180"
                 loading="lazy"
                 onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';"
               />
@@ -671,7 +663,7 @@
       </div>
     </section>
 
-    <!-- Mini-Game Interaktif Modern dengan Karakter Pikachu Penuh -->
+    <!-- Mini-Game Interaktif Pikachu -->
     <section id="game-arena" class="section-block game-section">
       <div class="container">
         <div class="section-header section-header-light reveal">
@@ -729,37 +721,68 @@
       </div>
     </section>
 
-    <!-- Cerita Cinta -->
+    <!-- Galeri Momen (FOTO 4: Foto Bersama Kedua) & Jejak Langkah -->
     <section id="galeri" class="section-block">
       <div class="container">
         <div class="section-header reveal">
-          <span class="section-eyebrow">JEJAK LANGKAH</span>
+          <span class="section-eyebrow">GALERI &amp; JEJAK LANGKAH</span>
           <h2 class="section-title">Perjalanan Menuju Pelaminan</h2>
         </div>
 
-        <div class="story-timeline">
-          <article class="story-step reveal" data-spotlight>
-            <span class="story-year">2022</span>
-            <h3>Pertemuan Pertama</h3>
-            <p>Berawal dari diskusi proyek desain dan kopi sore yang tidak disengaja, obrolan sederhana berubah menjadi kebiasaan setiap hari.</p>
-          </article>
+        <div class="story-gallery-split">
+          <!-- Foto 4: Foto Bersama Kedua -->
+          <figure class="couple-second-frame reveal" data-tilt data-spotlight>
+            <div class="second-frame-header">
+              <span>PHOTO 04 • TOGETHER FOREVER</span>
+              <span class="type-chip">SOULMATES</span>
+            </div>
+            <div class="second-frame-media">
+              <img
+                src="assets/couple-2.jpg"
+                alt="Foto bersama kedua Dimas dan Nabila"
+                width="480"
+                height="580"
+                loading="lazy"
+                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+              />
+              <div class="art-fallback" style="display: none;">
+                <svg viewBox="0 0 220 180" width="170" height="140" fill="none" aria-hidden="true">
+                  <circle cx="110" cy="90" r="72" fill="#FEF08A" />
+                  <path d="M110 62C102 51 87 54 87 66C87 78 110 92 110 92C110 92 133 78 133 66C133 54 118 51 110 62Z" fill="#E11D48" stroke="#1C1917" stroke-width="2.5" />
+                  <path d="M114 102L98 124H110L106 144L124 120H112L114 102Z" fill="#FACC15" stroke="#1C1917" stroke-width="2.5" stroke-linejoin="round" />
+                </svg>
+                <span class="fallback-caption">Simpan foto bersama ke-2 di <code>assets/couple-2.jpg</code></span>
+              </div>
+            </div>
+            <figcaption class="second-frame-caption">
+              <strong>Dimas &amp; Nabila</strong> — Langkah kecil yang tumbuh menjadi ikatan seumur hidup.
+            </figcaption>
+          </figure>
 
-          <article class="story-step reveal" data-spotlight>
-            <span class="story-year">2024</span>
-            <h3>Satu Visi &amp; Komitmen</h3>
-            <p>Melewati berbagai tantangan jarak dan kesibukan, kami belajar bahwa rumah terbaik adalah saling mendukung tanpa syarat.</p>
-          </article>
+          <div class="story-timeline-vertical">
+            <article class="story-step reveal" data-spotlight>
+              <span class="story-year">2022</span>
+              <h3>Pertemuan Pertama</h3>
+              <p>Berawal dari diskusi proyek desain dan kopi sore yang tidak disengaja, obrolan sederhana berubah menjadi kebiasaan setiap hari.</p>
+            </article>
 
-          <article class="story-step reveal" data-spotlight>
-            <span class="story-year">2026</span>
-            <h3>Ikatan Suci</h3>
-            <p>Dengan restu kedua orang tua, kami melangkah bersama memulai babak kehidupan baru yang penuh berkah.</p>
-          </article>
+            <article class="story-step reveal" data-spotlight>
+              <span class="story-year">2024</span>
+              <h3>Satu Visi &amp; Komitmen</h3>
+              <p>Melewati berbagai tantangan jarak dan kesibukan, kami belajar bahwa rumah terbaik adalah saling mendukung tanpa syarat.</p>
+            </article>
+
+            <article class="story-step reveal" data-spotlight>
+              <span class="story-year">2026</span>
+              <h3>Ikatan Suci</h3>
+              <p>Dengan restu kedua orang tua, kami melangkah bersama memulai babak kehidupan baru yang penuh berkah.</p>
+            </article>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- Hadiah Digital & RSVP WhatsApp -->
+    <!-- Hadiah Digital & RSVP WhatsApp + Buku Tamu Permanen -->
     <section id="rsvp" class="section-block section-tinted">
       <div class="container rsvp-layout">
         <div class="gift-column reveal">
@@ -798,7 +821,7 @@
 
         <div class="form-column reveal">
           <span class="section-eyebrow">KONFIRMASI &amp; DOA</span>
-          <h2 class="section-title-sm">Kirim RSVP via WhatsApp</h2>
+          <h2 class="section-title-sm">Kirim RSVP &amp; Ucapan</h2>
 
           <form id="rsvp-form" class="rsvp-form" novalidate>
             <div class="form-group">
@@ -847,21 +870,16 @@
             <p id="form-error" class="form-error" role="alert"></p>
 
             <button type="submit" class="btn-primary btn-full">
-              Kirim Ucapan ke WhatsApp
+              Simpan Ucapan &amp; Kirim ke WhatsApp
             </button>
           </form>
 
           <div class="wishes-wall" aria-label="Daftar ucapan tamu">
-            <h3 class="wishes-heading">Ucapan Tamu Terbaru</h3>
-            <div id="wishes-list" class="wishes-list">
-              <article class="wish-item">
-                <div class="wish-top">
-                  <strong>Raka &amp; Keluarga</strong>
-                  <span class="wish-badge">Hadir</span>
-                </div>
-                <p>Selamat menempuh hidup baru Dimas &amp; Nabila! Semoga selalu penuh kebahagiaan dan energi positif seperti tema undangannya.</p>
-              </article>
+            <div class="wishes-header-row">
+              <h3 class="wishes-heading">Ucapan Tamu</h3>
+              <span id="wishes-count" class="wishes-count-badge">2 Ucapan</span>
             </div>
+            <div id="wishes-list" class="wishes-list"></div>
           </div>
         </div>
       </div>
