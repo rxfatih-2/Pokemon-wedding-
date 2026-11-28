@@ -5,7 +5,11 @@
   const WHATSAPP_NUMBER = "6288226621362";
   const WISHES_STORAGE_KEY = "rxfatih_pikachu_wedding_wishes_v1";
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
   let sharedAudioCtx = null;
+  let backsoundStarted = false;
+  let localMp3Failed = false;
+  let synthLoopTimer = null;
 
   const DEFAULT_WISHES = [
     {
@@ -30,7 +34,7 @@
       if (AudioCtx) sharedAudioCtx = new AudioCtx();
     }
     if (sharedAudioCtx && sharedAudioCtx.state === "suspended") {
-      sharedAudioCtx.resume();
+      sharedAudioCtx.resume().catch(() => {});
     }
     return sharedAudioCtx;
   }
@@ -59,44 +63,139 @@
       osc.frequency.exponentialRampToValueAtTime(freq * 1.08, start + 0.09);
 
       gain.gain.setValueAtTime(0.001, start);
-      gain.gain.exponentialRampToValueAtTime(0.045, start + 0.02);
-      gain.gain.exponentialRampToValueAtTime(0.0008, start + 0.14);
+      gain.gain.exponentialRampToValueAtTime(0.16, start + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.0008, start + 0.16);
 
       osc.connect(gain);
       gain.connect(ctx.destination);
       osc.start(start);
-      osc.stop(start + 0.15);
+      osc.stop(start + 0.18);
     });
   }
 
-  function playSynthFallbackChime() {
+  function playMusicBoxBeat(step) {
+    if (document.hidden) return;
     const ctx = getAudioContext();
     if (!ctx) return;
 
-    const notes = [523.25, 659.25, 783.99, 1046.5, 987.77, 783.99, 659.25, 783.99];
+    const progression = [
+      { chord: [261.63, 329.63, 392.0], melody: [659.25, 783.99, 659.25, 523.25] },
+      { chord: [220.0, 261.63, 329.63], melody: [587.33, 659.25, 523.25, 440.0] },
+      { chord: [174.61, 220.0, 261.63], melody: [440.0, 523.25, 698.46, 659.25] },
+      { chord: [196.0, 246.94, 293.66], melody: [587.33, 493.88, 392.0, 587.33] }
+    ];
+
+    const barIndex = Math.floor(step / 4) % progression.length;
+    const beatInBar = step % 4;
+    const bar = progression[barIndex];
+    const now = ctx.currentTime;
+
+    if (beatInBar === 0) {
+      bar.chord.forEach((freq) => {
+        const padOsc = ctx.createOscillator();
+        const padGain = ctx.createGain();
+        padOsc.type = "sine";
+        padOsc.frequency.setValueAtTime(freq, now);
+
+        padGain.gain.setValueAtTime(0.001, now);
+        padGain.gain.linearRampToValueAtTime(0.065, now + 0.12);
+        padGain.gain.exponentialRampToValueAtTime(0.001, now + 1.65);
+
+        padOsc.connect(padGain);
+        padGain.connect(ctx.destination);
+        padOsc.start(now);
+        padOsc.stop(now + 1.7);
+      });
+    }
+
+    const leadFreq = bar.melody[beatInBar];
+    const bellOsc = ctx.createOscillator();
+    const bellGain = ctx.createGain();
+
+    bellOsc.type = "triangle";
+    bellOsc.frequency.setValueAtTime(leadFreq, now);
+
+    bellGain.gain.setValueAtTime(0.001, now);
+    bellGain.gain.linearRampToValueAtTime(0.22, now + 0.025);
+    bellGain.gain.exponentialRampToValueAtTime(0.001, now + 0.42);
+
+    bellOsc.connect(bellGain);
+    bellGain.connect(ctx.destination);
+    bellOsc.start(now);
+    bellOsc.stop(now + 0.45);
+  }
+
+  function startRomanticMusicBox() {
+    if (synthLoopTimer) return;
     let step = 0;
-
-    const triggerNote = () => {
-      const now = ctx.currentTime;
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-
-      osc.type = "triangle";
-      osc.frequency.setValueAtTime(notes[step % notes.length], now);
-
-      gain.gain.setValueAtTime(0.001, now);
-      gain.gain.exponentialRampToValueAtTime(0.042, now + 0.04);
-      gain.gain.exponentialRampToValueAtTime(0.0008, now + 0.55);
-
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      osc.start(now);
-      osc.stop(now + 0.58);
+    playMusicBoxBeat(step);
+    step += 1;
+    synthLoopTimer = window.setInterval(() => {
+      playMusicBoxBeat(step);
       step += 1;
+    }, 440);
+  }
+
+  function triggerBacksound() {
+    const bgMusic = document.getElementById("bg-music");
+    getAudioContext();
+
+    if (backsoundStarted) {
+      if (bgMusic && !localMp3Failed && bgMusic.paused && !document.hidden) {
+        bgMusic.play().catch(() => {});
+      }
+      return;
+    }
+
+    backsoundStarted = true;
+
+    if (bgMusic && !localMp3Failed && bgMusic.networkState !== HTMLMediaElement.NETWORK_NO_SOURCE) {
+      bgMusic.volume = 0.8;
+      const playPromise = bgMusic.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {
+          localMp3Failed = true;
+          startRomanticMusicBox();
+        });
+      }
+    } else {
+      startRomanticMusicBox();
+    }
+  }
+
+  function initBacksoundSystem() {
+    const bgMusic = document.getElementById("bg-music");
+    if (!bgMusic) {
+      localMp3Failed = true;
+    } else {
+      bgMusic.addEventListener("error", () => {
+        localMp3Failed = true;
+        if (backsoundStarted && !synthLoopTimer) {
+          startRomanticMusicBox();
+        }
+      });
+    }
+
+    const unlockEvents = ["pointerdown", "touchstart", "click", "keydown"];
+    const onFirstInteraction = () => {
+      triggerBacksound();
+      unlockEvents.forEach((evt) => {
+        document.removeEventListener(evt, onFirstInteraction);
+      });
     };
 
-    triggerNote();
-    window.setInterval(triggerNote, 840);
+    unlockEvents.forEach((evt) => {
+      document.addEventListener(evt, onFirstInteraction, { passive: true });
+    });
+
+    document.addEventListener("visibilitychange", () => {
+      if (!bgMusic || localMp3Failed || !backsoundStarted) return;
+      if (document.hidden) {
+        bgMusic.pause();
+      } else {
+        bgMusic.play().catch(() => {});
+      }
+    });
   }
 
   function initHamburgerMenu() {
@@ -225,7 +324,6 @@
   function initOpeningGate() {
     const gate = document.getElementById("opening-gate");
     const openBtn = document.getElementById("open-invitation-btn");
-    const bgMusic = document.getElementById("bg-music");
     if (!gate || !openBtn) return;
 
     document.body.classList.add("gate-locked");
@@ -240,15 +338,7 @@
 
       gate.classList.add("is-opened");
       document.body.classList.remove("gate-locked");
-
-      if (bgMusic) {
-        bgMusic.volume = 0.55;
-        bgMusic.play().catch(() => {
-          playSynthFallbackChime();
-        });
-      } else {
-        playSynthFallbackChime();
-      }
+      triggerBacksound();
     });
   }
 
@@ -1175,6 +1265,7 @@
   }
 
   document.addEventListener("DOMContentLoaded", () => {
+    initBacksoundSystem();
     initHamburgerMenu();
     initGuestPersonalization();
     initCharacterInteractions();
