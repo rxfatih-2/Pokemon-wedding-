@@ -16,7 +16,7 @@
 <body>
   <a href="#main-content" class="skip-link">Langsung ke isi undangan</a>
 
-  <!-- Audio latar (otomatis menyala saat gerbang dibuka) -->
+  <!-- Audio latar otomatis menyala saat gerbang dibuka -->
   <audio id="bg-music" loop preload="auto">
     <source src="assets/music.mp3" type="audio/mpeg" />
   </audio>
@@ -24,7 +24,7 @@
   <!-- Definisi Gradien Vektor Karakter (Reusable) -->
   <svg width="0" height="0" style="position:absolute" aria-hidden="true">
     <defs>
-      <radialGradient id="pika-fur" cx="42%" cy="32%" r="68%">
+      <radialGradient id="pika-fur" cx="42%" cy="30%" r="70%">
         <stop offset="0%" stop-color="#FEF08A" />
         <stop offset="55%" stop-color="#FACC15" />
         <stop offset="100%" stop-color="#EAB308" />
@@ -36,10 +36,10 @@
       </radialGradient>
       <linearGradient id="pika-tail-grad" x1="0%" y1="0%" x2="100%" y2="100%">
         <stop offset="0%" stop-color="#FDE047" />
-        <stop offset="75%" stop-color="#F59E0B" />
+        <stop offset="72%" stop-color="#F59E0B" />
         <stop offset="100%" stop-color="#78350F" />
       </linearGradient>
-      <radialGradient id="eevee-fur" cx="40%" cy="30%" r="70%">
+      <radialGradient id="eevee-fur" cx="40%" cy="28%" r="72%">
         <stop offset="0%" stop-color="#E6A962" />
         <stop offset="60%" stop-color="#C27834" />
         <stop offset="100%" stop-color="#854D1E" />
@@ -48,15 +48,20 @@
         <stop offset="0%" stop-color="#FFFDF5" />
         <stop offset="100%" stop-color="#FDE68A" />
       </radialGradient>
-      <radialGradient id="pichu-fur" cx="45%" cy="35%" r="65%">
+      <radialGradient id="pichu-fur" cx="45%" cy="32%" r="68%">
         <stop offset="0%" stop-color="#FEF9C3" />
-        <stop offset="70%" stop-color="#FDE047" />
+        <stop offset="68%" stop-color="#FDE047" />
         <stop offset="100%" stop-color="#EAB308" />
+      </radialGradient>
+      <radialGradient id="togepi-shell" cx="45%" cy="30%" r="70%">
+        <stop offset="0%" stop-color="#FFFFFF" />
+        <stop offset="70%" stop-color="#FFFBEB" />
+        <stop offset="100%" stop-color="#FDE68A" />
       </radialGradient>
     </defs>
   </svg>
 
-  <!-- Gerbang Pembuka Interaktif (Split-Vault + Character Ensemble) -->
+  <!-- Gerbang Pembuka Split-Vault -->
   <section id="opening-gate" class="opening-gate" aria-label="Gerbang Undangan">
     <div class="gate-panel gate-panel-top" aria-hidden="true"></div>
     <div class="gate-panel gate-panel-bottom" aria-hidden="true"></div>
@@ -64,86 +69,68 @@
     <canvas id="gate-canvas" class="gate-canvas" aria-hidden="true"></canvas>
 
     <div class="gate-stage">
-      <!-- Trio Karakter Mengintip di Atas Kartu Gerbang -->
-      <div class="gate-mascots" aria-label="Karakter pendamping undangan">
-        <!-- Togepi -->
-        <button type="button" class="mascot-btn mascot-togepi" data-spark="heart" aria-label="Sentuh Togepi">
+      <div class="gate-mascots" aria-label="Karakter penyambut undangan">
+        <!-- Togepi Gate -->
+        <button type="button" class="mascot-btn mascot-togepi" data-spark="heart" data-voice="togepi" aria-label="Sapa Togepi">
           <svg viewBox="0 0 110 110" width="76" height="76" fill="none">
             <path d="M55 12L46 28L33 21L36 37L23 42L35 50H75L87 42L74 37L77 21L64 28L55 12Z" fill="#FEF3C7" stroke="#1C1917" stroke-width="3" stroke-linejoin="round" />
             <ellipse cx="55" cy="54" rx="25" ry="22" fill="#FFFBEB" stroke="#1C1917" stroke-width="3" />
             <path d="M41 49Q45 44 49 49" stroke="#1C1917" stroke-width="2.6" stroke-linecap="round" />
             <path d="M61 49Q65 44 69 49" stroke="#1C1917" stroke-width="2.6" stroke-linecap="round" />
             <path d="M51 56Q55 61 59 56" stroke="#E11D48" stroke-width="2.4" stroke-linecap="round" />
-            <path d="M28 60L38 66L47 59L55 67L63 59L72 66L82 60C84 82 72 96 55 96C38 96 26 82 28 60Z" fill="#FFFDF5" stroke="#1C1917" stroke-width="3" stroke-linejoin="round" />
+            <path d="M28 60L38 66L47 59L55 67L63 59L72 66L82 60C84 82 72 96 55 96C38 96 26 82 28 60Z" fill="url(#togepi-shell)" stroke="#1C1917" stroke-width="3" stroke-linejoin="round" />
             <polygon points="40,74 46,70 45,78" fill="#E11D48" />
             <polygon points="65,72 71,76 64,80" fill="#2563EB" />
             <polygon points="52,82 58,82 55,88" fill="#E11D48" />
           </svg>
         </button>
 
-        <!-- Pikachu Utama -->
-        <button type="button" class="mascot-btn mascot-pikachu" data-spark="electric" aria-label="Sentuh Pikachu">
+        <!-- Pikachu Gate -->
+        <button type="button" class="mascot-btn mascot-pikachu" data-spark="electric" data-voice="pikachu" aria-label="Sapa Pikachu">
           <svg viewBox="0 0 180 160" width="128" height="114" fill="none">
-            <!-- Ekor Petir -->
             <path d="M126 116L146 98L138 86L164 62L152 46L172 28L142 36L148 52L124 74L132 88L114 106Z" fill="url(#pika-tail-grad)" stroke="#1C1917" stroke-width="3.2" stroke-linejoin="round" />
-            <!-- Telinga Kiri & Kanan -->
-            <g class="pika-ear-left">
-              <path d="M62 56C44 34 28 16 20 12C24 28 36 48 50 66Z" fill="url(#pika-fur)" stroke="#1C1917" stroke-width="3.2" stroke-linejoin="round" />
-              <path d="M34 28C27 20 22 14 20 12C22 19 25 27 30 35Z" fill="#1C1917" />
-            </g>
-            <g class="pika-ear-right">
-              <path d="M112 56C130 34 146 16 154 12C150 28 138 48 124 66Z" fill="url(#pika-fur)" stroke="#1C1917" stroke-width="3.2" stroke-linejoin="round" />
-              <path d="M140 28C147 20 152 14 154 12C152 19 149 27 144 35Z" fill="#1C1917" />
-            </g>
-            <!-- Badan & Kepala -->
+            <path d="M62 56C44 34 28 16 20 12C24 28 36 48 50 66Z" fill="url(#pika-fur)" stroke="#1C1917" stroke-width="3.2" stroke-linejoin="round" />
+            <path d="M34 28C27 20 22 14 20 12C22 19 25 27 30 35Z" fill="#1C1917" />
+            <path d="M112 56C130 34 146 16 154 12C150 28 138 48 124 66Z" fill="url(#pika-fur)" stroke="#1C1917" stroke-width="3.2" stroke-linejoin="round" />
+            <path d="M140 28C147 20 152 14 154 12C152 19 149 27 144 35Z" fill="#1C1917" />
             <path d="M52 94C46 112 48 136 62 142H112C126 136 128 112 122 94Z" fill="url(#pika-fur)" stroke="#1C1917" stroke-width="3.2" />
             <ellipse cx="87" cy="78" rx="40" ry="34" fill="url(#pika-fur)" stroke="#1C1917" stroke-width="3.2" />
-            <!-- Mata -->
             <circle cx="71" cy="73" r="6.8" fill="#1C1917" />
             <circle cx="73" cy="70.5" r="2.5" fill="#FFFFFF" />
             <circle cx="103" cy="73" r="6.8" fill="#1C1917" />
             <circle cx="105" cy="70.5" r="2.5" fill="#FFFFFF" />
-            <!-- Hidung & Mulut -->
             <ellipse cx="87" cy="81" rx="2.5" ry="1.6" fill="#1C1917" />
             <path d="M79 87Q83 92 87 87Q91 92 95 87" stroke="#1C1917" stroke-width="2.5" stroke-linecap="round" />
-            <!-- Pipi Merah -->
             <circle cx="57" cy="85" r="8.5" fill="url(#pika-cheek)" />
             <circle cx="117" cy="85" r="8.5" fill="url(#pika-cheek)" />
-            <!-- Dasi Kupu-kupu Pernikahan -->
             <polygon points="87,108 75,102 75,114" fill="#E11D48" stroke="#1C1917" stroke-width="2" />
             <polygon points="87,108 99,102 99,114" fill="#E11D48" stroke="#1C1917" stroke-width="2" />
             <circle cx="87" cy="108" r="3.2" fill="#FACC15" stroke="#1C1917" stroke-width="1.8" />
-            <!-- Tangan Mengintip -->
             <ellipse cx="66" cy="118" rx="8" ry="6" fill="url(#pika-fur)" stroke="#1C1917" stroke-width="2.6" />
             <ellipse cx="108" cy="118" rx="8" ry="6" fill="url(#pika-fur)" stroke="#1C1917" stroke-width="2.6" />
           </svg>
         </button>
 
-        <!-- Eevee -->
-        <button type="button" class="mascot-btn mascot-eevee" data-spark="star" aria-label="Sentuh Eevee">
+        <!-- Eevee Gate -->
+        <button type="button" class="mascot-btn mascot-eevee" data-spark="star" data-voice="eevee" aria-label="Sapa Eevee">
           <svg viewBox="0 0 130 125" width="88" height="84" fill="none">
-            <!-- Telinga Eevee -->
             <path d="M44 46C30 26 24 10 26 6C36 12 48 26 56 42Z" fill="url(#eevee-fur)" stroke="#1C1917" stroke-width="3" stroke-linejoin="round" />
             <path d="M42 40C34 26 30 16 31 13C38 18 45 27 50 38Z" fill="#451A03" />
             <path d="M86 46C100 26 106 10 104 6C94 12 82 26 74 42Z" fill="url(#eevee-fur)" stroke="#1C1917" stroke-width="3" stroke-linejoin="round" />
             <path d="M88 40C96 26 100 16 99 13C92 18 85 27 80 38Z" fill="#451A03" />
-            <!-- Kepala -->
             <ellipse cx="65" cy="64" rx="30" ry="26" fill="url(#eevee-fur)" stroke="#1C1917" stroke-width="3" />
             <path d="M55 39L60 30L65 38L70 31L74 39" fill="url(#eevee-fur)" stroke="#1C1917" stroke-width="2.5" stroke-linejoin="round" />
-            <!-- Mata -->
             <ellipse cx="53" cy="62" rx="5.2" ry="6.2" fill="#1C1917" />
             <circle cx="54.5" cy="59.5" r="2.2" fill="#FFFFFF" />
             <ellipse cx="77" cy="62" rx="5.2" ry="6.2" fill="#1C1917" />
             <circle cx="78.5" cy="59.5" r="2.2" fill="#FFFFFF" />
             <circle cx="65" cy="69" r="2" fill="#1C1917" />
             <path d="M60 74Q65 78 70 74" stroke="#1C1917" stroke-width="2.2" stroke-linecap="round" />
-            <!-- Syal Bulu Krem -->
             <path d="M35 84C38 76 50 78 65 78C80 78 92 76 95 84C98 94 84 104 65 104C46 104 32 94 35 84Z" fill="url(#eevee-cream)" stroke="#1C1917" stroke-width="3" />
           </svg>
         </button>
       </div>
 
-      <!-- Kartu Gerbang Utama -->
       <div class="gate-card" data-spotlight>
         <div class="gate-ribbon">
           <span>THE ELECTRIC UNION • 19.12.2026</span>
@@ -191,84 +178,249 @@
   </header>
 
   <main id="main-content">
-    <!-- Hero Section + Parade Karakter di Bagian Atas Web -->
+    <!-- Hero Section + Stage Karakter Utuh di Bagian Atas Web -->
     <section id="hero" class="hero-section">
-      <div class="hero-ambient-glow" aria-hidden="true"></div>
+      <canvas id="hero-ambient-canvas" class="hero-ambient-canvas" aria-hidden="true"></canvas>
       <div class="hero-pattern" aria-hidden="true"></div>
 
       <div class="container">
-        <!-- Parade Karakter Interaktif di Bagian Atas Web -->
-        <div class="top-character-bar reveal" aria-label="Karakter Pokémon di atas halaman">
-          <div class="character-strip-label">
-            <span class="pulse-dot" aria-hidden="true"></span>
-            <span>Klik karakter untuk menyalakan percikan energi</span>
+        <!-- LIVING CHARACTER STAGE (4 Karakter Utuh Beranimasi & Interaktif) -->
+        <div class="character-stage-card reveal" data-spotlight aria-label="Panggung karakter Pokémon interaktif">
+          <div class="stage-topbar">
+            <div class="stage-status">
+              <span class="pulse-dot" aria-hidden="true"></span>
+              <span>Sentuh karakter di bawah untuk melihat animasi &amp; ucapan spesial</span>
+            </div>
+            <button type="button" id="cheer-all-btn" class="btn-cheer">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
+                <path d="M13 2L4 14H12L11 22L20 10H12L13 2Z" />
+              </svg>
+              <span>Rayakan Bersama</span>
+            </button>
           </div>
 
-          <div class="character-squad">
-            <!-- Pikachu -->
-            <button type="button" class="squad-chip" data-spark="electric" aria-label="Pikachu">
-              <svg viewBox="0 0 84 76" width="52" height="48" fill="none">
-                <path d="M28 28L12 8L22 34Z" fill="url(#pika-fur)" stroke="#1C1917" stroke-width="2.4" />
-                <path d="M17 15L12 8L15 19Z" fill="#1C1917" />
-                <path d="M56 28L72 8L62 34Z" fill="url(#pika-fur)" stroke="#1C1917" stroke-width="2.4" />
-                <path d="M67 15L72 8L69 19Z" fill="#1C1917" />
-                <ellipse cx="42" cy="44" rx="23" ry="20" fill="url(#pika-fur)" stroke="#1C1917" stroke-width="2.4" />
-                <circle cx="33" cy="41" r="4" fill="#1C1917" />
-                <circle cx="34.2" cy="39.8" r="1.4" fill="#FFF" />
-                <circle cx="51" cy="41" r="4" fill="#1C1917" />
-                <circle cx="52.2" cy="39.8" r="1.4" fill="#FFF" />
-                <circle cx="25" cy="48" r="5" fill="url(#pika-cheek)" />
-                <circle cx="59" cy="48" r="5" fill="url(#pika-cheek)" />
-                <path d="M37 49Q42 53 47 49" stroke="#1C1917" stroke-width="2" stroke-linecap="round" />
-              </svg>
-              <span>Pikachu</span>
-            </button>
+          <div class="stage-arena">
+            <!-- Bukit & Cahaya Matahari Latar Stage agar Tidak Flat -->
+            <div class="stage-sun-glow" aria-hidden="true"></div>
+            <svg class="stage-meadow-hills" viewBox="0 0 1200 120" preserveAspectRatio="none" aria-hidden="true">
+              <path d="M0 70Q300 20 600 68T1200 54V120H0Z" fill="#FDE68A" opacity="0.55" />
+              <path d="M0 88Q360 46 720 84T1200 72V120H0Z" fill="#FACC15" opacity="0.32" />
+            </svg>
 
-            <!-- Eevee -->
-            <button type="button" class="squad-chip" data-spark="star" aria-label="Eevee">
-              <svg viewBox="0 0 84 76" width="52" height="48" fill="none">
-                <path d="M28 30L16 8L32 28Z" fill="url(#eevee-fur)" stroke="#1C1917" stroke-width="2.4" />
-                <path d="M56 30L68 8L52 28Z" fill="url(#eevee-fur)" stroke="#1C1917" stroke-width="2.4" />
-                <ellipse cx="42" cy="44" rx="21" ry="18" fill="url(#eevee-fur)" stroke="#1C1917" stroke-width="2.4" />
-                <path d="M24 56C30 50 54 50 60 56C56 66 28 66 24 56Z" fill="url(#eevee-cream)" stroke="#1C1917" stroke-width="2.2" />
-                <circle cx="34" cy="42" r="3.6" fill="#1C1917" />
-                <circle cx="35" cy="41" r="1.3" fill="#FFF" />
-                <circle cx="50" cy="42" r="3.6" fill="#1C1917" />
-                <circle cx="51" cy="41" r="1.3" fill="#FFF" />
-              </svg>
-              <span>Eevee</span>
-            </button>
+            <div class="full-character-row">
+              <!-- 1. PIKACHU UTUH -->
+              <button
+                type="button"
+                class="full-char-actor actor-pikachu"
+                data-spark="electric"
+                data-voice="pikachu"
+                aria-label="Pikachu: Pika-Pika! Selamat Menempuh Hidup Baru!"
+              >
+                <span class="speech-bubble" role="status">Pika-Pika! Selamat Bahagia!</span>
+                <svg class="actor-svg" viewBox="0 0 210 195" fill="none">
+                  <ellipse class="char-shadow" cx="98" cy="180" rx="44" ry="8" fill="rgba(28,25,23,0.22)" />
+                  <g class="char-body-rig">
+                    <!-- Ekor Petir Zig-Zag -->
+                    <g class="anim-tail">
+                      <path d="M126 142L150 122L140 108L170 82L156 64L180 42L144 50L152 68L124 94L134 110L112 132Z" fill="url(#pika-tail-grad)" stroke="#1C1917" stroke-width="3" stroke-linejoin="round" />
+                    </g>
+                    <!-- Telinga Kiri & Kanan -->
+                    <g class="anim-ear-l">
+                      <path d="M68 68C48 44 30 24 22 18C26 36 40 58 56 78Z" fill="url(#pika-fur)" stroke="#1C1917" stroke-width="3" stroke-linejoin="round" />
+                      <path d="M38 36C30 27 25 21 22 18C24 26 28 35 34 44Z" fill="#1C1917" />
+                    </g>
+                    <g class="anim-ear-r">
+                      <path d="M118 68C138 44 156 24 164 18C160 36 146 58 130 78Z" fill="url(#pika-fur)" stroke="#1C1917" stroke-width="3" stroke-linejoin="round" />
+                      <path d="M148 36C156 27 161 21 164 18C162 26 158 35 152 44Z" fill="#1C1917" />
+                    </g>
+                    <!-- Kaki -->
+                    <ellipse cx="76" cy="172" rx="13" ry="7" fill="url(#pika-fur)" stroke="#1C1917" stroke-width="2.8" />
+                    <ellipse cx="114" cy="172" rx="13" ry="7" fill="url(#pika-fur)" stroke="#1C1917" stroke-width="2.8" />
+                    <!-- Badan Utuh -->
+                    <path d="M62 108C54 132 56 164 74 170H116C134 164 136 132 128 108Z" fill="url(#pika-fur)" stroke="#1C1917" stroke-width="3" />
+                    <!-- Garis Punggung Cokelat -->
+                    <path d="M126 126L134 123L133 132L125 135Z" fill="#78350F" />
+                    <path d="M124 142L133 139L131 148L122 150Z" fill="#78350F" />
+                    <!-- Kepala -->
+                    <ellipse cx="95" cy="90" rx="40" ry="34" fill="url(#pika-fur)" stroke="#1C1917" stroke-width="3" />
+                    <!-- Mata Berkedip -->
+                    <g class="anim-eyes">
+                      <circle cx="78" cy="85" r="6.8" fill="#1C1917" />
+                      <circle cx="80.2" cy="82.5" r="2.5" fill="#FFFFFF" />
+                      <circle cx="112" cy="85" r="6.8" fill="#1C1917" />
+                      <circle cx="114.2" cy="82.5" r="2.5" fill="#FFFFFF" />
+                    </g>
+                    <!-- Hidung & Mulut -->
+                    <ellipse cx="95" cy="93" rx="2.5" ry="1.6" fill="#1C1917" />
+                    <path d="M87 99Q91 104 95 99Q99 104 103 99" stroke="#1C1917" stroke-width="2.4" stroke-linecap="round" />
+                    <!-- Pipi Merah -->
+                    <circle class="anim-cheeks" cx="65" cy="97" r="8.5" fill="url(#pika-cheek)" />
+                    <circle class="anim-cheeks" cx="125" cy="97" r="8.5" fill="url(#pika-cheek)" />
+                    <!-- Dasi Kupu-kupu Pernikahan -->
+                    <polygon points="95,121 82,115 82,127" fill="#E11D48" stroke="#1C1917" stroke-width="2.2" />
+                    <polygon points="95,121 108,115 108,127" fill="#E11D48" stroke="#1C1917" stroke-width="2.2" />
+                    <circle cx="95" cy="121" r="3.4" fill="#FACC15" stroke="#1C1917" stroke-width="1.8" />
+                    <!-- Tangan Melambai -->
+                    <g class="anim-arms">
+                      <ellipse cx="64" cy="133" rx="11" ry="7" transform="rotate(-24 64 133)" fill="url(#pika-fur)" stroke="#1C1917" stroke-width="2.6" />
+                      <ellipse cx="126" cy="133" rx="11" ry="7" transform="rotate(24 126 133)" fill="url(#pika-fur)" stroke="#1C1917" stroke-width="2.6" />
+                    </g>
+                  </g>
+                </svg>
+                <span class="actor-name-pill">Pikachu</span>
+              </button>
 
-            <!-- Pichu -->
-            <button type="button" class="squad-chip" data-spark="electric" aria-label="Pichu">
-              <svg viewBox="0 0 84 76" width="52" height="48" fill="none">
-                <path d="M27 30L10 14L22 6L34 26Z" fill="url(#pichu-fur)" stroke="#1C1917" stroke-width="2.4" />
-                <path d="M57 30L74 14L62 6L50 26Z" fill="url(#pichu-fur)" stroke="#1C1917" stroke-width="2.4" />
-                <ellipse cx="42" cy="46" rx="20" ry="18" fill="url(#pichu-fur)" stroke="#1C1917" stroke-width="2.4" />
-                <circle cx="34" cy="44" r="3.6" fill="#1C1917" />
-                <circle cx="35" cy="43" r="1.3" fill="#FFF" />
-                <circle cx="50" cy="44" r="3.6" fill="#1C1917" />
-                <circle cx="51" cy="43" r="1.3" fill="#FFF" />
-                <circle cx="27" cy="50" r="4.5" fill="#FB7185" />
-                <circle cx="57" cy="50" r="4.5" fill="#FB7185" />
-              </svg>
-              <span>Pichu</span>
-            </button>
+              <!-- 2. EEVEE UTUH -->
+              <button
+                type="button"
+                class="full-char-actor actor-eevee"
+                data-spark="star"
+                data-voice="eevee"
+                aria-label="Eevee: Vee-Vee! Cinta Sejati Selamanya!"
+              >
+                <span class="speech-bubble" role="status">Vee-Vee! Penuh Cinta!</span>
+                <svg class="actor-svg" viewBox="0 0 200 195" fill="none">
+                  <ellipse class="char-shadow" cx="96" cy="180" rx="42" ry="8" fill="rgba(28,25,23,0.22)" />
+                  <g class="char-body-rig">
+                    <!-- Ekor Lebat Eevee -->
+                    <g class="anim-tail">
+                      <path d="M122 146C146 136 168 110 162 84C158 70 144 68 134 78C124 88 116 112 114 138Z" fill="url(#eevee-fur)" stroke="#1C1917" stroke-width="3" stroke-linejoin="round" />
+                      <path d="M162 84C158 70 144 68 134 78L142 90L151 86L156 97Z" fill="url(#eevee-cream)" stroke="#1C1917" stroke-width="2.4" stroke-linejoin="round" />
+                    </g>
+                    <!-- Telinga Panjang Eevee -->
+                    <g class="anim-ear-l">
+                      <path d="M68 68C50 42 42 20 44 14C56 22 72 40 82 62Z" fill="url(#eevee-fur)" stroke="#1C1917" stroke-width="3" stroke-linejoin="round" />
+                      <path d="M64 60C54 42 49 28 50 24C58 30 68 42 74 56Z" fill="#451A03" />
+                    </g>
+                    <g class="anim-ear-r">
+                      <path d="M116 68C134 42 142 20 140 14C128 22 112 40 102 62Z" fill="url(#eevee-fur)" stroke="#1C1917" stroke-width="3" stroke-linejoin="round" />
+                      <path d="M120 60C130 42 135 28 134 24C126 30 116 42 110 56Z" fill="#451A03" />
+                    </g>
+                    <!-- Badan & Kaki Duduk -->
+                    <path d="M68 118C62 142 64 166 76 172H112C124 166 126 142 120 118Z" fill="url(#eevee-fur)" stroke="#1C1917" stroke-width="3" />
+                    <ellipse cx="78" cy="173" rx="11" ry="6.5" fill="url(#eevee-fur)" stroke="#1C1917" stroke-width="2.6" />
+                    <ellipse cx="108" cy="173" rx="11" ry="6.5" fill="url(#eevee-fur)" stroke="#1C1917" stroke-width="2.6" />
+                    <!-- Syal Bulu Krem Tebal -->
+                    <path d="M56 114C60 102 76 105 93 105C110 105 126 102 130 114C134 128 116 140 93 140C70 140 52 128 56 114Z" fill="url(#eevee-cream)" stroke="#1C1917" stroke-width="3" />
+                    <!-- Kepala -->
+                    <ellipse cx="93" cy="86" rx="33" ry="29" fill="url(#eevee-fur)" stroke="#1C1917" stroke-width="3" />
+                    <path d="M82 58L88 47L93 56L99 48L104 58" fill="url(#eevee-fur)" stroke="#1C1917" stroke-width="2.5" stroke-linejoin="round" />
+                    <!-- Mata Berkedip -->
+                    <g class="anim-eyes">
+                      <ellipse cx="80" cy="84" rx="5.5" ry="6.6" fill="#1C1917" />
+                      <circle cx="81.6" cy="81.2" r="2.3" fill="#FFFFFF" />
+                      <ellipse cx="106" cy="84" rx="5.5" ry="6.6" fill="#1C1917" />
+                      <circle cx="107.6" cy="81.2" r="2.3" fill="#FFFFFF" />
+                    </g>
+                    <circle cx="93" cy="92" r="2.2" fill="#1C1917" />
+                    <path d="M87 98Q93 103 99 98" stroke="#1C1917" stroke-width="2.3" stroke-linecap="round" />
+                  </g>
+                </svg>
+                <span class="actor-name-pill">Eevee</span>
+              </button>
 
-            <!-- Togepi -->
-            <button type="button" class="squad-chip" data-spark="heart" aria-label="Togepi">
-              <svg viewBox="0 0 84 76" width="52" height="48" fill="none">
-                <path d="M42 10L35 22L25 18L28 30H56L59 18L49 22L42 10Z" fill="#FEF3C7" stroke="#1C1917" stroke-width="2.3" />
-                <ellipse cx="42" cy="40" rx="19" ry="16" fill="#FFFDF5" stroke="#1C1917" stroke-width="2.3" />
-                <path d="M33 37Q36 33 39 37" stroke="#1C1917" stroke-width="2.2" stroke-linecap="round" />
-                <path d="M45 37Q48 33 51 37" stroke="#1C1917" stroke-width="2.2" stroke-linecap="round" />
-                <path d="M23 46L32 51L42 45L52 51L61 46C61 61 52 68 42 68C32 68 23 61 23 46Z" fill="#FFFBEB" stroke="#1C1917" stroke-width="2.3" />
-              </svg>
-              <span>Togepi</span>
-            </button>
+              <!-- 3. PICHU UTUH -->
+              <button
+                type="button"
+                class="full-char-actor actor-pichu"
+                data-spark="electric"
+                data-voice="pichu"
+                aria-label="Pichu: Pi-Chu! Energi Bahagia!"
+              >
+                <span class="speech-bubble" role="status">Pi-Chu! Energi Bahagia!</span>
+                <svg class="actor-svg" viewBox="0 0 190 195" fill="none">
+                  <ellipse class="char-shadow" cx="95" cy="180" rx="38" ry="8" fill="rgba(28,25,23,0.22)" />
+                  <g class="char-body-rig">
+                    <!-- Ekor Kecil Hitam Pichu -->
+                    <g class="anim-tail">
+                      <path d="M118 148L142 134L134 118L114 134Z" fill="#1C1917" stroke="#1C1917" stroke-width="2.5" stroke-linejoin="round" />
+                    </g>
+                    <!-- Telinga Besar Berlian Pichu -->
+                    <g class="anim-ear-l">
+                      <path d="M68 74L32 42L56 22L82 62Z" fill="url(#pichu-fur)" stroke="#1C1917" stroke-width="3.2" stroke-linejoin="round" />
+                      <path d="M56 22L32 42L44 52L64 34Z" fill="#1C1917" />
+                    </g>
+                    <g class="anim-ear-r">
+                      <path d="M122 74L158 42L134 22L108 62Z" fill="url(#pichu-fur)" stroke="#1C1917" stroke-width="3.2" stroke-linejoin="round" />
+                      <path d="M134 22L158 42L146 52L126 34Z" fill="#1C1917" />
+                    </g>
+                    <!-- Kaki -->
+                    <ellipse cx="80" cy="172" rx="11" ry="6.5" fill="url(#pichu-fur)" stroke="#1C1917" stroke-width="2.8" />
+                    <ellipse cx="110" cy="172" rx="11" ry="6.5" fill="url(#pichu-fur)" stroke="#1C1917" stroke-width="2.8" />
+                    <!-- Badan Mungil -->
+                    <path d="M72 120C66 140 68 164 80 170H110C122 164 124 140 118 120Z" fill="url(#pichu-fur)" stroke="#1C1917" stroke-width="3" />
+                    <!-- Kerah Hitam Pichu -->
+                    <path d="M74 118L84 130L95 120L106 130L116 118" fill="#1C1917" stroke="#1C1917" stroke-width="2.2" stroke-linejoin="round" />
+                    <!-- Kepala Bulat -->
+                    <ellipse cx="95" cy="92" rx="34" ry="30" fill="url(#pichu-fur)" stroke="#1C1917" stroke-width="3" />
+                    <!-- Mata Berkedip -->
+                    <g class="anim-eyes">
+                      <circle cx="81" cy="88" r="6" fill="#1C1917" />
+                      <circle cx="83" cy="85.8" r="2.2" fill="#FFFFFF" />
+                      <circle cx="109" cy="88" r="6" fill="#1C1917" />
+                      <circle cx="111" cy="85.8" r="2.2" fill="#FFFFFF" />
+                    </g>
+                    <circle cx="95" cy="95" r="2" fill="#1C1917" />
+                    <path d="M88 101Q95 109 102 101Z" fill="#FB7185" stroke="#1C1917" stroke-width="2" />
+                    <!-- Pipi Merah Muda -->
+                    <circle class="anim-cheeks" cx="70" cy="99" r="7.5" fill="#FB7185" />
+                    <circle class="anim-cheeks" cx="120" cy="99" r="7.5" fill="#FB7185" />
+                    <!-- Tangan Melambai -->
+                    <g class="anim-arms">
+                      <ellipse cx="64" cy="134" rx="10" ry="6" transform="rotate(-32 64 134)" fill="url(#pichu-fur)" stroke="#1C1917" stroke-width="2.6" />
+                      <ellipse cx="126" cy="134" rx="10" ry="6" transform="rotate(32 126 134)" fill="url(#pichu-fur)" stroke="#1C1917" stroke-width="2.6" />
+                    </g>
+                  </g>
+                </svg>
+                <span class="actor-name-pill">Pichu</span>
+              </button>
+
+              <!-- 4. TOGEPI UTUH -->
+              <button
+                type="button"
+                class="full-char-actor actor-togepi"
+                data-spark="heart"
+                data-voice="togepi"
+                aria-label="Togepi: Toge-Priii! Doa Restu Selalu!"
+              >
+                <span class="speech-bubble" role="status">Toge-Priii! Doa Restu!</span>
+                <svg class="actor-svg" viewBox="0 0 190 195" fill="none">
+                  <ellipse class="char-shadow" cx="95" cy="180" rx="38" ry="8" fill="rgba(28,25,23,0.22)" />
+                  <g class="char-body-rig">
+                    <!-- Kaki Mungil Togepi -->
+                    <ellipse cx="78" cy="171" rx="12" ry="7" fill="#FEF3C7" stroke="#1C1917" stroke-width="2.8" />
+                    <ellipse cx="112" cy="171" rx="12" ry="7" fill="#FEF3C7" stroke="#1C1917" stroke-width="2.8" />
+                    <!-- Mahkota Duri Kepala -->
+                    <path d="M95 34L84 56L66 46L72 68L54 74L72 86H118L136 74L118 68L124 46L106 56L95 34Z" fill="#FEF3C7" stroke="#1C1917" stroke-width="3" stroke-linejoin="round" />
+                    <!-- Kepala -->
+                    <ellipse cx="95" cy="92" rx="33" ry="28" fill="#FFFDF5" stroke="#1C1917" stroke-width="3" />
+                    <!-- Mata Senyum Ceria -->
+                    <path d="M76 86Q82 79 88 86" stroke="#1C1917" stroke-width="3" stroke-linecap="round" />
+                    <path d="M102 86Q108 79 114 86" stroke="#1C1917" stroke-width="3" stroke-linecap="round" />
+                    <circle cx="74" cy="94" r="5.5" fill="#FDA4AF" opacity="0.75" />
+                    <circle cx="116" cy="94" r="5.5" fill="#FDA4AF" opacity="0.75" />
+                    <path d="M89 96Q95 103 101 96" stroke="#E11D48" stroke-width="2.6" stroke-linecap="round" />
+                    <!-- Tangan Kecil -->
+                    <g class="anim-arms">
+                      <ellipse cx="56" cy="126" rx="11" ry="7" transform="rotate(-28 56 126)" fill="#FFFDF5" stroke="#1C1917" stroke-width="2.8" />
+                      <ellipse cx="134" cy="126" rx="11" ry="7" transform="rotate(28 134 126)" fill="#FFFDF5" stroke="#1C1917" stroke-width="2.8" />
+                    </g>
+                    <!-- Badan Cangkang Telur Utuh -->
+                    <path d="M58 106L72 115L84 105L95 116L106 105L118 115L132 106C136 142 120 166 95 166C70 166 54 142 58 106Z" fill="url(#togepi-shell)" stroke="#1C1917" stroke-width="3" stroke-linejoin="round" />
+                    <!-- Motif Segitiga Cangkang -->
+                    <polygon points="75,128 84,122 82,134" fill="#E11D48" />
+                    <polygon points="108,125 117,131 107,136" fill="#2563EB" />
+                    <polygon points="90,144 100,144 95,153" fill="#E11D48" />
+                    <circle cx="72" cy="148" r="4" fill="#2563EB" />
+                  </g>
+                </svg>
+                <span class="actor-name-pill">Togepi</span>
+              </button>
+            </div>
           </div>
         </div>
 
+        <!-- Konten Utama Hero -->
         <div class="hero-layout">
           <div class="hero-copy reveal">
             <div class="pill-badge">
@@ -284,7 +436,6 @@
               Dengan penuh rasa syukur, kami mengundang Anda hadir dan memberikan doa restu pada hari dimulainya perjalanan baru kehidupan rumah tangga kami.
             </p>
 
-            <!-- Countdown Timer -->
             <div id="countdown" class="countdown-grid" aria-label="Hitung mundur menuju hari pernikahan">
               <div class="time-box">
                 <span id="cd-days" class="time-val">00</span>
@@ -326,14 +477,10 @@
                   fetchpriority="high"
                   onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
                 />
-                <!-- Ilustrasi Pikachu & Eevee Couple sebagai default elegan jika foto belum dipasang -->
                 <div class="art-fallback" style="display: none;">
                   <svg viewBox="0 0 320 260" width="270" height="220" fill="none" aria-hidden="true">
-                    <!-- Cahaya Latar -->
                     <circle cx="160" cy="135" r="102" fill="#FEF08A" opacity="0.65" />
                     <circle cx="160" cy="135" r="76" fill="#FDE047" opacity="0.55" />
-
-                    <!-- Pikachu Pengantin Pria (Kiri) -->
                     <g transform="translate(34, 42)">
                       <path d="M98 112L118 94L110 82L132 60L122 46L138 30L112 36L118 50L96 72L104 84L88 102Z" fill="url(#pika-tail-grad)" stroke="#1C1917" stroke-width="2.8" />
                       <path d="M40 50C24 30 10 14 4 10C8 24 18 42 30 58Z" fill="url(#pika-fur)" stroke="#1C1917" stroke-width="2.8" />
@@ -349,12 +496,9 @@
                       <circle cx="37" cy="74" r="7" fill="url(#pika-cheek)" />
                       <circle cx="87" cy="74" r="7" fill="url(#pika-cheek)" />
                       <path d="M55 76Q62 82 69 76" stroke="#1C1917" stroke-width="2.4" stroke-linecap="round" />
-                      <!-- Dasi Kupu-kupu -->
                       <polygon points="62,97 51,92 51,102" fill="#E11D48" stroke="#1C1917" stroke-width="1.8" />
                       <polygon points="62,97 73,92 73,102" fill="#E11D48" stroke="#1C1917" stroke-width="1.8" />
                     </g>
-
-                    <!-- Eevee / Pikachu Pengantin Wanita dengan Veil Bunga (Kanan) -->
                     <g transform="translate(154, 48)">
                       <path d="M36 46C22 26 14 12 10 8C14 22 24 40 34 54Z" fill="url(#pika-fur)" stroke="#1C1917" stroke-width="2.8" />
                       <path d="M19 20C14 14 11 10 10 8C12 14 14 20 17 26Z" fill="#1C1917" />
@@ -362,7 +506,6 @@
                       <path d="M97 20C102 14 105 10 106 8C104 14 102 20 99 26Z" fill="#1C1917" />
                       <ellipse cx="58" cy="112" rx="30" ry="34" fill="url(#pika-fur)" stroke="#1C1917" stroke-width="2.8" />
                       <ellipse cx="58" cy="66" rx="32" ry="28" fill="url(#pika-fur)" stroke="#1C1917" stroke-width="2.8" />
-                      <!-- Mahkota Bunga Pengantin -->
                       <circle cx="44" cy="40" r="6" fill="#FFFFFF" stroke="#1C1917" stroke-width="1.8" />
                       <circle cx="58" cy="38" r="6.5" fill="#FB7185" stroke="#1C1917" stroke-width="1.8" />
                       <circle cx="72" cy="40" r="6" fill="#FFFFFF" stroke="#1C1917" stroke-width="1.8" />
@@ -374,8 +517,6 @@
                       <circle cx="81" cy="72" r="6.5" fill="url(#pika-cheek)" />
                       <path d="M52 74Q58 80 64 74" stroke="#1C1917" stroke-width="2.3" stroke-linecap="round" />
                     </g>
-
-                    <!-- Hati Bercahaya di Tengah -->
                     <path d="M160 88C153 78 140 80 140 91C140 101 160 113 160 113C160 113 180 101 180 91C180 80 167 78 160 88Z" fill="#E11D48" stroke="#1C1917" stroke-width="2.6" />
                   </svg>
                   <span class="fallback-caption">Ganti foto prewedding di <code>assets/hero.jpg</code></span>
