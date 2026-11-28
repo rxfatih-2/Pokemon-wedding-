@@ -3,8 +3,26 @@
 
   const WEDDING_DATE = new Date("2026-12-19T08:00:00+07:00").getTime();
   const WHATSAPP_NUMBER = "6288226621362";
+  const WISHES_STORAGE_KEY = "rxfatih_pikachu_wedding_wishes_v1";
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   let sharedAudioCtx = null;
+
+  const DEFAULT_WISHES = [
+    {
+      name: "Raka & Keluarga",
+      status: "Hadir",
+      guests: "2 Orang",
+      message: "Selamat menempuh hidup baru Dimas & Nabila! Semoga selalu penuh kebahagiaan dan energi positif seperti tema undangannya.",
+      timestamp: "28 Nov 2026"
+    },
+    {
+      name: "Nadia Putri",
+      status: "Hadir",
+      guests: "1 Orang",
+      message: "Barakallahu lakuma wa baraka 'alaikuma. Sampai bertemu di hari bahagia nanti!",
+      timestamp: "28 Nov 2026"
+    }
+  ];
 
   function getAudioContext() {
     if (!sharedAudioCtx) {
@@ -79,6 +97,48 @@
 
     triggerNote();
     window.setInterval(triggerNote, 840);
+  }
+
+  function initHamburgerMenu() {
+    const toggleBtn = document.getElementById("nav-toggle");
+    const drawer = document.getElementById("mobile-drawer");
+    if (!toggleBtn || !drawer) return;
+
+    const closeDrawer = () => {
+      toggleBtn.setAttribute("aria-expanded", "false");
+      toggleBtn.setAttribute("aria-label", "Buka menu navigasi");
+      drawer.hidden = true;
+    };
+
+    const openDrawer = () => {
+      toggleBtn.setAttribute("aria-expanded", "true");
+      toggleBtn.setAttribute("aria-label", "Tutup menu navigasi");
+      drawer.hidden = false;
+    };
+
+    toggleBtn.addEventListener("click", () => {
+      const isExpanded = toggleBtn.getAttribute("aria-expanded") === "true";
+      if (isExpanded) closeDrawer();
+      else openDrawer();
+    });
+
+    drawer.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", closeDrawer);
+    });
+
+    document.addEventListener("click", (e) => {
+      if (drawer.hidden) return;
+      if (!drawer.contains(e.target) && !toggleBtn.contains(e.target)) {
+        closeDrawer();
+      }
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && !drawer.hidden) {
+        closeDrawer();
+        toggleBtn.focus();
+      }
+    });
   }
 
   function initGuestPersonalization() {
@@ -415,7 +475,7 @@
   }
 
   /* ==========================================================================
-     PIKA-SPARK: CATCH THE LOVE (Full Pikachu Character Sprite + 60FPS Arcade)
+     PIKA-SPARK: CATCH THE LOVE
      ========================================================================== */
   function initPikaSparkGame() {
     const canvas = document.getElementById("pika-game-canvas");
@@ -989,6 +1049,65 @@
     });
   }
 
+  /* ==========================================================================
+     PERSISTENT GUESTBOOK (localStorage) & WHATSAPP RSVP
+     ========================================================================== */
+  function loadSavedWishes() {
+    try {
+      const raw = window.localStorage.getItem(WISHES_STORAGE_KEY);
+      if (!raw) return [...DEFAULT_WISHES];
+      const parsed = JSON.parse(raw);
+      return Array.isArray(parsed) && parsed.length ? parsed : [...DEFAULT_WISHES];
+    } catch {
+      return [...DEFAULT_WISHES];
+    }
+  }
+
+  function saveWishesList(wishes) {
+    try {
+      window.localStorage.setItem(WISHES_STORAGE_KEY, JSON.stringify(wishes.slice(0, 100)));
+    } catch {
+      // Abaikan jika mode private browsing membatasi kuota penyimpanan
+    }
+  }
+
+  function renderWishesWall(wishes) {
+    const wishesList = document.getElementById("wishes-list");
+    const countBadge = document.getElementById("wishes-count");
+    if (!wishesList) return;
+
+    if (countBadge) {
+      countBadge.textContent = `${wishes.length} Ucapan`;
+    }
+
+    wishesList.innerHTML = "";
+    wishes.forEach((item) => {
+      const card = document.createElement("article");
+      card.className = "wish-item";
+
+      const top = document.createElement("div");
+      top.className = "wish-top";
+
+      const author = document.createElement("strong");
+      author.textContent = `${item.name} (${item.guests})`;
+
+      const badge = document.createElement("span");
+      badge.className = "wish-badge";
+      badge.textContent = item.status;
+
+      const body = document.createElement("p");
+      body.textContent = item.message;
+
+      const timeEl = document.createElement("span");
+      timeEl.className = "wish-time";
+      timeEl.textContent = item.timestamp || "Tersimpan";
+
+      top.append(author, badge);
+      card.append(top, body, timeEl);
+      wishesList.appendChild(card);
+    });
+  }
+
   function initGiftAndRsvp() {
     const feedback = document.getElementById("copy-feedback");
     document.querySelectorAll("[data-copy-target]").forEach((btn) => {
@@ -1006,9 +1125,11 @@
       });
     });
 
+    let wishes = loadSavedWishes();
+    renderWishesWall(wishes);
+
     const form = document.getElementById("rsvp-form");
     const errorEl = document.getElementById("form-error");
-    const wishesList = document.getElementById("wishes-list");
     if (!form) return;
 
     form.addEventListener("submit", (e) => {
@@ -1024,27 +1145,24 @@
       }
       if (errorEl) errorEl.textContent = "";
 
-      if (wishesList) {
-        const card = document.createElement("article");
-        card.className = "wish-item";
+      const nowLabel = new Intl.DateTimeFormat("id-ID", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit"
+      }).format(new Date());
 
-        const top = document.createElement("div");
-        top.className = "wish-top";
+      wishes.unshift({
+        name,
+        status,
+        guests,
+        message,
+        timestamp: nowLabel
+      });
 
-        const author = document.createElement("strong");
-        author.textContent = `${name} (${guests})`;
-
-        const badge = document.createElement("span");
-        badge.className = "wish-badge";
-        badge.textContent = status;
-
-        const body = document.createElement("p");
-        body.textContent = message;
-
-        top.append(author, badge);
-        card.append(top, body);
-        wishesList.prepend(card);
-      }
+      saveWishesList(wishes);
+      renderWishesWall(wishes);
 
       const waText = [
         `Halo Dimas & Nabila, saya *${name}* ingin mengonfirmasi kehadiran pernikahan:`,
@@ -1059,6 +1177,7 @@
   }
 
   document.addEventListener("DOMContentLoaded", () => {
+    initHamburgerMenu();
     initGuestPersonalization();
     initCharacterInteractions();
     initOpeningGate();
