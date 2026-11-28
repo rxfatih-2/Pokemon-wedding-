@@ -24,7 +24,7 @@
     if (!AudioCtx) return;
 
     const ctx = new AudioCtx();
-    const notes = [523.25, 659.25, 783.99, 1046.5, 783.99, 1046.5];
+    const notes = [523.25, 659.25, 783.99, 1046.5, 987.77, 783.99, 659.25, 783.99];
     let step = 0;
 
     const triggerNote = () => {
@@ -37,7 +37,7 @@
       osc.frequency.setValueAtTime(notes[step % notes.length], now);
 
       gain.gain.setValueAtTime(0.001, now);
-      gain.gain.exponentialRampToValueAtTime(0.055, now + 0.04);
+      gain.gain.exponentialRampToValueAtTime(0.05, now + 0.04);
       gain.gain.exponentialRampToValueAtTime(0.0008, now + 0.55);
 
       osc.connect(gain);
@@ -48,7 +48,48 @@
     };
 
     triggerNote();
-    window.setInterval(triggerNote, 900);
+    window.setInterval(triggerNote, 820);
+  }
+
+  function spawnDomParticleBurst(x, y, mode = "electric") {
+    if (prefersReducedMotion) return;
+    const palette =
+      mode === "heart"
+        ? ["#E11D48", "#FB7185", "#FACC15"]
+        : mode === "star"
+        ? ["#F59E0B", "#FACC15", "#78350F"]
+        : ["#FACC15", "#E11D48", "#1C1917"];
+
+    for (let i = 0; i < 10; i += 1) {
+      const el = document.createElement("span");
+      el.className = "dom-spark-burst";
+      const angle = (Math.PI * 2 * i) / 10 + Math.random() * 0.35;
+      const dist = 38 + Math.random() * 44;
+      el.style.left = `${x}px`;
+      el.style.top = `${y}px`;
+      el.style.color = palette[i % palette.length];
+      el.style.setProperty("--dx", `${Math.cos(angle) * dist}px`);
+      el.style.setProperty("--dy", `${Math.sin(angle) * dist - 14}px`);
+      el.textContent = mode === "heart" ? "♥" : mode === "star" ? "✦" : "⚡";
+      document.body.appendChild(el);
+      window.setTimeout(() => el.remove(), 700);
+    }
+  }
+
+  function initCharacterInteractions() {
+    document.querySelectorAll("[data-spark]").forEach((btn) => {
+      btn.addEventListener("click", (e) => {
+        const mode = btn.getAttribute("data-spark") || "electric";
+        btn.classList.remove("is-bouncing");
+        void btn.offsetWidth;
+        btn.classList.add("is-bouncing");
+
+        const rect = btn.getBoundingClientRect();
+        const cx = e.clientX || rect.left + rect.width / 2;
+        const cy = e.clientY || rect.top + rect.height / 2;
+        spawnDomParticleBurst(cx, cy, mode);
+      });
+    });
   }
 
   function initOpeningGate() {
@@ -59,7 +100,14 @@
 
     document.body.classList.add("gate-locked");
 
-    openBtn.addEventListener("click", () => {
+    openBtn.addEventListener("click", (e) => {
+      const rect = openBtn.getBoundingClientRect();
+      spawnDomParticleBurst(
+        e.clientX || rect.left + rect.width / 2,
+        e.clientY || rect.top + rect.height / 2,
+        "electric"
+      );
+
       gate.classList.add("is-opened");
       document.body.classList.remove("gate-locked");
 
@@ -82,7 +130,8 @@
 
     let width = 0;
     let height = 0;
-    const sparks = [];
+    const motes = [];
+    const trail = [];
 
     const resize = () => {
       width = canvas.width = window.innerWidth;
@@ -91,34 +140,62 @@
     resize();
     window.addEventListener("resize", resize);
 
-    for (let i = 0; i < 34; i += 1) {
-      sparks.push({
+    for (let i = 0; i < 42; i += 1) {
+      motes.push({
         x: Math.random() * width,
         y: Math.random() * height,
-        r: 2 + Math.random() * 4,
-        vx: (Math.random() - 0.5) * 0.9,
-        vy: -0.4 - Math.random() * 0.9,
-        color: i % 5 === 0 ? "#EF233C" : "#18181B"
+        r: 2 + Math.random() * 4.5,
+        vx: (Math.random() - 0.5) * 0.8,
+        vy: -0.35 - Math.random() * 0.85,
+        color: i % 4 === 0 ? "#E11D48" : i % 2 === 0 ? "#FFFDF5" : "#78350F"
       });
     }
+
+    window.addEventListener("pointermove", (e) => {
+      if (document.getElementById("opening-gate")?.classList.contains("is-opened")) return;
+      trail.push({
+        x: e.clientX,
+        y: e.clientY,
+        life: 1,
+        vx: (Math.random() - 0.5) * 2.4,
+        vy: (Math.random() - 0.5) * 2.4
+      });
+    });
 
     const render = () => {
       if (document.getElementById("opening-gate")?.classList.contains("is-opened")) return;
       ctx.clearRect(0, 0, width, height);
 
-      for (const s of sparks) {
-        s.x += s.vx;
-        s.y += s.vy;
-        if (s.y < -10) s.y = height + 10;
-        if (s.x < -10) s.x = width + 10;
-        if (s.x > width + 10) s.x = -10;
+      for (const m of motes) {
+        m.x += m.vx;
+        m.y += m.vy;
+        if (m.y < -12) m.y = height + 12;
+        if (m.x < -12) m.x = width + 12;
+        if (m.x > width + 12) m.x = -12;
 
         ctx.beginPath();
-        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-        ctx.fillStyle = s.color;
-        ctx.globalAlpha = 0.25;
+        ctx.arc(m.x, m.y, m.r, 0, Math.PI * 2);
+        ctx.fillStyle = m.color;
+        ctx.globalAlpha = 0.34;
         ctx.fill();
       }
+
+      for (let i = trail.length - 1; i >= 0; i -= 1) {
+        const t = trail[i];
+        t.x += t.vx;
+        t.y += t.vy;
+        t.life -= 0.045;
+        if (t.life <= 0) {
+          trail.splice(i, 1);
+          continue;
+        }
+        ctx.beginPath();
+        ctx.arc(t.x, t.y, 4 * t.life, 0, Math.PI * 2);
+        ctx.fillStyle = "#E11D48";
+        ctx.globalAlpha = t.life * 0.65;
+        ctx.fill();
+      }
+
       ctx.globalAlpha = 1;
       requestAnimationFrame(render);
     };
@@ -157,22 +234,37 @@
     const affinityCount = document.getElementById("affinity-count");
     if (affinityBtn && affinityCount) {
       let count = 999;
-      affinityBtn.addEventListener("click", () => {
+      affinityBtn.addEventListener("click", (e) => {
         count += 1;
         affinityCount.textContent = String(count);
+        const rect = affinityBtn.getBoundingClientRect();
+        spawnDomParticleBurst(
+          e.clientX || rect.left + rect.width / 2,
+          e.clientY || rect.top + rect.height / 2,
+          "heart"
+        );
       });
     }
 
     if (prefersReducedMotion) return;
+
+    document.querySelectorAll("[data-spotlight]").forEach((el) => {
+      el.addEventListener("pointermove", (e) => {
+        const rect = el.getBoundingClientRect();
+        el.style.setProperty("--spot-x", `${e.clientX - rect.left}px`);
+        el.style.setProperty("--spot-y", `${e.clientY - rect.top}px`);
+      });
+    });
+
     document.querySelectorAll("[data-tilt]").forEach((card) => {
       card.addEventListener("pointermove", (e) => {
         const rect = card.getBoundingClientRect();
         const x = (e.clientX - rect.left) / rect.width - 0.5;
         const y = (e.clientY - rect.top) / rect.height - 0.5;
-        card.style.transform = `perspective(900px) rotateX(${(-y * 7).toFixed(2)}deg) rotateY(${(x * 7).toFixed(2)}deg)`;
+        card.style.transform = `perspective(950px) rotateX(${(-y * 6.5).toFixed(2)}deg) rotateY(${(x * 6.5).toFixed(2)}deg)`;
       });
       card.addEventListener("pointerleave", () => {
-        card.style.transform = "perspective(900px) rotateX(0deg) rotateY(0deg)";
+        card.style.transform = "perspective(950px) rotateX(0deg) rotateY(0deg)";
       });
     });
   }
@@ -200,7 +292,7 @@
   }
 
   /* ==========================================================================
-     PIKA-SPARK: CATCH THE LOVE (60FPS Modern Canvas Arcade Engine)
+     PIKA-SPARK: CATCH THE LOVE (Full Pikachu Character Sprite + 60FPS Arcade)
      ========================================================================== */
   function initPikaSparkGame() {
     const canvas = document.getElementById("pika-game-canvas");
@@ -228,12 +320,16 @@
       combo: 1,
       timeLeft: 30,
       magnetTimer: 0,
+      hopOffset: 0,
+      cheekFlash: 0,
       shake: 0,
       playerX: 0,
       targetX: 0,
+      vx: 0,
       items: [],
       particles: [],
       bolts: [],
+      shockwaves: [],
       floatingTexts: [],
       spawnCooldown: 0
     };
@@ -258,7 +354,7 @@
     const setPointerTarget = (clientX) => {
       const rect = canvas.getBoundingClientRect();
       const relX = clientX - rect.left;
-      state.targetX = Math.max(36, Math.min(width - 36, relX));
+      state.targetX = Math.max(46, Math.min(width - 46, relX));
     };
 
     canvas.addEventListener("pointermove", (e) => {
@@ -272,16 +368,16 @@
     window.addEventListener("keydown", (e) => {
       if (!state.running) return;
       if (e.key === "ArrowLeft" || e.key === "a") {
-        state.targetX = Math.max(36, state.targetX - 42);
+        state.targetX = Math.max(46, state.targetX - 48);
       } else if (e.key === "ArrowRight" || e.key === "d") {
-        state.targetX = Math.min(width - 36, state.targetX + 42);
+        state.targetX = Math.min(width - 46, state.targetX + 48);
       }
     });
 
-    const spawnParticles = (x, y, color, count = 14) => {
+    const spawnParticles = (x, y, color, count = 16) => {
       for (let i = 0; i < count; i += 1) {
         const angle = (Math.PI * 2 * i) / count + Math.random() * 0.4;
-        const speed = 2 + Math.random() * 4.5;
+        const speed = 2.2 + Math.random() * 4.8;
         state.particles.push({
           x,
           y,
@@ -289,7 +385,7 @@
           vy: Math.sin(angle) * speed,
           life: 1,
           color,
-          size: 3 + Math.random() * 3.5
+          size: 3 + Math.random() * 3.8
         });
       }
     };
@@ -299,10 +395,10 @@
       const steps = 6;
       for (let i = 0; i <= steps; i += 1) {
         const t = i / steps;
-        const jitter = i === 0 || i === steps ? 0 : (Math.random() - 0.5) * 26;
+        const jitter = i === 0 || i === steps ? 0 : (Math.random() - 0.5) * 28;
         segments.push({
           x: x1 + (x2 - x1) * t + jitter,
-          y: y1 + (y2 - y1) * t + jitter * 0.5
+          y: y1 + (y2 - y1) * t + jitter * 0.45
         });
       }
       state.bolts.push({ segments, life: 1 });
@@ -312,15 +408,15 @@
       const roll = Math.random();
       let type = "heart";
       if (roll > 0.84) type = "thunder";
-      else if (roll > 0.66) type = "static";
+      else if (roll > 0.67) type = "static";
 
       state.items.push({
         type,
-        x: 34 + Math.random() * (width - 68),
-        y: -26,
-        vy: 2.7 + Math.random() * 2.1 + (30 - state.timeLeft) * 0.05,
+        x: 38 + Math.random() * (width - 76),
+        y: -28,
+        vy: 2.7 + Math.random() * 2 + (30 - state.timeLeft) * 0.05,
         wobble: Math.random() * Math.PI * 2,
-        radius: type === "thunder" ? 20 : 17
+        radius: type === "thunder" ? 21 : 18
       });
     };
 
@@ -330,70 +426,195 @@
       timerEl.textContent = `${state.timeLeft}s`;
     };
 
-    const drawCollector = (x, y) => {
-      ctx.save();
-      ctx.translate(x, y);
+    /* Gambar Karakter Pikachu Utuh dan Ekspresif di Canvas */
+    const drawPikachuCharacter = (x, y) => {
+      const now = Date.now();
+      const tilt = Math.max(-0.22, Math.min(0.22, state.vx * 0.018));
+      const tailSwing = Math.sin(now * 0.012) * 0.22 - tilt * 1.4;
+      const earWiggle = Math.sin(now * 0.015) * 0.07;
 
+      ctx.save();
+      ctx.translate(x, y - state.hopOffset);
+
+      // Bayangan Lantai
+      ctx.fillStyle = "rgba(0, 0, 0, 0.45)";
+      ctx.beginPath();
+      ctx.ellipse(0, 38 + state.hopOffset, 30 - state.hopOffset * 0.4, 7, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Aura Magnet Thunder Stone
       if (state.magnetTimer > 0) {
+        ctx.save();
+        ctx.rotate(now * 0.005);
         ctx.beginPath();
-        ctx.arc(0, 0, 52 + Math.sin(Date.now() * 0.015) * 5, 0, Math.PI * 2);
-        ctx.strokeStyle = "rgba(255, 214, 10, 0.45)";
-        ctx.lineWidth = 2.5;
+        ctx.arc(0, 0, 62 + Math.sin(now * 0.02) * 4, 0, Math.PI * 2);
+        ctx.strokeStyle = "rgba(250, 204, 21, 0.6)";
+        ctx.lineWidth = 3;
+        ctx.setLineDash([12, 8]);
         ctx.stroke();
+        ctx.restore();
       }
 
-      // Telinga khas Pikachu
-      ctx.fillStyle = "#FFD60A";
+      ctx.rotate(tilt);
+
+      // Ekor Petir Zig-Zag di Belakang
+      ctx.save();
+      ctx.translate(16, 14);
+      ctx.rotate(tailSwing);
       ctx.beginPath();
-      ctx.moveTo(-22, -12);
-      ctx.lineTo(-32, -40);
-      ctx.lineTo(-10, -20);
+      ctx.moveTo(0, 0);
+      ctx.lineTo(14, -12);
+      ctx.lineTo(8, -20);
+      ctx.lineTo(28, -36);
+      ctx.lineTo(20, -46);
+      ctx.lineTo(38, -60);
+      ctx.lineTo(14, -52);
+      ctx.lineTo(18, -42);
+      ctx.lineTo(0, -26);
+      ctx.lineTo(6, -16);
+      ctx.lineTo(-6, -4);
       ctx.closePath();
+      ctx.fillStyle = "#FACC15";
       ctx.fill();
+      ctx.lineWidth = 2.5;
+      ctx.strokeStyle = "#1C1917";
+      ctx.stroke();
+      ctx.restore();
 
+      // Telinga Kiri + Ujung Hitam
+      ctx.save();
+      ctx.translate(-16, -20);
+      ctx.rotate(-0.42 + earWiggle - tilt * 0.8);
       ctx.beginPath();
-      ctx.moveTo(22, -12);
-      ctx.lineTo(32, -40);
-      ctx.lineTo(10, -20);
+      ctx.moveTo(0, 4);
+      ctx.quadraticCurveTo(-8, -22, 0, -40);
+      ctx.quadraticCurveTo(8, -22, 4, 4);
       ctx.closePath();
+      ctx.fillStyle = "#FACC15";
       ctx.fill();
-
-      // Ujung telinga hitam
-      ctx.fillStyle = "#18181B";
-      ctx.beginPath();
-      ctx.moveTo(-27, -27);
-      ctx.lineTo(-32, -40);
-      ctx.lineTo(-21, -30);
-      ctx.closePath();
-      ctx.fill();
-
-      ctx.beginPath();
-      ctx.moveTo(27, -27);
-      ctx.lineTo(32, -40);
-      ctx.lineTo(21, -30);
-      ctx.closePath();
-      ctx.fill();
-
-      // Inti energi kuning
-      const grad = ctx.createRadialGradient(0, 0, 6, 0, 0, 32);
-      grad.addColorStop(0, "#FFFBEB");
-      grad.addColorStop(0.55, "#FFD60A");
-      grad.addColorStop(1, "#F59E0B");
-
-      ctx.beginPath();
-      ctx.arc(0, 0, 28, 0, Math.PI * 2);
-      ctx.fillStyle = grad;
-      ctx.fill();
-      ctx.lineWidth = 3;
-      ctx.strokeStyle = "#FFFFFF";
+      ctx.lineWidth = 2.4;
+      ctx.strokeStyle = "#1C1917";
       ctx.stroke();
 
-      // Pipi merah bercahaya
-      ctx.fillStyle = "#EF233C";
       ctx.beginPath();
-      ctx.arc(-14, 5, 5.5, 0, Math.PI * 2);
-      ctx.arc(14, 5, 5.5, 0, Math.PI * 2);
+      ctx.moveTo(-4.5, -24);
+      ctx.quadraticCurveTo(-5, -33, 0, -40);
+      ctx.quadraticCurveTo(5, -33, 4.5, -24);
+      ctx.closePath();
+      ctx.fillStyle = "#1C1917";
       ctx.fill();
+      ctx.restore();
+
+      // Telinga Kanan + Ujung Hitam
+      ctx.save();
+      ctx.translate(16, -20);
+      ctx.rotate(0.42 - earWiggle - tilt * 0.8);
+      ctx.beginPath();
+      ctx.moveTo(-4, 4);
+      ctx.quadraticCurveTo(-8, -22, 0, -40);
+      ctx.quadraticCurveTo(8, -22, 0, 4);
+      ctx.closePath();
+      ctx.fillStyle = "#FACC15";
+      ctx.fill();
+      ctx.lineWidth = 2.4;
+      ctx.strokeStyle = "#1C1917";
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.moveTo(-4.5, -24);
+      ctx.quadraticCurveTo(-5, -33, 0, -40);
+      ctx.quadraticCurveTo(5, -33, 4.5, -24);
+      ctx.closePath();
+      ctx.fillStyle = "#1C1917";
+      ctx.fill();
+      ctx.restore();
+
+      // Badan Pikachu
+      const bodyGrad = ctx.createRadialGradient(-4, 10, 4, 0, 14, 28);
+      bodyGrad.addColorStop(0, "#FEF08A");
+      bodyGrad.addColorStop(0.65, "#FACC15");
+      bodyGrad.addColorStop(1, "#EAB308");
+
+      ctx.beginPath();
+      ctx.ellipse(0, 16, 22, 20, 0, 0, Math.PI * 2);
+      ctx.fillStyle = bodyGrad;
+      ctx.fill();
+      ctx.lineWidth = 2.5;
+      ctx.strokeStyle = "#1C1917";
+      ctx.stroke();
+
+      // Kaki Kecil
+      ctx.fillStyle = "#FACC15";
+      ctx.beginPath();
+      ctx.ellipse(-11, 34, 7, 4, -0.2, 0, Math.PI * 2);
+      ctx.ellipse(11, 34, 7, 4, 0.2, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+
+      // Kepala Pikachu
+      const headGrad = ctx.createRadialGradient(-6, -14, 4, 0, -8, 28);
+      headGrad.addColorStop(0, "#FEF9C3");
+      headGrad.addColorStop(0.55, "#FACC15");
+      headGrad.addColorStop(1, "#EAB308");
+
+      ctx.beginPath();
+      ctx.ellipse(0, -8, 25, 21, 0, 0, Math.PI * 2);
+      ctx.fillStyle = headGrad;
+      ctx.fill();
+      ctx.lineWidth = 2.5;
+      ctx.strokeStyle = "#1C1917";
+      ctx.stroke();
+
+      // Mata Besar Ekspresif + Catchlight
+      ctx.fillStyle = "#1C1917";
+      ctx.beginPath();
+      ctx.arc(-10, -11, 4.4, 0, Math.PI * 2);
+      ctx.arc(10, -11, 4.4, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = "#FFFFFF";
+      ctx.beginPath();
+      ctx.arc(-8.6, -12.4, 1.7, 0, Math.PI * 2);
+      ctx.arc(11.4, -12.4, 1.7, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Hidung & Senyum "w"
+      ctx.fillStyle = "#1C1917";
+      ctx.beginPath();
+      ctx.ellipse(0, -6, 1.8, 1.2, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.strokeStyle = "#1C1917";
+      ctx.lineWidth = 2;
+      ctx.lineCap = "round";
+      ctx.beginPath();
+      ctx.moveTo(-5, -2);
+      ctx.quadraticCurveTo(-2.5, 1.5, 0, -2);
+      ctx.quadraticCurveTo(2.5, 1.5, 5, -2);
+      ctx.stroke();
+
+      // Pipi Merah Menyala
+      ctx.save();
+      if (state.cheekFlash > 0 || state.combo >= 3) {
+        ctx.shadowColor = "#FACC15";
+        ctx.shadowBlur = 14;
+      }
+      ctx.fillStyle = state.cheekFlash > 0 ? "#FB7185" : "#E11D48";
+      ctx.beginPath();
+      ctx.arc(-17, -3, 5.6, 0, Math.PI * 2);
+      ctx.arc(17, -3, 5.6, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+
+      // Tangan Mengangkat ke Atas Siap Menangkap
+      ctx.fillStyle = "#FACC15";
+      ctx.strokeStyle = "#1C1917";
+      ctx.lineWidth = 2.2;
+      ctx.beginPath();
+      ctx.ellipse(-18, 9, 5.5, 4.2, -0.5, 0, Math.PI * 2);
+      ctx.ellipse(18, 9, 5.5, 4.2, 0.5, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
 
       ctx.restore();
     };
@@ -403,35 +624,41 @@
       ctx.translate(item.x, item.y);
 
       if (item.type === "heart") {
-        ctx.fillStyle = "#EF233C";
-        ctx.shadowColor = "rgba(239, 35, 60, 0.75)";
-        ctx.shadowBlur = 14;
+        ctx.fillStyle = "#E11D48";
+        ctx.shadowColor = "rgba(225, 29, 72, 0.8)";
+        ctx.shadowBlur = 15;
         ctx.beginPath();
-        ctx.moveTo(0, 10);
-        ctx.bezierCurveTo(-16, -2, -14, -15, 0, -6);
-        ctx.bezierCurveTo(14, -15, 16, -2, 0, 10);
+        ctx.moveTo(0, 11);
+        ctx.bezierCurveTo(-17, -2, -15, -16, 0, -6);
+        ctx.bezierCurveTo(15, -16, 17, -2, 0, 11);
         ctx.fill();
+        ctx.strokeStyle = "#FFE4E6";
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
       } else if (item.type === "thunder") {
-        ctx.fillStyle = "#FFD60A";
-        ctx.shadowColor = "rgba(255, 214, 10, 0.9)";
-        ctx.shadowBlur = 18;
+        ctx.fillStyle = "#FACC15";
+        ctx.shadowColor = "rgba(250, 204, 21, 0.95)";
+        ctx.shadowBlur = 20;
         ctx.beginPath();
-        ctx.moveTo(4, -16);
-        ctx.lineTo(-10, 2);
+        ctx.moveTo(4, -17);
+        ctx.lineTo(-11, 2);
         ctx.lineTo(0, 2);
-        ctx.lineTo(-4, 16);
-        ctx.lineTo(10, -2);
+        ctx.lineTo(-4, 17);
+        ctx.lineTo(11, -2);
         ctx.lineTo(0, -2);
         ctx.closePath();
         ctx.fill();
+        ctx.strokeStyle = "#FFFDF5";
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
       } else {
-        ctx.fillStyle = "#9333EA";
-        ctx.shadowColor = "rgba(147, 51, 234, 0.7)";
-        ctx.shadowBlur = 12;
+        ctx.fillStyle = "#7E22CE";
+        ctx.shadowColor = "rgba(168, 85, 247, 0.8)";
+        ctx.shadowBlur = 14;
         ctx.beginPath();
-        ctx.arc(0, 0, 14, 0, Math.PI * 2);
+        ctx.arc(0, 0, 15, 0, Math.PI * 2);
         ctx.fill();
-        ctx.strokeStyle = "#E9D5FF";
+        ctx.strokeStyle = "#F3E8FF";
         ctx.lineWidth = 2;
         ctx.stroke();
       }
@@ -450,10 +677,10 @@
       }
 
       overlayTitle.textContent = unlocked
-        ? `Luar Biasa! Skor ${state.score} Poin!`
+        ? `Hebat! Pikachu Meraih ${state.score} Poin!`
         : `Waktu Habis! Skor ${state.score} Poin`;
       overlayText.innerHTML = unlocked
-        ? "Anda berhasil membuka kode suvenir VIP <strong>PIKA-VIP26</strong>. Main lagi untuk memecahkan rekor tertinggi!"
+        ? "Kode suvenir VIP <strong>PIKA-VIP26</strong> berhasil dibuka. Main lagi untuk memecahkan rekor tertinggi!"
         : "Kumpulkan minimal <strong>1.500 poin</strong> untuk membuka kode suvenir VIP pernikahan kami. Coba lagi!";
       startBtn.textContent = "Main Lagi";
       overlay.classList.remove("is-hidden");
@@ -465,35 +692,37 @@
       ctx.save();
       if (state.shake > 0.2) {
         ctx.translate((Math.random() - 0.5) * state.shake, (Math.random() - 0.5) * state.shake);
-        state.shake *= 0.85;
+        state.shake *= 0.84;
       }
 
-      // Latar arena gelap dengan grid halus
-      ctx.fillStyle = "#09090B";
+      // Latar Arena Warm Obsidian + Fever Glow saat Combo tinggi
+      const bgGrad = ctx.createLinearGradient(0, 0, 0, height);
+      bgGrad.addColorStop(0, "#1C1917");
+      bgGrad.addColorStop(1, state.combo >= 3 ? "#2E2110" : "#12100E");
+      ctx.fillStyle = bgGrad;
       ctx.fillRect(0, 0, width, height);
 
-      ctx.strokeStyle = "rgba(255, 214, 10, 0.08)";
-      ctx.lineWidth = 1;
-      for (let gx = 0; gx < width; gx += 40) {
-        ctx.beginPath();
-        ctx.moveTo(gx, 0);
-        ctx.lineTo(gx, height);
-        ctx.stroke();
-      }
+      // Lantai Arena
+      ctx.fillStyle = "rgba(250, 204, 21, 0.12)";
+      ctx.fillRect(0, height - 24, width, 24);
 
-      // Interpolasi posisi pemain (spring smoothing)
+      // Pergerakan Pikachu dengan inersia halus
+      const prevX = state.playerX;
       state.playerX += (state.targetX - state.playerX) * 0.22;
-      const playerY = height - 52;
+      state.vx = state.playerX - prevX;
+      const playerY = height - 56;
 
       if (state.magnetTimer > 0) state.magnetTimer -= 1;
+      if (state.hopOffset > 0) state.hopOffset = Math.max(0, state.hopOffset - 1.4);
+      if (state.cheekFlash > 0) state.cheekFlash -= 1;
 
       state.spawnCooldown -= 1;
       if (state.spawnCooldown <= 0) {
         spawnItem();
-        state.spawnCooldown = Math.max(18, 34 - (30 - state.timeLeft) * 0.45);
+        state.spawnCooldown = Math.max(18, 33 - (30 - state.timeLeft) * 0.45);
       }
 
-      // Update & gambar item jatuh
+      // Update & gambar item
       for (let i = state.items.length - 1; i >= 0; i -= 1) {
         const item = state.items[i];
         item.wobble += 0.06;
@@ -501,36 +730,39 @@
         item.x += Math.sin(item.wobble) * 0.9;
 
         if (state.magnetTimer > 0 && item.type !== "static") {
-          item.x += (state.playerX - item.x) * 0.09;
+          item.x += (state.playerX - item.x) * 0.1;
           item.y += (playerY - item.y) * 0.06;
         }
 
-        const dx = item.x - state.playerX;
-        const dy = item.y - playerY;
-        const dist = Math.hypot(dx, dy);
-
-        if (dist < item.radius + 28) {
+        const dist = Math.hypot(item.x - state.playerX, item.y - playerY);
+        if (dist < item.radius + 32) {
           if (item.type === "heart") {
             const pts = 100 * state.combo;
             state.score += pts;
             state.combo = Math.min(5, state.combo + 1);
-            spawnParticles(item.x, item.y, "#EF233C", 14);
-            spawnLightningBolt(state.playerX, playerY, item.x, item.y);
-            state.floatingTexts.push({ x: item.x, y: item.y, text: `+${pts}`, life: 1, color: "#FFD60A" });
+            state.hopOffset = 14;
+            state.cheekFlash = 14;
+            spawnParticles(item.x, item.y, "#E11D48", 16);
+            spawnLightningBolt(state.playerX, playerY - 8, item.x, item.y);
+            state.shockwaves.push({ x: item.x, y: item.y, r: 8, life: 1, color: "#FACC15" });
+            state.floatingTexts.push({ x: item.x, y: item.y, text: `+${pts}`, life: 1, color: "#FACC15" });
           } else if (item.type === "thunder") {
             const pts = 250 * state.combo;
             state.score += pts;
             state.combo = Math.min(5, state.combo + 1);
-            state.magnetTimer = 240;
+            state.magnetTimer = 250;
+            state.hopOffset = 18;
+            state.cheekFlash = 24;
             state.shake = 8;
-            spawnParticles(item.x, item.y, "#FFD60A", 22);
-            spawnLightningBolt(state.playerX, playerY, item.x, item.y);
-            state.floatingTexts.push({ x: item.x, y: item.y, text: `MAGNET +${pts}`, life: 1, color: "#FFFBEB" });
+            spawnParticles(item.x, item.y, "#FACC15", 24);
+            spawnLightningBolt(state.playerX, playerY - 8, item.x, item.y);
+            state.shockwaves.push({ x: item.x, y: item.y, r: 10, life: 1, color: "#FFFDF5" });
+            state.floatingTexts.push({ x: item.x, y: item.y, text: `MAGNET +${pts}`, life: 1, color: "#FFFDF5" });
           } else {
             state.combo = 1;
             state.shake = 12;
-            spawnParticles(item.x, item.y, "#A855F7", 16);
-            state.floatingTexts.push({ x: item.x, y: item.y, text: "STATIC!", life: 1, color: "#D8B4FE" });
+            spawnParticles(item.x, item.y, "#A855F7", 18);
+            state.floatingTexts.push({ x: item.x, y: item.y, text: "STATIC!", life: 1, color: "#E9D5FF" });
           }
           updateHud();
           state.items.splice(i, 1);
@@ -545,10 +777,28 @@
         drawItem(item);
       }
 
-      // Sambaran petir prosedural
+      // Gelombang kejut tangkapan
+      for (let i = state.shockwaves.length - 1; i >= 0; i -= 1) {
+        const sw = state.shockwaves[i];
+        sw.r += 3.5;
+        sw.life -= 0.06;
+        if (sw.life <= 0) {
+          state.shockwaves.splice(i, 1);
+          continue;
+        }
+        ctx.beginPath();
+        ctx.arc(sw.x, sw.y, sw.r, 0, Math.PI * 2);
+        ctx.strokeStyle = sw.color;
+        ctx.globalAlpha = sw.life * 0.7;
+        ctx.lineWidth = 2.5;
+        ctx.stroke();
+      }
+      ctx.globalAlpha = 1;
+
+      // Sambaran petir dari pipi Pikachu
       for (let i = state.bolts.length - 1; i >= 0; i -= 1) {
         const b = state.bolts[i];
-        b.life -= 0.09;
+        b.life -= 0.085;
         if (b.life <= 0) {
           state.bolts.splice(i, 1);
           continue;
@@ -558,18 +808,18 @@
           if (idx === 0) ctx.moveTo(pt.x, pt.y);
           else ctx.lineTo(pt.x, pt.y);
         });
-        ctx.strokeStyle = `rgba(255, 214, 10, ${b.life})`;
-        ctx.lineWidth = 3;
+        ctx.strokeStyle = `rgba(250, 204, 21, ${b.life})`;
+        ctx.lineWidth = 3.2;
         ctx.stroke();
       }
 
-      // Partikel ledakan
+      // Partikel percikan
       for (let i = state.particles.length - 1; i >= 0; i -= 1) {
         const p = state.particles[i];
         p.x += p.vx;
         p.y += p.vy;
         p.vy += 0.12;
-        p.life -= 0.035;
+        p.life -= 0.034;
         if (p.life <= 0) {
           state.particles.splice(i, 1);
           continue;
@@ -582,12 +832,12 @@
       }
       ctx.globalAlpha = 1;
 
-      // Floating score text
+      // Teks skor melayang
       ctx.font = '700 15px "JetBrains Mono", monospace';
       ctx.textAlign = "center";
       for (let i = state.floatingTexts.length - 1; i >= 0; i -= 1) {
         const ft = state.floatingTexts[i];
-        ft.y -= 1.3;
+        ft.y -= 1.4;
         ft.life -= 0.025;
         if (ft.life <= 0) {
           state.floatingTexts.splice(i, 1);
@@ -599,7 +849,7 @@
       }
       ctx.globalAlpha = 1;
 
-      drawCollector(state.playerX, playerY);
+      drawPikachuCharacter(state.playerX, playerY);
       ctx.restore();
 
       animId = requestAnimationFrame(loop);
@@ -612,9 +862,12 @@
       state.combo = 1;
       state.timeLeft = 30;
       state.magnetTimer = 0;
+      state.hopOffset = 0;
+      state.cheekFlash = 0;
       state.items = [];
       state.particles = [];
       state.bolts = [];
+      state.shockwaves = [];
       state.floatingTexts = [];
       state.playerX = width / 2;
       state.targetX = width / 2;
@@ -705,6 +958,7 @@
 
   document.addEventListener("DOMContentLoaded", () => {
     initGuestPersonalization();
+    initCharacterInteractions();
     initOpeningGate();
     initGateSparks();
     initCountdown();
