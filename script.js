@@ -2,8 +2,84 @@
   "use strict";
 
   const WEDDING_DATE = new Date("2026-12-19T08:00:00+07:00").getTime();
-  const WHATSAPP_NUMBER = "6281234567890";
+  const WHATSAPP_NUMBER = "6288226621362";
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let sharedAudioCtx = null;
+
+  function getAudioContext() {
+    if (!sharedAudioCtx) {
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (AudioCtx) sharedAudioCtx = new AudioCtx();
+    }
+    if (sharedAudioCtx && sharedAudioCtx.state === "suspended") {
+      sharedAudioCtx.resume();
+    }
+    return sharedAudioCtx;
+  }
+
+  function playCharacterChirp(voice = "pikachu") {
+    const ctx = getAudioContext();
+    if (!ctx) return;
+
+    const profiles = {
+      pikachu: [784, 1046.5, 1318.5],
+      eevee: [659.25, 880, 1174.66],
+      pichu: [987.77, 1318.5, 1567.98],
+      togepi: [587.33, 739.99, 987.77]
+    };
+
+    const notes = profiles[voice] || profiles.pikachu;
+    const now = ctx.currentTime;
+
+    notes.forEach((freq, index) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      const start = now + index * 0.065;
+
+      osc.type = voice === "eevee" ? "sine" : "triangle";
+      osc.frequency.setValueAtTime(freq, start);
+      osc.frequency.exponentialRampToValueAtTime(freq * 1.08, start + 0.09);
+
+      gain.gain.setValueAtTime(0.001, start);
+      gain.gain.exponentialRampToValueAtTime(0.045, start + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.0008, start + 0.14);
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(start);
+      osc.stop(start + 0.15);
+    });
+  }
+
+  function playSynthFallbackChime() {
+    const ctx = getAudioContext();
+    if (!ctx) return;
+
+    const notes = [523.25, 659.25, 783.99, 1046.5, 987.77, 783.99, 659.25, 783.99];
+    let step = 0;
+
+    const triggerNote = () => {
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+
+      osc.type = "triangle";
+      osc.frequency.setValueAtTime(notes[step % notes.length], now);
+
+      gain.gain.setValueAtTime(0.001, now);
+      gain.gain.exponentialRampToValueAtTime(0.042, now + 0.04);
+      gain.gain.exponentialRampToValueAtTime(0.0008, now + 0.55);
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(now);
+      osc.stop(now + 0.58);
+      step += 1;
+    };
+
+    triggerNote();
+    window.setInterval(triggerNote, 840);
+  }
 
   function initGuestPersonalization() {
     const params = new URLSearchParams(window.location.search);
@@ -19,38 +95,6 @@
     if (rsvpInput) rsvpInput.value = cleanName;
   }
 
-  function playSynthFallbackChime() {
-    const AudioCtx = window.AudioContext || window.webkitAudioContext;
-    if (!AudioCtx) return;
-
-    const ctx = new AudioCtx();
-    const notes = [523.25, 659.25, 783.99, 1046.5, 987.77, 783.99, 659.25, 783.99];
-    let step = 0;
-
-    const triggerNote = () => {
-      if (ctx.state === "suspended") ctx.resume();
-      const now = ctx.currentTime;
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-
-      osc.type = "triangle";
-      osc.frequency.setValueAtTime(notes[step % notes.length], now);
-
-      gain.gain.setValueAtTime(0.001, now);
-      gain.gain.exponentialRampToValueAtTime(0.05, now + 0.04);
-      gain.gain.exponentialRampToValueAtTime(0.0008, now + 0.55);
-
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      osc.start(now);
-      osc.stop(now + 0.58);
-      step += 1;
-    };
-
-    triggerNote();
-    window.setInterval(triggerNote, 820);
-  }
-
   function spawnDomParticleBurst(x, y, mode = "electric") {
     if (prefersReducedMotion) return;
     const palette =
@@ -60,36 +104,61 @@
         ? ["#F59E0B", "#FACC15", "#78350F"]
         : ["#FACC15", "#E11D48", "#1C1917"];
 
-    for (let i = 0; i < 10; i += 1) {
+    for (let i = 0; i < 12; i += 1) {
       const el = document.createElement("span");
       el.className = "dom-spark-burst";
-      const angle = (Math.PI * 2 * i) / 10 + Math.random() * 0.35;
-      const dist = 38 + Math.random() * 44;
+      const angle = (Math.PI * 2 * i) / 12 + Math.random() * 0.35;
+      const dist = 42 + Math.random() * 48;
       el.style.left = `${x}px`;
       el.style.top = `${y}px`;
       el.style.color = palette[i % palette.length];
       el.style.setProperty("--dx", `${Math.cos(angle) * dist}px`);
-      el.style.setProperty("--dy", `${Math.sin(angle) * dist - 14}px`);
+      el.style.setProperty("--dy", `${Math.sin(angle) * dist - 18}px`);
       el.textContent = mode === "heart" ? "♥" : mode === "star" ? "✦" : "⚡";
       document.body.appendChild(el);
-      window.setTimeout(() => el.remove(), 700);
+      window.setTimeout(() => el.remove(), 740);
     }
+  }
+
+  function triggerCharacterExcitement(el, clientX, clientY) {
+    const mode = el.getAttribute("data-spark") || "electric";
+    const voice = el.getAttribute("data-voice") || "pikachu";
+
+    el.classList.remove("is-bouncing", "is-excited");
+    void el.offsetWidth;
+    el.classList.add("is-bouncing", "is-excited");
+
+    playCharacterChirp(voice);
+
+    const rect = el.getBoundingClientRect();
+    const cx = clientX || rect.left + rect.width / 2;
+    const cy = clientY || rect.top + rect.height / 2;
+    spawnDomParticleBurst(cx, cy, mode);
+
+    window.clearTimeout(el._bubbleTimeout);
+    el._bubbleTimeout = window.setTimeout(() => {
+      el.classList.remove("is-excited");
+    }, 2000);
   }
 
   function initCharacterInteractions() {
     document.querySelectorAll("[data-spark]").forEach((btn) => {
       btn.addEventListener("click", (e) => {
-        const mode = btn.getAttribute("data-spark") || "electric";
-        btn.classList.remove("is-bouncing");
-        void btn.offsetWidth;
-        btn.classList.add("is-bouncing");
-
-        const rect = btn.getBoundingClientRect();
-        const cx = e.clientX || rect.left + rect.width / 2;
-        const cy = e.clientY || rect.top + rect.height / 2;
-        spawnDomParticleBurst(cx, cy, mode);
+        triggerCharacterExcitement(btn, e.clientX, e.clientY);
       });
     });
+
+    const cheerAllBtn = document.getElementById("cheer-all-btn");
+    if (cheerAllBtn) {
+      cheerAllBtn.addEventListener("click", () => {
+        const actors = document.querySelectorAll(".full-char-actor");
+        actors.forEach((actor, idx) => {
+          window.setTimeout(() => {
+            triggerCharacterExcitement(actor);
+          }, idx * 140);
+        });
+      });
+    }
   }
 
   function initOpeningGate() {
@@ -196,6 +265,60 @@
         ctx.fill();
       }
 
+      ctx.globalAlpha = 1;
+      requestAnimationFrame(render);
+    };
+
+    requestAnimationFrame(render);
+  }
+
+  function initHeroAmbientCanvas() {
+    if (prefersReducedMotion) return;
+    const canvas = document.getElementById("hero-ambient-canvas");
+    const heroSection = document.getElementById("hero");
+    if (!canvas || !heroSection) return;
+
+    const ctx = canvas.getContext("2d");
+    let width = 0;
+    let height = 0;
+    const orbs = [];
+
+    const resize = () => {
+      const rect = heroSection.getBoundingClientRect();
+      width = canvas.width = rect.width;
+      height = canvas.height = rect.height;
+    };
+    resize();
+    window.addEventListener("resize", resize);
+
+    for (let i = 0; i < 28; i += 1) {
+      orbs.push({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        r: 2.5 + Math.random() * 5,
+        vx: (Math.random() - 0.5) * 0.45,
+        vy: -0.25 - Math.random() * 0.55,
+        phase: Math.random() * Math.PI * 2,
+        color: i % 5 === 0 ? "#E11D48" : i % 2 === 0 ? "#FACC15" : "#F59E0B"
+      });
+    }
+
+    const render = () => {
+      ctx.clearRect(0, 0, width, height);
+      for (const orb of orbs) {
+        orb.phase += 0.025;
+        orb.x += orb.vx + Math.sin(orb.phase) * 0.25;
+        orb.y += orb.vy;
+        if (orb.y < -12) orb.y = height + 12;
+        if (orb.x < -12) orb.x = width + 12;
+        if (orb.x > width + 12) orb.x = -12;
+
+        ctx.beginPath();
+        ctx.arc(orb.x, orb.y, orb.r, 0, Math.PI * 2);
+        ctx.fillStyle = orb.color;
+        ctx.globalAlpha = 0.28 + Math.sin(orb.phase) * 0.12;
+        ctx.fill();
+      }
       ctx.globalAlpha = 1;
       requestAnimationFrame(render);
     };
@@ -426,7 +549,6 @@
       timerEl.textContent = `${state.timeLeft}s`;
     };
 
-    /* Gambar Karakter Pikachu Utuh dan Ekspresif di Canvas */
     const drawPikachuCharacter = (x, y) => {
       const now = Date.now();
       const tilt = Math.max(-0.22, Math.min(0.22, state.vx * 0.018));
@@ -436,13 +558,11 @@
       ctx.save();
       ctx.translate(x, y - state.hopOffset);
 
-      // Bayangan Lantai
       ctx.fillStyle = "rgba(0, 0, 0, 0.45)";
       ctx.beginPath();
       ctx.ellipse(0, 38 + state.hopOffset, 30 - state.hopOffset * 0.4, 7, 0, 0, Math.PI * 2);
       ctx.fill();
 
-      // Aura Magnet Thunder Stone
       if (state.magnetTimer > 0) {
         ctx.save();
         ctx.rotate(now * 0.005);
@@ -457,7 +577,6 @@
 
       ctx.rotate(tilt);
 
-      // Ekor Petir Zig-Zag di Belakang
       ctx.save();
       ctx.translate(16, 14);
       ctx.rotate(tailSwing);
@@ -481,7 +600,6 @@
       ctx.stroke();
       ctx.restore();
 
-      // Telinga Kiri + Ujung Hitam
       ctx.save();
       ctx.translate(-16, -20);
       ctx.rotate(-0.42 + earWiggle - tilt * 0.8);
@@ -505,7 +623,6 @@
       ctx.fill();
       ctx.restore();
 
-      // Telinga Kanan + Ujung Hitam
       ctx.save();
       ctx.translate(16, -20);
       ctx.rotate(0.42 - earWiggle - tilt * 0.8);
@@ -529,7 +646,6 @@
       ctx.fill();
       ctx.restore();
 
-      // Badan Pikachu
       const bodyGrad = ctx.createRadialGradient(-4, 10, 4, 0, 14, 28);
       bodyGrad.addColorStop(0, "#FEF08A");
       bodyGrad.addColorStop(0.65, "#FACC15");
@@ -543,7 +659,6 @@
       ctx.strokeStyle = "#1C1917";
       ctx.stroke();
 
-      // Kaki Kecil
       ctx.fillStyle = "#FACC15";
       ctx.beginPath();
       ctx.ellipse(-11, 34, 7, 4, -0.2, 0, Math.PI * 2);
@@ -551,7 +666,6 @@
       ctx.fill();
       ctx.stroke();
 
-      // Kepala Pikachu
       const headGrad = ctx.createRadialGradient(-6, -14, 4, 0, -8, 28);
       headGrad.addColorStop(0, "#FEF9C3");
       headGrad.addColorStop(0.55, "#FACC15");
@@ -565,7 +679,6 @@
       ctx.strokeStyle = "#1C1917";
       ctx.stroke();
 
-      // Mata Besar Ekspresif + Catchlight
       ctx.fillStyle = "#1C1917";
       ctx.beginPath();
       ctx.arc(-10, -11, 4.4, 0, Math.PI * 2);
@@ -578,7 +691,6 @@
       ctx.arc(11.4, -12.4, 1.7, 0, Math.PI * 2);
       ctx.fill();
 
-      // Hidung & Senyum "w"
       ctx.fillStyle = "#1C1917";
       ctx.beginPath();
       ctx.ellipse(0, -6, 1.8, 1.2, 0, 0, Math.PI * 2);
@@ -593,7 +705,6 @@
       ctx.quadraticCurveTo(2.5, 1.5, 5, -2);
       ctx.stroke();
 
-      // Pipi Merah Menyala
       ctx.save();
       if (state.cheekFlash > 0 || state.combo >= 3) {
         ctx.shadowColor = "#FACC15";
@@ -606,7 +717,6 @@
       ctx.fill();
       ctx.restore();
 
-      // Tangan Mengangkat ke Atas Siap Menangkap
       ctx.fillStyle = "#FACC15";
       ctx.strokeStyle = "#1C1917";
       ctx.lineWidth = 2.2;
@@ -695,18 +805,15 @@
         state.shake *= 0.84;
       }
 
-      // Latar Arena Warm Obsidian + Fever Glow saat Combo tinggi
       const bgGrad = ctx.createLinearGradient(0, 0, 0, height);
       bgGrad.addColorStop(0, "#1C1917");
       bgGrad.addColorStop(1, state.combo >= 3 ? "#2E2110" : "#12100E");
       ctx.fillStyle = bgGrad;
       ctx.fillRect(0, 0, width, height);
 
-      // Lantai Arena
       ctx.fillStyle = "rgba(250, 204, 21, 0.12)";
       ctx.fillRect(0, height - 24, width, 24);
 
-      // Pergerakan Pikachu dengan inersia halus
       const prevX = state.playerX;
       state.playerX += (state.targetX - state.playerX) * 0.22;
       state.vx = state.playerX - prevX;
@@ -722,7 +829,6 @@
         state.spawnCooldown = Math.max(18, 33 - (30 - state.timeLeft) * 0.45);
       }
 
-      // Update & gambar item
       for (let i = state.items.length - 1; i >= 0; i -= 1) {
         const item = state.items[i];
         item.wobble += 0.06;
@@ -777,7 +883,6 @@
         drawItem(item);
       }
 
-      // Gelombang kejut tangkapan
       for (let i = state.shockwaves.length - 1; i >= 0; i -= 1) {
         const sw = state.shockwaves[i];
         sw.r += 3.5;
@@ -795,7 +900,6 @@
       }
       ctx.globalAlpha = 1;
 
-      // Sambaran petir dari pipi Pikachu
       for (let i = state.bolts.length - 1; i >= 0; i -= 1) {
         const b = state.bolts[i];
         b.life -= 0.085;
@@ -813,7 +917,6 @@
         ctx.stroke();
       }
 
-      // Partikel percikan
       for (let i = state.particles.length - 1; i >= 0; i -= 1) {
         const p = state.particles[i];
         p.x += p.vx;
@@ -832,7 +935,6 @@
       }
       ctx.globalAlpha = 1;
 
-      // Teks skor melayang
       ctx.font = '700 15px "JetBrains Mono", monospace';
       ctx.textAlign = "center";
       for (let i = state.floatingTexts.length - 1; i >= 0; i -= 1) {
@@ -961,6 +1063,7 @@
     initCharacterInteractions();
     initOpeningGate();
     initGateSparks();
+    initHeroAmbientCanvas();
     initCountdown();
     initInteractiveCards();
     initScrollReveal();
