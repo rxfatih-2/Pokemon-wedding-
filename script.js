@@ -116,7 +116,8 @@
       drawer.hidden = false;
     };
 
-    toggleBtn.addEventListener("click", () => {
+    toggleBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
       const isExpanded = toggleBtn.getAttribute("aria-expanded") === "true";
       if (isExpanded) closeDrawer();
       else openDrawer();
@@ -276,7 +277,7 @@
         r: 2 + Math.random() * 4.5,
         vx: (Math.random() - 0.5) * 0.8,
         vy: -0.35 - Math.random() * 0.85,
-        color: i % 4 === 0 ? "#E11D48" : i % 2 === 0 ? "#FFFDF5" : "#78350F"
+        color: i % 4 === 0 ? "#E11D48" : i % 2 === 0 ? "#FEF9C3" : "#78350F"
       });
     }
 
@@ -359,7 +360,7 @@
         vx: (Math.random() - 0.5) * 0.45,
         vy: -0.25 - Math.random() * 0.55,
         phase: Math.random() * Math.PI * 2,
-        color: i % 5 === 0 ? "#E11D48" : i % 2 === 0 ? "#FACC15" : "#F59E0B"
+        color: i % 5 === 0 ? "#E11D48" : i % 2 === 0 ? "#F59E0B" : "#78350F"
       });
     }
 
@@ -376,7 +377,7 @@
         ctx.beginPath();
         ctx.arc(orb.x, orb.y, orb.r, 0, Math.PI * 2);
         ctx.fillStyle = orb.color;
-        ctx.globalAlpha = 0.28 + Math.sin(orb.phase) * 0.12;
+        ctx.globalAlpha = 0.22 + Math.sin(orb.phase) * 0.1;
         ctx.fill();
       }
       ctx.globalAlpha = 1;
@@ -818,7 +819,7 @@
         ctx.lineTo(0, -2);
         ctx.closePath();
         ctx.fill();
-        ctx.strokeStyle = "#FFFDF5";
+        ctx.strokeStyle = "#FEFCE8";
         ctx.lineWidth = 1.5;
         ctx.stroke();
       } else {
@@ -922,8 +923,8 @@
             state.shake = 8;
             spawnParticles(item.x, item.y, "#FACC15", 24);
             spawnLightningBolt(state.playerX, playerY - 8, item.x, item.y);
-            state.shockwaves.push({ x: item.x, y: item.y, r: 10, life: 1, color: "#FFFDF5" });
-            state.floatingTexts.push({ x: item.x, y: item.y, text: `MAGNET +${pts}`, life: 1, color: "#FFFDF5" });
+            state.shockwaves.push({ x: item.x, y: item.y, r: 10, life: 1, color: "#FEF9C3" });
+            state.floatingTexts.push({ x: item.x, y: item.y, text: `MAGNET +${pts}`, life: 1, color: "#FEF9C3" });
           } else {
             state.combo = 1;
             state.shake = 12;
@@ -1049,9 +1050,6 @@
     });
   }
 
-  /* ==========================================================================
-     PERSISTENT GUESTBOOK (localStorage) & WHATSAPP RSVP
-     ========================================================================== */
   function loadSavedWishes() {
     try {
       const raw = window.localStorage.getItem(WISHES_STORAGE_KEY);
@@ -1067,7 +1065,7 @@
     try {
       window.localStorage.setItem(WISHES_STORAGE_KEY, JSON.stringify(wishes.slice(0, 100)));
     } catch {
-      // Abaikan jika mode private browsing membatasi kuota penyimpanan
+      // Abaikan jika penyimpanan dibatasi
     }
   }
 
