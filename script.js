@@ -4,11 +4,13 @@
   const WEDDING_DATE = new Date("2026-12-19T08:00:00+07:00").getTime();
   const WHATSAPP_NUMBER = "6288226621362";
   const WISHES_STORAGE_KEY = "rxfatih_pikachu_wedding_wishes_v1";
+  const AUDIO_CANDIDATES = ["musik.mp3", "assets/musik.mp3", "assets/music.mp3"];
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   let sharedAudioCtx = null;
-  let backsoundStarted = false;
-  let localMp3Failed = false;
+  let backsoundPlaying = false;
+  let allMp3Failed = false;
+  let candidateIndex = 0;
   let synthLoopTimer = null;
 
   const DEFAULT_WISHES = [
@@ -98,7 +100,7 @@
         padOsc.frequency.setValueAtTime(freq, now);
 
         padGain.gain.setValueAtTime(0.001, now);
-        padGain.gain.linearRampToValueAtTime(0.065, now + 0.12);
+        padGain.gain.linearRampToValueAtTime(0.075, now + 0.12);
         padGain.gain.exponentialRampToValueAtTime(0.001, now + 1.65);
 
         padOsc.connect(padGain);
@@ -116,7 +118,7 @@
     bellOsc.frequency.setValueAtTime(leadFreq, now);
 
     bellGain.gain.setValueAtTime(0.001, now);
-    bellGain.gain.linearRampToValueAtTime(0.22, now + 0.025);
+    bellGain.gain.linearRampToValueAtTime(0.24, now + 0.025);
     bellGain.gain.exponentialRampToValueAtTime(0.001, now + 0.42);
 
     bellOsc.connect(bellGain);
@@ -126,6 +128,7 @@
   }
 
   function startRomanticMusicBox() {
+    backsoundPlaying = true;
     if (synthLoopTimer) return;
     let step = 0;
     playMusicBoxBeat(step);
@@ -140,56 +143,64 @@
     const bgMusic = document.getElementById("bg-music");
     getAudioContext();
 
-    if (backsoundStarted) {
-      if (bgMusic && !localMp3Failed && bgMusic.paused && !document.hidden) {
-        bgMusic.play().catch(() => {});
-      }
+    if (allMp3Failed || !bgMusic) {
+      startRomanticMusicBox();
       return;
     }
 
-    backsoundStarted = true;
+    if (!bgMusic.paused) {
+      backsoundPlaying = true;
+      return;
+    }
 
-    if (bgMusic && !localMp3Failed && bgMusic.networkState !== HTMLMediaElement.NETWORK_NO_SOURCE) {
-      bgMusic.volume = 0.8;
-      const playPromise = bgMusic.play();
-      if (playPromise !== undefined) {
-        playPromise.catch(() => {
-          localMp3Failed = true;
-          startRomanticMusicBox();
+    bgMusic.volume = 0.85;
+    const playPromise = bgMusic.play();
+    if (playPromise !== undefined) {
+      playPromise
+        .then(() => {
+          backsoundPlaying = true;
+        })
+        .catch(() => {
+          // Akan dicoba lagi saat tap/klik penuh berikutnya atau saat fallback error aktif
         });
-      }
     } else {
-      startRomanticMusicBox();
+      backsoundPlaying = true;
     }
   }
 
   function initBacksoundSystem() {
     const bgMusic = document.getElementById("bg-music");
     if (!bgMusic) {
-      localMp3Failed = true;
+      allMp3Failed = true;
     } else {
       bgMusic.addEventListener("error", () => {
-        localMp3Failed = true;
-        if (backsoundStarted && !synthLoopTimer) {
-          startRomanticMusicBox();
+        candidateIndex += 1;
+        if (candidateIndex < AUDIO_CANDIDATES.length) {
+          bgMusic.src = AUDIO_CANDIDATES[candidateIndex];
+          bgMusic.load();
+          if (backsoundPlaying) {
+            bgMusic.play().catch(() => {});
+          }
+        } else {
+          allMp3Failed = true;
+          if (backsoundPlaying) {
+            startRomanticMusicBox();
+          }
         }
       });
     }
 
-    const unlockEvents = ["pointerdown", "touchstart", "click", "keydown"];
-    const onFirstInteraction = () => {
+    const handleUserGesture = () => {
+      if (backsoundPlaying && bgMusic && !bgMusic.paused) return;
       triggerBacksound();
-      unlockEvents.forEach((evt) => {
-        document.removeEventListener(evt, onFirstInteraction);
-      });
     };
 
-    unlockEvents.forEach((evt) => {
-      document.addEventListener(evt, onFirstInteraction, { passive: true });
+    ["pointerdown", "touchstart", "click", "keydown"].forEach((evt) => {
+      document.addEventListener(evt, handleUserGesture, { passive: true });
     });
 
     document.addEventListener("visibilitychange", () => {
-      if (!bgMusic || localMp3Failed || !backsoundStarted) return;
+      if (!bgMusic || allMp3Failed || !backsoundPlaying) return;
       if (document.hidden) {
         bgMusic.pause();
       } else {
